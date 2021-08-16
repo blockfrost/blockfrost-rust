@@ -2,3 +2,7 @@
 name = "blockfrost"
 version = "0.1.0"
 edition = "2018"
+
+# Used in examples/
+[dev-dependencies]
+tokio = { version = "1.10.0", features = ["macros", "rt-multi-thread"] }
