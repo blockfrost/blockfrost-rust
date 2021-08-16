@@ -18,5 +18,33 @@ impl BlockFrostApi {
     }
 }
 
-#[derive(Debug, Default)]
-pub struct Settings;
+#[derive(Debug)]
+pub struct Settings {
+    network_endpoint: &'static str,
+}
+
+impl Settings {
+    pub fn new() -> Self {
+        Self {
+            network_endpoint: CARDANO_MAINNET_NETWORK,
+        }
+    }
+
+    pub fn set_test_network(&mut self, flag: bool) {
+        self.network_endpoint = if flag {
+            CARDANO_TESTNET_NETWORK
+        } else {
+            CARDANO_MAINNET_NETWORK
+        };
+    }
+
+    pub fn set_custom_network(&mut self, network_endpoint: &'static str) {
+        self.network_endpoint = network_endpoint;
+    }
+}
+
+impl Default for Settings {
+    fn default() -> Self {
+        Self::new()
+    }
+}
