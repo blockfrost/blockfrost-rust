@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2018"
 
 [dependencies]
-reqwest = { version = "0.11.4", default-features = false }
+reqwest = { version = "0.11.4", features = ["json", "multipart"] }
+serde = { version = "1.0", features = ["derive"] }
 
 # Used in examples/
 [dev-dependencies]

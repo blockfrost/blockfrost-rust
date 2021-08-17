@@ -5,12 +5,11 @@ type MainResult = std::result::Result<(), Box<dyn std::error::Error + Send + Syn
 #[tokio::main]
 async fn main() -> MainResult {
     let project_id = "YOUR_KEY_HERE";
-    let api = BlockFrostApi::new(project_id, Settings::default());
+    let settings = Settings::new().set_test_network(true);
+    let api = BlockFrostApi::new(project_id, settings);
 
-    // let health = api.health().await.unwrap();
-    // println!("{:?}", health);
-    // dbg!(health.status());
-    // println!("{:#?}", health.json::<Health>().await.unwrap());
+    let health = api.health().await;
+    println!("{:?}", health);
 
     Ok(())
 }
