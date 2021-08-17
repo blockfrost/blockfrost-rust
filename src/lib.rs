@@ -5,15 +5,26 @@ pub const CARDANO_TESTNET_NETWORK: &str = "https://cardano-testnet.blockfrost.io
 
 #[derive(Debug, Default)]
 pub struct BlockFrostApi {
-    public_id: String,
+    project_id: String,
     settings: Settings,
+    client: reqwest::Client,
 }
 
 impl BlockFrostApi {
-    pub fn new(public_id: impl AsRef<str>, settings: Settings) -> Self {
+    pub fn new(project_id: impl AsRef<str>, settings: Settings) -> Self {
+        let mut headers = reqwest::header::HeaderMap::new();
+
+        headers.insert("project_id", project_id.as_ref().parse().unwrap());
+
+        let client = reqwest::Client::builder()
+            .default_headers(headers)
+            .build()
+            .unwrap();
+
         Self {
-            public_id: public_id.as_ref().to_string(),
+            project_id: project_id.as_ref().to_string(),
             settings,
+            client,
         }
     }
 }

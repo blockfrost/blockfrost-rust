@@ -3,6 +3,9 @@ name = "blockfrost"
 version = "0.1.0"
 edition = "2018"
 
+[dependencies]
+reqwest = { version = "0.11.4", default-features = false }
+
 # Used in examples/
 [dev-dependencies]
 tokio = { version = "1.10.0", features = ["macros", "rt-multi-thread"] }
