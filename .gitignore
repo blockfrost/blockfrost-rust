@@ -1,5 +1,3 @@
 /target
 Cargo.lock
-
-# Having an main.rs in a library crate can be useful for developing
-/src/main.rs
+.env
