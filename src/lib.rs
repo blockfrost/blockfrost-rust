@@ -7,20 +7,21 @@ pub mod env;
 pub const CARDANO_MAINNET_NETWORK: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
 pub const CARDANO_TESTNET_NETWORK: &str = "https://cardano-testnet.blockfrost.io/api/v0";
 
-use settings::Settings;
+pub use settings::Settings;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Clone)]
 pub struct BlockFrostApi {
-    project_id: String,
     settings: Settings,
     client: reqwest::Client,
 }
 
 impl BlockFrostApi {
-    pub fn new(project_id: impl AsRef<str>, settings: Settings) -> Self {
+    pub fn new(settings: Settings) -> Self {
         let mut headers = reqwest::header::HeaderMap::new();
 
-        headers.insert("project_id", project_id.as_ref().parse().unwrap());
+        let project_id = settings.project_id.parse().expect("Should be ??");
+
+        headers.insert("project_id", project_id);
 
         let client = reqwest::Client::builder()
             .default_headers(headers)
@@ -28,7 +29,6 @@ impl BlockFrostApi {
             .unwrap();
 
         Self {
-            project_id: project_id.as_ref().to_string(),
             settings,
             client,
         }
