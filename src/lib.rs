@@ -1,9 +1,13 @@
 //! Rust SDK for Blockfrost.io
 
 pub mod models;
+pub mod settings;
+pub mod env;
 
 pub const CARDANO_MAINNET_NETWORK: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
 pub const CARDANO_TESTNET_NETWORK: &str = "https://cardano-testnet.blockfrost.io/api/v0";
+
+use settings::Settings;
 
 #[derive(Debug, Default)]
 pub struct BlockFrostApi {
@@ -37,41 +41,5 @@ impl BlockFrostApi {
         let response = self.client.get(full_url).send().await?;
         dbg!(&response);
         response.json().await
-    }
-}
-
-#[derive(Debug)]
-pub struct Settings {
-    pub(crate) network_endpoint: &'static str,
-}
-
-impl Settings {
-    pub fn new() -> Self {
-        Self {
-            network_endpoint: CARDANO_MAINNET_NETWORK,
-        }
-    }
-
-    pub fn set_test_network(mut self, flag: bool) -> Self {
-        self.network_endpoint = if flag {
-            CARDANO_TESTNET_NETWORK
-        } else {
-            CARDANO_MAINNET_NETWORK
-        };
-        self
-    }
-
-    pub fn set_custom_network(&mut self, network_endpoint: &'static str) {
-        self.network_endpoint = network_endpoint;
-    }
-
-    pub fn current_network(&self) -> &'static str {
-        self.network_endpoint
-    }
-}
-
-impl Default for Settings {
-    fn default() -> Self {
-        Self::new()
     }
 }
