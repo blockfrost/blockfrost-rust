@@ -1,15 +1,20 @@
-use blockfrost::{BlockFrostApi, Settings, env::*};
+use blockfrost::{env, BlockFrostApi, Settings};
 
-type MainResult = std::result::Result<(), Box<dyn std::error::Error + Send + Sync>>;
+fn build_api() -> BlockFrostApi {
+    let project_id = env::load_project_id().expect("Could not read key");
+    let settings = Settings::new(project_id).set_test_network(true);
+    BlockFrostApi::new(settings)
+}
 
 #[tokio::main]
-async fn main() -> MainResult {
-    let project_id = project_id_from_env().expect("Could not read .env");
-    let settings = Settings::new(project_id).set_test_network(true);
-    let api = BlockFrostApi::new(settings);
+async fn main() -> blockfrost::Result<()> {
+    let api = build_api();
 
     let health = api.health().await;
-    println!("{:?}", health);
+    let root = api.root().await;
+
+    println!("{:#?}", health);
+    println!("{:#?}", root);
 
     Ok(())
 }

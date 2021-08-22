@@ -4,3 +4,9 @@ use serde::{Deserialize, Serialize};
 pub struct Health {
     is_healthy: bool,
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Root {
+    url: String,
+    version: String,
+}
