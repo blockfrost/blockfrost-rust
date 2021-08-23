@@ -1,3 +1,4 @@
+use std::path::PathBuf;
 use std::{error, fmt, io};
 
 #[derive(Debug)]
@@ -5,6 +6,11 @@ pub enum Error {
     Http(reqwest::Error),
     Json(serde_json::Error),
     Io(io::Error),
+    DotEnv {
+        reason: &'static str,
+        path: PathBuf,
+        line_number: usize,
+    },
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
@@ -15,17 +21,27 @@ impl fmt::Display for Error {
             Error::Http(source) => write!(f, "http err: {:#?}.", source),
             Error::Json(source) => write!(f, "json err: {:#?}.", source),
             Error::Io(source) => write!(f, "io err: {:#?}.", source),
+            Error::DotEnv {
+                reason,
+                path,
+                line_number,
+            } => write!(
+                f,
+                "dotenv err: parse error at line {} of file '{:#?}': {}.",
+                line_number, path, reason
+            ),
         }
     }
 }
 
 impl error::Error for Error {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
-        Some(match self {
-            Error::Http(source) => source,
-            Error::Json(source) => source,
-            Error::Io(source) => source,
-        })
+        match self {
+            Error::Http(source) => Some(source),
+            Error::Json(source) => Some(source),
+            Error::Io(source) => Some(source),
+            Error::DotEnv { .. } => None,
+        }
     }
 }
 

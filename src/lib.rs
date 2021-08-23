@@ -24,7 +24,7 @@ pub struct BlockFrostApi {
 impl BlockFrostApi {
     pub fn new(settings: Settings) -> Self {
         let mut headers = HeaderMap::new();
-        let project_id = settings.project_id.parse().expect("Should be ??");
+        let project_id = settings.project_id.parse().unwrap();
         headers.insert("project_id", project_id);
 
         let client = Client::builder().default_headers(headers).build().unwrap();
@@ -39,7 +39,6 @@ impl BlockFrostApi {
     pub async fn root(&self) -> Result<models::Root> {
         self.get("/").await
     }
-
 }
 
 // Private interface
@@ -50,6 +49,13 @@ impl BlockFrostApi {
     {
         let url = self.gather_url(suffix);
         let response = self.client.get(url).send().await?;
+
+        let status_code = response.status();
+
+        // Wrap everything into an error type
+        if !status_code.is_success() {
+            panic!();
+        }
         let text = response.text().await?;
         Ok(serde_json::from_str::<T>(&text)?)
     }
