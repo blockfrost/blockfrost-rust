@@ -1,0 +1,8 @@
+max_width = 120
+use_field_init_shorthand = true
+newline_style = "Unix"
+edition = "2018"
+reorder_imports = true
+reorder_modules = true
+use_try_shorthand = true
+use_small_heuristics = "Max"
