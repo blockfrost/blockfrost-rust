@@ -51,12 +51,12 @@ impl BlockFrostApi {
         let response = self.client.get(url).send().await?;
 
         let status_code = response.status();
+        let text = response.text().await?;
 
         // Wrap everything into an error type
         if !status_code.is_success() {
-            panic!();
+            todo!();
         }
-        let text = response.text().await?;
         Ok(serde_json::from_str::<T>(&text)?)
     }
 

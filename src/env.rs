@@ -3,6 +3,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use crate::error::DotEnvError;
 use crate::Error;
 
 #[derive(Debug, Clone, Default)]
@@ -41,11 +42,11 @@ pub fn load_settings() -> crate::Result<EnvSettings> {
             let separator_index = match line.find('=') {
                 Some(index) => index,
                 None => {
-                    return Err(Error::DotEnv {
+                    return Err(Error::DotEnv(DotEnvError {
                         reason: "Expected separator '=' was not found",
                         path: dotenv_file,
                         line_number,
-                    })
+                    }))
                 }
             };
 
@@ -55,19 +56,19 @@ pub fn load_settings() -> crate::Result<EnvSettings> {
             let value = &value[1..];
 
             if key.is_empty() {
-                return Err(Error::DotEnv {
+                return Err(Error::DotEnv(DotEnvError {
                     reason: "KEY is empty",
                     path: dotenv_file,
                     line_number,
-                });
+                }));
             }
 
             if value.is_empty() {
-                return Err(Error::DotEnv {
+                return Err(Error::DotEnv(DotEnvError {
                     reason: "VALUE is empty",
                     path: dotenv_file,
                     line_number,
-                });
+                }));
             }
 
             if key == "BLOCKFROST_NETWORK_ADDRESS" {
@@ -78,11 +79,11 @@ pub fn load_settings() -> crate::Result<EnvSettings> {
         }
     }
 
-    if let None = settings.network_address {
+    if settings.network_address.is_none() {
         settings.network_address = env::var("BLOCKFROST_NETWORK_ADDRESS").ok();
     }
 
-    if let None = settings.project_id {
+    if settings.project_id.is_none() {
         settings.project_id = env::var("BLOCKFROST_PROJECT_ID").ok();
     }
 
