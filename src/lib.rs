@@ -5,8 +5,6 @@ pub mod error;
 pub mod models;
 pub mod settings;
 
-pub use error::{process_error, Error, HttpError, Result};
-
 pub use settings::Settings;
 
 use serde_json::from_str as serde_from_str;
