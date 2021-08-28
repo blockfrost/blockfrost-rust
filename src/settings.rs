@@ -8,18 +8,12 @@ pub struct Settings {
 
 impl Settings {
     pub fn new(project_id: impl AsRef<str>) -> Self {
-        Self {
-            network_endpoint: CARDANO_MAINNET_NETWORK.to_string(),
-            project_id: project_id.as_ref().to_string(),
-        }
+        Self { network_endpoint: CARDANO_MAINNET_NETWORK.to_string(), project_id: project_id.as_ref().to_string() }
     }
 
     pub fn set_test_network(mut self, flag: bool) -> Self {
-        self.network_endpoint = if flag {
-            CARDANO_TESTNET_NETWORK.to_string()
-        } else {
-            CARDANO_MAINNET_NETWORK.to_string()
-        };
+        self.network_endpoint =
+            if flag { CARDANO_TESTNET_NETWORK.to_string() } else { CARDANO_MAINNET_NETWORK.to_string() };
         self
     }
 

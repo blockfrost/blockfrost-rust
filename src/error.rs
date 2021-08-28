@@ -2,6 +2,24 @@ use std::path::PathBuf;
 use std::{error, fmt, io};
 
 use serde::{Deserialize, Serialize};
+use serde_json::from_str as serde_from_str;
+
+use reqwest::StatusCode;
+
+// TODO: fix Json::Error when Error::Http fails to parse response body
+pub fn process_error(text: &str, status_code: StatusCode) -> Error {
+    let status_code = status_code.as_u16();
+
+    let expected_error_codes = &[400, 403, 404, 418, 429, 500];
+    if !expected_error_codes.contains(&status_code) {
+        eprintln!("Warning: status code {} was not expected.", status_code);
+    }
+
+    match serde_from_str::<HttpError>(text) {
+        Ok(http_error) => Error::Http(http_error),
+        Err(serde_error) => Error::Json(serde_error),
+    }
+}
 
 #[derive(Debug)]
 pub enum Error {
@@ -49,11 +67,7 @@ impl fmt::Display for HttpError {
 
 impl fmt::Display for DotEnvError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "dotenv err: parse error at line {} of file '{:#?}': {}.",
-            self.line_number, self.path, self.reason
-        )
+        write!(f, "dotenv err: parse error at line {} of file '{:#?}': {}.", self.line_number, self.path, self.reason)
     }
 }
 

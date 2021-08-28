@@ -5,9 +5,11 @@ pub mod error;
 pub mod models;
 pub mod settings;
 
-pub use error::{Error, Result};
+pub use error::{process_error, Error, HttpError, Result};
 
 pub use settings::Settings;
+
+use serde_json::from_str as serde_from_str;
 
 use reqwest::{header::HeaderMap, Client};
 
@@ -43,21 +45,20 @@ impl BlockFrostApi {
 
 // Private interface
 impl BlockFrostApi {
-    async fn get<T>(&self, suffix: &str) -> crate::Result<T>
+    async fn get<T>(&self, url_suffix: &str) -> crate::Result<T>
     where
         T: serde::de::DeserializeOwned,
     {
-        let url = self.gather_url(suffix);
+        let url = self.gather_url(url_suffix);
         let response = self.client.get(url).send().await?;
 
         let status_code = response.status();
         let text = response.text().await?;
 
-        // Wrap everything into an error type
         if !status_code.is_success() {
-            todo!();
+            return Err(process_error(&text, status_code));
         }
-        Ok(serde_json::from_str::<T>(&text)?)
+        Ok(serde_from_str::<T>(&text)?)
     }
 
     fn gather_url(&self, suffix: &str) -> String {
