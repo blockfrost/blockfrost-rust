@@ -26,11 +26,14 @@ pub struct BlockFrostApi {
 impl BlockFrostApi {
     pub fn new(settings: Settings) -> Self {
         let mut headers = HeaderMap::new();
+
         let project_id = settings.project_id.parse().unwrap();
+        let user_agent = format!("blockfrost-rust/{}", LIB_VERSION);
+
         headers.insert("project_id", project_id);
+        headers.insert("User-Agent", user_agent.parse().unwrap());
 
         let client = Client::builder().default_headers(headers).build().unwrap();
-
         Self { settings, client }
     }
 
