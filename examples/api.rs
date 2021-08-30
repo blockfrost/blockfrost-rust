@@ -13,10 +13,10 @@ async fn main() -> blockfrost::Result<()> {
     let api = build_api()?;
 
     let health = api.health().await;
-    let root = api.root().await;
+    let metrics = api.metrics().await;
 
     println!("{:#?}", health);
-    println!("{:#?}", root);
+    println!("{:#?}", metrics);
 
     Ok(())
 }
