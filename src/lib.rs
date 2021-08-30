@@ -1,15 +1,18 @@
 //! Rust SDK for Blockfrost.io
 
+pub mod endpoints;
 pub mod env;
 pub mod error;
 pub mod models;
 pub mod settings;
 
+const LIB_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
+pub use error::{process_error, Error, HttpError, Result};
 pub use settings::Settings;
 
-use serde_json::from_str as serde_from_str;
-
 use reqwest::{header::HeaderMap, Client};
+use serde_json::from_str as serde_from_str;
 
 pub const CARDANO_MAINNET_NETWORK: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
 pub const CARDANO_TESTNET_NETWORK: &str = "https://cardano-testnet.blockfrost.io/api/v0";
@@ -34,14 +37,6 @@ impl BlockFrostApi {
         let client = Client::builder().default_headers(headers).build().unwrap();
         Self { settings, client }
     }
-
-    pub async fn health(&self) -> Result<models::Health> {
-        self.get("/health").await
-    }
-
-    pub async fn root(&self) -> Result<models::Root> {
-        self.get("/").await
-    }
 }
 
 // Private interface
@@ -55,6 +50,9 @@ impl BlockFrostApi {
 
         let status_code = response.status();
         let text = response.text().await?;
+
+        let debug_info = format!("{}: {}", url_suffix, text);
+        eprintln!("debug_info: {}.", debug_info);
 
         if !status_code.is_success() {
             return Err(process_error(&text, status_code));
