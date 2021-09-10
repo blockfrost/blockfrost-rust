@@ -12,8 +12,8 @@ impl Settings {
     }
 
     pub fn set_test_network(mut self, flag: bool) -> Self {
-        self.network_endpoint =
-            if flag { CARDANO_TESTNET_NETWORK.to_string() } else { CARDANO_MAINNET_NETWORK.to_string() };
+        let address = if flag { CARDANO_TESTNET_NETWORK } else { CARDANO_MAINNET_NETWORK };
+        self.network_endpoint = address.to_owned();
         self
     }
 
