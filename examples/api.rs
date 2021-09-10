@@ -12,11 +12,11 @@ fn build_api() -> blockfrost::Result<BlockFrostApi> {
 async fn main() -> blockfrost::Result<()> {
     let api = build_api()?;
 
+    let root = api.root().await;
     let health = api.health().await;
-    let metrics = api.metrics().await;
 
+    println!("{:#?}", root);
     println!("{:#?}", health);
-    println!("{:#?}", metrics);
 
     Ok(())
 }
