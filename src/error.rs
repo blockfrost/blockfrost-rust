@@ -1,10 +1,14 @@
 use std::path::PathBuf;
 use std::{error, fmt, io};
 
-use serde::{Deserialize, Serialize};
-use serde_json::from_str as serde_from_str;
-
 use reqwest::StatusCode;
+use serde::{Deserialize, Serialize};
+use serde_json::Value as JsonValue;
+
+// Imports with bindings improve how Error is shown in docs
+use io::Error as IoError;
+use reqwest::Error as ReqwestError;
+use serde_json::Error as SerdeJsonError;
 
 // TODO: fix Json::Error when Error::Http fails to parse response body
 pub fn process_error(text: &str, status_code: StatusCode) -> Error {
@@ -15,7 +19,7 @@ pub fn process_error(text: &str, status_code: StatusCode) -> Error {
         eprintln!("Warning: status code {} was not expected.", status_code);
     }
 
-    match serde_from_str::<HttpError>(text) {
+    match serde_json::from_str::<HttpError>(text) {
         Ok(http_error) => Error::Http(http_error),
         Err(serde_error) => Error::Json(serde_error),
     }
@@ -23,9 +27,9 @@ pub fn process_error(text: &str, status_code: StatusCode) -> Error {
 
 #[derive(Debug)]
 pub enum Error {
-    Network(reqwest::Error),
-    Json(serde_json::Error),
-    Io(io::Error),
+    Network(ReqwestError),
+    Json(SerdeJsonError),
+    Io(IoError),
     DotEnv(DotEnvError),
     Http(HttpError),
 }
