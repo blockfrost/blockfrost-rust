@@ -9,6 +9,8 @@ use io::Error as IoError;
 use reqwest::Error as ReqwestError;
 use serde_json::Error as SerdeJsonError;
 
+use crate::utils;
+
 // Parsing the error response is tricky, it's necessary to check if the json body is
 // malformed, if so, we will catch an error trying to get the cause to another error
 //
@@ -25,19 +27,14 @@ pub fn process_error_response(text: &str, status_code: StatusCode) -> Error {
         eprintln!("Warning: status code {} was not expected.", status_code);
     }
 
-    fn try_formatting_json(_text: &str) -> Option<String> {
-        todo!();
-    }
-
     match serde_json::from_str::<HttpError>(text) {
         Ok(http_error) => Error::Http(http_error),
         Err(_) => {
-            // Try to format received JSON body, if it does not work, use unformatted body instead
-            let formatted_body_text = try_formatting_json(text).unwrap_or_else(|| text.to_owned());
+            // Try to format JSON body, or use unformatted body instead
+            let formatted_body_text = utils::try_formatting_json(text).unwrap_or_else(|_| text.to_owned());
             let reason = "Could not parse error body to interpret the reason of the error".into();
 
             let http_error = HttpError { status_code, error: reason, message: formatted_body_text };
-
             Error::Http(http_error)
         }
     }

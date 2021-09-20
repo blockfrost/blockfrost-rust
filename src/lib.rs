@@ -9,6 +9,7 @@ pub mod env;
 mod api;
 mod error;
 mod types;
+mod utils;
 
 pub use api::*;
 pub use error::*;
