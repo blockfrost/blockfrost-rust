@@ -3,15 +3,21 @@ use std::{error, fmt, io};
 
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
-use serde_json::Value as JsonValue;
 
 // Imports with bindings improve how Error is shown in docs
 use io::Error as IoError;
 use reqwest::Error as ReqwestError;
 use serde_json::Error as SerdeJsonError;
 
-// TODO: fix Json::Error when Error::Http fails to parse response body
-pub fn process_error(text: &str, status_code: StatusCode) -> Error {
+// Parsing the error response is tricky, it's necessary to check if the json body is
+// malformed, if so, we will catch an error trying to get the cause to another error
+//
+// Catching a Error::Json when trying to interpret a Error::ErrorResponse
+//
+// TODO: CHANGE ERROR_RESPONSE NAME
+//
+// This function can only return Error::ErrorResponse.
+pub fn process_error_response(text: &str, status_code: StatusCode) -> Error {
     let status_code = status_code.as_u16();
 
     let expected_error_codes = &[400, 403, 404, 418, 429, 500];
@@ -19,9 +25,21 @@ pub fn process_error(text: &str, status_code: StatusCode) -> Error {
         eprintln!("Warning: status code {} was not expected.", status_code);
     }
 
+    fn try_formatting_json(_text: &str) -> Option<String> {
+        todo!();
+    }
+
     match serde_json::from_str::<HttpError>(text) {
         Ok(http_error) => Error::Http(http_error),
-        Err(serde_error) => Error::Json(serde_error),
+        Err(_) => {
+            // Try to format received JSON body, if it does not work, use unformatted body instead
+            let formatted_body_text = try_formatting_json(text).unwrap_or_else(|| text.to_owned());
+            let reason = "Could not parse error body to interpret the reason of the error".into();
+
+            let http_error = HttpError { status_code, error: reason, message: formatted_body_text };
+
+            Error::Http(http_error)
+        }
     }
 }
 

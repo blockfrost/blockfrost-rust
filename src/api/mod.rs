@@ -4,7 +4,7 @@ mod endpoints;
 
 pub use endpoints::*;
 
-pub use crate::error::{process_error, Error, HttpError, Result};
+pub use crate::error::{process_error_response, Error, HttpError, Result};
 pub use settings::Settings;
 
 use reqwest::{header::HeaderMap, Client};
@@ -48,8 +48,9 @@ impl BlockFrostApi {
         eprintln!("debug_info: {}.", debug_info);
 
         if !status_code.is_success() {
-            return Err(process_error(&text, status_code));
+            return Err(process_error_response(&text, status_code));
         }
+        // This gon have to be removed
         Ok(serde_from_str::<T>(&text)?)
     }
 
