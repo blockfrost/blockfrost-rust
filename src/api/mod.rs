@@ -1,18 +1,14 @@
-pub mod settings;
-
-mod endpoints;
-
-pub use endpoints::*;
-
-pub use crate::error::{process_error_response, Error, HttpError, Result};
-pub use settings::Settings;
+pub(crate) mod endpoints;
+mod settings;
 
 use reqwest::{header::HeaderMap, Client};
 use serde_json::from_str as serde_from_str;
 
-// Format example: "blockfrost-rust/0.1.2".
-// Sent in request headers to indicate version of sdk being used.
-const USER_AGENT: &str = concat!("blockfrost-rust/", env!("CARGO_PKG_VERSION"));
+use crate::error::process_error_response;
+pub use settings::Settings;
+
+/// SDK version being used.
+pub const USER_AGENT: &str = concat!("blockfrost-rust/", env!("CARGO_PKG_VERSION"));
 
 #[derive(Debug, Clone)]
 pub struct BlockFrostApi {

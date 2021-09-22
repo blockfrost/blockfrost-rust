@@ -19,7 +19,7 @@ use crate::utils;
 // TODO: CHANGE ERROR_RESPONSE NAME
 //
 // This function can only return Error::ErrorResponse.
-pub fn process_error_response(text: &str, status_code: StatusCode) -> Error {
+pub(crate) fn process_error_response(text: &str, status_code: StatusCode) -> Error {
     let status_code = status_code.as_u16();
 
     let expected_error_codes = &[400, 403, 404, 418, 429, 500];
