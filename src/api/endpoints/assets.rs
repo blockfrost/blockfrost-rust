@@ -128,7 +128,7 @@ pub struct AssetHistory {
     /// Hash of the transaction containing the asset action.
     pub tx_hash: String,
     /// Action executed upon the asset policy.
-    pub action: String, // enum: "minted" | "burned"
+    pub action: String, // "minted" | "burned"
     /// Asset amount of the specific action.
     pub amount: String,
 }
@@ -160,6 +160,16 @@ pub struct AssetPolicy {
     pub asset: String,
     /// Current asset quantity.
     pub quantity: String,
+}
+
+/// Inner enum for [`AssetHistory`].
+///
+/// Action executed upon the asset policy.
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum AssetHistoryActionType {
+    Minted,
+    Burned,
 }
 
 #[cfg(test)]

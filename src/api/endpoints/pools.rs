@@ -223,15 +223,7 @@ pub struct PoolUpdate {
     /// Certificate within the transaction.
     pub cert_index: Integer,
     /// Action in the certificate.
-    pub action: PoolUpdateAction,
-}
-
-/// Inner enum for [`PoolUpdate`].
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(rename_all = "snake_case")]
-pub enum PoolUpdateAction {
-    Registered,
-    Deregistered,
+    pub action: ActionType, // "registered" | "deregistered"
 }
 
 #[cfg(test)]

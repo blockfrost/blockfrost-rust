@@ -163,7 +163,7 @@ pub struct AccountRegistration {
     /// Hash of the transaction containing the (de)registration certificate.
     pub tx_hash: String,
     /// Action in the certificate.
-    pub action: String, // enum: "registered" | "deregistered"
+    pub action: ActionType, // "registered" | "deregistered"
 }
 
 /// Created by [`accounts_withdrawals`](BlockFrostApi::accounts_withdrawals) method.

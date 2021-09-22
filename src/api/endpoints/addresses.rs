@@ -63,7 +63,7 @@ pub struct Address {
     pub stake_address: Option<String>,
     /// Address era.
     #[serde(rename = "type")]
-    pub type_: String, // enum: "byron" | "shelley"
+    pub type_: AdressType, // "byron" | "shelley"
 }
 
 /// Created by [`addresses_total`](BlockFrostApi::addresses_total) method.
@@ -133,6 +133,16 @@ pub struct Amount {
     pub unit: String,
     /// The quantity of the unit.
     pub quantity: String,
+}
+
+/// Inner enum for [`Address`].
+///
+/// Address era.
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum AdressType {
+    Byron,
+    Shelley,
 }
 
 #[cfg(test)]
