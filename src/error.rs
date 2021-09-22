@@ -11,35 +11,6 @@ use serde_json::Error as SerdeJsonError;
 
 use crate::utils;
 
-// Parsing the error response is tricky, it's necessary to check if the json body is
-// malformed, if so, we will catch an error trying to get the cause to another error
-//
-// Catching a Error::Json when trying to interpret a Error::ErrorResponse
-//
-// TODO: CHANGE ERROR_RESPONSE NAME
-//
-// This function can only return Error::ErrorResponse.
-pub(crate) fn process_error_response(text: &str, status_code: StatusCode) -> Error {
-    let status_code = status_code.as_u16();
-
-    let expected_error_codes = &[400, 403, 404, 418, 429, 500];
-    if !expected_error_codes.contains(&status_code) {
-        eprintln!("Warning: status code {} was not expected.", status_code);
-    }
-
-    match serde_json::from_str::<HttpError>(text) {
-        Ok(http_error) => Error::Http(http_error),
-        Err(_) => {
-            // Try to format JSON body, or use unformatted body instead
-            let formatted_body_text = utils::try_formatting_json(text).unwrap_or_else(|_| text.to_owned());
-            let reason = "Could not parse error body to interpret the reason of the error".into();
-
-            let http_error = HttpError { status_code, error: reason, message: formatted_body_text };
-            Error::Http(http_error)
-        }
-    }
-}
-
 #[derive(Debug)]
 pub enum Error {
     Network(ReqwestError),
@@ -123,5 +94,34 @@ impl From<serde_json::Error> for Error {
 impl From<io::Error> for Error {
     fn from(source: io::Error) -> Self {
         Error::Io(source)
+    }
+}
+
+// Parsing the error response is tricky, it's necessary to check if the json body is
+// malformed, if so, we will catch an error trying to get the cause to another error
+//
+// Catching a Error::Json when trying to interpret a Error::ErrorResponse
+//
+// TODO: CHANGE ERROR_RESPONSE NAME
+//
+// This function can only return Error::ErrorResponse.
+pub(crate) fn process_error_response(text: &str, status_code: StatusCode) -> Error {
+    let status_code = status_code.as_u16();
+
+    let expected_error_codes = &[400, 403, 404, 418, 429, 500];
+    if !expected_error_codes.contains(&status_code) {
+        eprintln!("Warning: status code {} was not expected.", status_code);
+    }
+
+    match serde_json::from_str::<HttpError>(text) {
+        Ok(http_error) => Error::Http(http_error),
+        Err(_) => {
+            // Try to format JSON body, or use unformatted body instead
+            let formatted_body_text = utils::try_formatting_json(text).unwrap_or_else(|_| text.to_owned());
+            let reason = "Could not parse error body to interpret the reason of the error".into();
+
+            let http_error = HttpError { status_code, error: reason, message: formatted_body_text };
+            Error::Http(http_error)
+        }
     }
 }

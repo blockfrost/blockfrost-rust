@@ -18,7 +18,7 @@ impl BlockFrostApi {
     ///
     /// [`/pools/retired`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retired/get
     pub async fn pools_retired(&self) -> Result<Vec<RetiredPool>> {
-      self.get("/pools/retired").await
+        self.get("/pools/retired").await
     }
 
     /// List of retiring stake pools.
@@ -27,7 +27,7 @@ impl BlockFrostApi {
     ///
     /// [`/pools/retiring`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retiring/get
     pub async fn pools_retiring(&self) -> Result<Vec<RetiringPool>> {
-      self.get("/pools/retired").await
+        self.get("/pools/retired").await
     }
 
     /// Pool information.
@@ -36,18 +36,18 @@ impl BlockFrostApi {
     ///
     /// [`/pools/{pool_id}`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}/get
     pub async fn pools_by_id(&self, pool_id: &str) -> Result<Pool> {
-      let prefix = format!("/pools/{pool_id}", pool_id = pool_id);
-      self.get(&prefix).await
+        let prefix = format!("/pools/{pool_id}", pool_id = pool_id);
+        self.get(&prefix).await
     }
-    
+
     /// History of stake pool parameters over epochs.
     ///
     /// OpenAPI endpoint reference: [`/pools/{pool_id}/history`].
     ///
     /// [`/pools/{pool_id}/history`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1history/get
     pub async fn pools_history(&self, pool_id: &str) -> Result<Vec<PoolHistory>> {
-      let prefix = format!("/pools/{pool_id}/history", pool_id = pool_id);
-      self.get(&prefix).await
+        let prefix = format!("/pools/{pool_id}/history", pool_id = pool_id);
+        self.get(&prefix).await
     }
 
     /// Stake pool registration metadata.
@@ -56,8 +56,8 @@ impl BlockFrostApi {
     ///
     /// [`/pools/{pool_id}/metadata`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1metadata/get
     pub async fn pools_metadata(&self, pool_id: &str) -> Result<PoolMetadata> {
-      let prefix = format!("/pools/{pool_id}/metadata", pool_id = pool_id);
-      self.get(&prefix).await
+        let prefix = format!("/pools/{pool_id}/metadata", pool_id = pool_id);
+        self.get(&prefix).await
     }
 
     /// Relays of a stake pool.
@@ -66,8 +66,8 @@ impl BlockFrostApi {
     ///
     /// [`/pools/{pool_id}/relays`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1relays/get
     pub async fn pools_relays(&self, pool_id: &str) -> Result<Vec<PoolRelay>> {
-      let prefix = format!("/pools/{pool_id}/relays", pool_id = pool_id);
-      self.get(&prefix).await
+        let prefix = format!("/pools/{pool_id}/relays", pool_id = pool_id);
+        self.get(&prefix).await
     }
 
     /// List of current stake pools delegators.
@@ -76,162 +76,162 @@ impl BlockFrostApi {
     ///
     /// [`/pools/{pool_id}/delegators]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1delegators/get
     pub async fn pools_delegators(&self, pool_id: &str) -> Result<Vec<PoolDelegator>> {
-      let prefix = format!("/pools/{pool_id}/delegators", pool_id = pool_id);
-      self.get(&prefix).await
+        let prefix = format!("/pools/{pool_id}/delegators", pool_id = pool_id);
+        self.get(&prefix).await
     }
-    
+
     /// List of stake pools blocks.
     ///
     /// OpenAPI endpoint reference: [`/pools/{pool_id}/blocks`].    
     ///
     /// [`/pools/{pool_id}/blocks`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1blocks/get
     pub async fn pools_blocks(&self, pool_id: &str) -> Result<Vec<String>> {
-      let prefix = format!("/pools/{pool_id}/delegators", pool_id = pool_id);
-      self.get(&prefix).await
+        let prefix = format!("/pools/{pool_id}/delegators", pool_id = pool_id);
+        self.get(&prefix).await
     }
-    
+
     /// List of certificate updates to the stake pool.
     ///
     /// OpenAPI endpoint reference: [`/pools/{pool_id}/updates`].    
     ///
     /// [`/pools/{pool_id}/updates`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1updates/get
     pub async fn pools_updates(&self, pool_id: &str) -> Result<Vec<PoolUpdate>> {
-      let prefix = format!("/pools/{pool_id}/updates", pool_id = pool_id);
-      self.get(&prefix).await
+        let prefix = format!("/pools/{pool_id}/updates", pool_id = pool_id);
+        self.get(&prefix).await
     }
 }
 
 /// Created by [`pools_retired`](BlockFrostApi::pools_retired) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RetiredPool {
-  /// Bech32 encoded pool ID
-  pub pool_id: String,
-  /// Retirement epoch number
-  pub epoch: Integer,
+    /// Bech32 encoded pool ID.
+    pub pool_id: String,
+    /// Retirement epoch number.
+    pub epoch: Integer,
 }
 
 /// Created by [`pools_retiring`](BlockFrostApi::pools_retiring) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RetiringPool {
-  /// Bech32 encoded pool ID
-  pub pool_id: String,
-  /// Retirement epoch number
-  pub epoch: Integer,
+    /// Bech32 encoded pool ID.
+    pub pool_id: String,
+    /// Retirement epoch number.
+    pub epoch: Integer,
 }
 
 /// Created by [`pools_by_id`](BlockFrostApi::pool_by_id) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Pool {
-  /// Bech32 pool ID
-  pub pool_id: String,
-  /// Hexadecimal pool ID.
-  pub hex: String,
-  /// VRF key hash
-  pub vrf_key: String,
-  /// Total minted blocks
-  pub blocks_minted: Integer,
-  pub live_stake: String,
-  pub live_size: Float,
-  pub live_saturation: Float,
-  pub live_delegators: Integer,
-  pub active_stake: String,
-  pub active_size: Float,
-  /// Stake pool certificate pledge
-  pub declared_pledge: String,
-  /// Stake pool urrent pledge
-  pub live_pledge: String,
-  /// Margin tax cost of the stake pool
-  pub margin_cost: Float,
-  /// Fixed tax cost of the stake pool
-  pub fixed_cost: String,
-  /// Bech32 reward account of the stake pool
-  pub reward_account: String,
-  pub owners: Vec<String>,
-  pub registration: Vec<String>,
-  pub retirement: Vec<String>,
+    /// Bech32 pool ID.
+    pub pool_id: String,
+    /// Hexadecimal pool ID.
+    pub hex: String,
+    /// VRF key hash.
+    pub vrf_key: String,
+    /// Total minted blocks.
+    pub blocks_minted: Integer,
+    pub live_stake: String,
+    pub live_size: Float,
+    pub live_saturation: Float,
+    pub live_delegators: Integer,
+    pub active_stake: String,
+    pub active_size: Float,
+    /// Stake pool certificate pledge.
+    pub declared_pledge: String,
+    /// Stake pool urrent pledge.
+    pub live_pledge: String,
+    /// Margin tax cost of the stake pool.
+    pub margin_cost: Float,
+    /// Fixed tax cost of the stake pool.
+    pub fixed_cost: String,
+    /// Bech32 reward account of the stake pool.
+    pub reward_account: String,
+    pub owners: Vec<String>,
+    pub registration: Vec<String>,
+    pub retirement: Vec<String>,
 }
 
 /// Created by [`pools_history`](BlockFrostApi::pools_history) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PoolHistory {
-  /// Epoch number
-  pub epoch: Integer,
-  /// Number of blocks created by pool
-  pub blocks: Integer,
-  /// Active (Snapshot of live stake 2 epochs ago) stake in Lovelaces
-  pub active_stake: String,
-  /// Pool size (percentage) of overall active stake at that epoch
-  pub active_size: Float,
-  /// Number of delegators for epoch
-  pub delegators_count: Integer,
-  /// Total rewards received before distribution to delegators
-  pub rewards: String,
-  /// Pool operator rewards
-  pub fees: String,
+    /// Epoch number.
+    pub epoch: Integer,
+    /// Number of blocks created by pool.
+    pub blocks: Integer,
+    /// Active (Snapshot of live stake 2 epochs ago) stake in Lovelaces.
+    pub active_stake: String,
+    /// Pool size (percentage) of overall active stake at that epoch.
+    pub active_size: Float,
+    /// Number of delegators for epoch.
+    pub delegators_count: Integer,
+    /// Total rewards received before distribution to delegators.
+    pub rewards: String,
+    /// Pool operator rewards.
+    pub fees: String,
 }
 
 /// Created by [`pools_metadata`](BlockFrostApi::pools_metadata) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PoolMetadata {
-  /// Bech32 pool ID
-  pub pool_id: String,
-  /// Hexadecimal pool ID
-  pub hex: String,
-  /// URL to the stake pool metadata
-  pub url: Option<String>,
-  /// Hash of the metadata file
-  pub hash: Option<String>,
-  /// Ticker of the stake pool
-  pub ticker: Option<String>,
-  /// Name of the stake pool
-  pub name: Option<String>,
-  /// Description of the stake pool
-  pub description: Option<String>,
-  /// Home page of the stake pool
-  pub homepage: Option<String>,
+    /// Bech32 pool ID.
+    pub pool_id: String,
+    /// Hexadecimal pool ID.
+    pub hex: String,
+    /// URL to the stake pool metadata.
+    pub url: Option<String>,
+    /// Hash of the metadata file.
+    pub hash: Option<String>,
+    /// Ticker of the stake pool.
+    pub ticker: Option<String>,
+    /// Name of the stake pool.
+    pub name: Option<String>,
+    /// Description of the stake pool.
+    pub description: Option<String>,
+    /// Home page of the stake pool.
+    pub homepage: Option<String>,
 }
 
 /// Created by [`pools_relays`](BlockFrostApi::pools_relays) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PoolRelay {
-  /// IPv4 address of the relay
-  pub ipv4: Option<String>,
-  /// IPv6 address of the relay
-  pub ipv6: Option<String>,
-  /// DNS name of the relay
-  pub dns: Option<String>,
-  /// DNS SRV entry of the relay
-  pub dns_srv: Option<String>,
-  /// Network port of the relay
-  pub port: Integer,
+    /// IPv4 address of the relay.
+    pub ipv4: Option<String>,
+    /// IPv6 address of the relay.
+    pub ipv6: Option<String>,
+    /// DNS name of the relay.
+    pub dns: Option<String>,
+    /// DNS SRV entry of the relay.
+    pub dns_srv: Option<String>,
+    /// Network port of the relay.
+    pub port: Integer,
 }
 
 /// Created by [`pools_delegators`](BlockFrostApi::pools_delegators) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PoolDelegator {
-  /// Bech32 encoded stake addresses
-  pub address: String,
-  /// Currently delegated amount
-  pub live_stake: String,
+    /// Bech32 encoded stake addresses.
+    pub address: String,
+    /// Currently delegated amount.
+    pub live_stake: String,
 }
 
 /// Created by [`pools_updates`](BlockFrostApi::pools_updates) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PoolUpdate {
-  /// Transaction ID
-  pub tx_hash: String,
-  /// Certificate within the transaction
-  pub cert_index: Integer,
-  /// Action in the certificate
-  pub action: PoolUpdateAction,
+    /// Transaction ID.
+    pub tx_hash: String,
+    /// Certificate within the transaction.
+    pub cert_index: Integer,
+    /// Action in the certificate.
+    pub action: PoolUpdateAction,
 }
 
-/// Inner enum for [`PoolUpdate`]
+/// Inner enum for [`PoolUpdate`].
 #[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(rename_all="snake_case")]
+#[serde(rename_all = "snake_case")]
 pub enum PoolUpdateAction {
-  Registered,
-  Deregistered
+    Registered,
+    Deregistered,
 }
 
 #[cfg(test)]
