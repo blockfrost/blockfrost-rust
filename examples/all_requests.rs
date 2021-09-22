@@ -14,6 +14,7 @@ async fn main() -> blockfrost::Result<()> {
 
     // Arbitrary example text used in requisitions that require id or address
     let address = "example-address-01234567890123456789";
+    let pool = "example-pool-01234567890123456789";
 
     let root = api.root().await;
     let health = api.health().await;
@@ -39,6 +40,16 @@ async fn main() -> blockfrost::Result<()> {
     let assets_transactions = api.assets_transactions(address).await;
     let assets_addresses = api.assets_addresses(address).await;
     let assets_policy_by_id = api.assets_policy_by_id(address).await;
+    let pools = api.pools().await;
+    let pools_retired = api.pools_retired().await;
+    let pools_retiring = api.pools_retiring().await;
+    let pools_by_id = api.pools_by_id(pool).await;
+    let pools_history = api.pools_history(pool).await;
+    let pools_metadata = api.pools_metadata(pool).await;
+    let pools_relays = api.pools_relays(pool).await;
+    let pools_delegators = api.pools_delegators(pool).await;
+    let pools_blocks = api.pools_blocks(pool).await;
+    let pools_updates = api.pools_updates(pool).await;
 
     println!("{:#?}", root);
     println!("{:#?}", health);
@@ -64,6 +75,16 @@ async fn main() -> blockfrost::Result<()> {
     println!("{:#?}", assets_transactions);
     println!("{:#?}", assets_addresses);
     println!("{:#?}", assets_policy_by_id);
+    println!("{:#?}", pools);
+    println!("{:#?}", pools_retired);
+    println!("{:#?}", pools_retiring);
+    println!("{:#?}", pools_by_id);
+    println!("{:#?}", pools_history);
+    println!("{:#?}", pools_metadata);
+    println!("{:#?}", pools_relays);
+    println!("{:#?}", pools_delegators);
+    println!("{:#?}", pools_blocks);
+    println!("{:#?}", pools_updates);
 
     Ok(())
 }
