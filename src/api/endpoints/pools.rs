@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
 use crate::*;
+use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
-    endpoints!{
+    endpoints! {
         /// List of registered stake pools.
         pools() -> Vec<String> => "/pools";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools/get"),
