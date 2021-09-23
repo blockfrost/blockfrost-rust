@@ -6,63 +6,25 @@ use serde_json::Value as JsonValue;
 use crate::*;
 
 impl BlockFrostApi {
-    /// List of assets.
-    ///
-    /// OpenAPI endpoint reference: [`/assets`].
-    ///
-    /// [`/assets`]: https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets/get
-    pub async fn assets(&self) -> Result<Vec<Asset>> {
-        self.get("/assets").await
-    }
-
-    /// Detailed information about a specific asset.
-    ///
-    /// OpenAPI endpoint reference: [`/assets/{asset}`].
-    ///
-    /// [`/assets/{asset}`]: https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}/get
-    pub async fn assets_by_id(&self, asset: &str) -> Result<AssetDetails> {
-        let suffix = format!("/assets/{asset}", asset = asset);
-        self.get(&suffix).await
-    }
-
-    /// History of a specific asset.
-    ///
-    /// OpenAPI endpoint reference: [`/assets/{asset}/history`].
-    ///
-    /// [`/assets/{asset}/history`]: https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1history/get
-    pub async fn assets_history(&self, asset: &str) -> Result<Vec<AssetHistory>> {
-        let suffix = format!("/assets/{asset}/history", asset = asset);
-        self.get(&suffix).await
-    }
-
-    /// List of a specific asset transactions.
-    ///
-    /// OpenAPI endpoint reference: [`/assets/{asset}/transactions`].
-    ///
-    /// [`/assets/{asset}/transactions`]: https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1transactions/get
-    pub async fn assets_transactions(&self, asset: &str) -> Result<Vec<AssetTransaction>> {
-        let suffix = format!("/assets/{asset}/transactions", asset = asset);
-        self.get(&suffix).await
-    }
-
-    /// List of a addresses containing a specific asset.
-    ///
-    /// OpenAPI endpoint reference: [`/assets/{asset}/addresses`].
-    ///
-    /// [`/assets/{asset}/addresses`]: https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1addresses/get
-    pub async fn assets_addresses(&self, asset: &str) -> Result<Vec<AssetAddress>> {
-        let suffix = format!("/assets/{asset}/addresses", asset = asset);
-        self.get(&suffix).await
-    }
-
-    /// List of asset minted under a specific policy.
-    ///
-    /// OpenAPI endpoint reference: [`/assets/policy/{policy_id}`].
-    ///
-    /// [`/assets/policy/{policy_id}`]: https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1policy~1{policy_id}/get
-    pub async fn assets_policy_by_id(&self, policy_id: &str) -> Result<Vec<AssetPolicy>> {
-        let suffix = format!("/assets/policy/{policy_id}", policy_id = policy_id);
-        self.get(&suffix).await
+    endpoints! {
+        /// List of assets.
+        assets() -> Vec<Asset> => "/assets";
+            ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets/get"),
+        /// Detailed information about a specific asset.
+        assets_by_id(asset: &str) -> AssetDetails => "/assets/{asset}";
+            ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}/get"),
+        /// History of a specific asset.
+        assets_history(asset: &str) -> Vec<AssetHistory> => "/assets/{asset}/history";
+            ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1history/get"),
+        /// List of a specific asset transactions.
+        assets_transactions(asset: &str) -> Vec<AssetTransaction> => "/assets/{asset}/transactions";
+            ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1transactions/get"),
+        /// List of a addresses containing a specific asset.
+        assets_addresses(asset: &str) -> Vec<AssetAddress> => "/assets/{asset}/addresses";
+            ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1addresses/get"),
+        /// List of asset minted under a specific policy.
+        assets_policy_by_id(policy_id: &str) -> Vec<AssetPolicy> => "/assets/policy/{policy_id}";
+            ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1policy~1{policy_id}/get"),
     }
 }
 

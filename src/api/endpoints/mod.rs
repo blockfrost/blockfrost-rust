@@ -1,3 +1,6 @@
+#[macro_use]
+mod endpoint_macro;
+
 mod accounts;
 mod addresses;
 mod assets;

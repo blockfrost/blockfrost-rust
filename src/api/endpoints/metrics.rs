@@ -3,26 +3,17 @@ use serde::{Deserialize, Serialize};
 use crate::*;
 
 impl BlockFrostApi {
-    /// Blockfrost usage metrics.
-    ///
-    /// History of your Blockfrost usage metrics in the past 30 days.
-    ///
-    /// OpenAPI endpoint reference: [`/metrics`].
-    ///
-    /// [`/metrics`]: https://docs.blockfrost.io/#tag/Metrics/paths/~1metrics~1/get
-    pub async fn metrics(&self) -> Result<Vec<Metric>> {
-        self.get("/metrics").await
-    }
-
-    /// Blockfrost endpoint usage metrics.
-    ///
-    /// History of your Blockfrost usage metrics per endpoint in the past 30 days.
-    ///
-    /// OpenAPI endpoint reference: [`/metrics/endpoints`].
-    ///
-    /// [`/metrics/endpoints`]: https://docs.blockfrost.io/#tag/Metrics/paths/~1metrics~1endpoints/get
-    pub async fn metrics_endpoints(&self) -> Result<Vec<MetricEndpoint>> {
-        self.get("/metrics/endpoints").await
+    endpoints! {
+        /// Blockfrost usage metrics.
+        ///
+        /// History of your Blockfrost usage metrics in the past 30 days.
+        metrics() -> Vec<Metric> => "/metrics";
+            ("https://docs.blockfrost.io/#tag/Metrics/paths/~1metrics~1/get"),
+        /// Blockfrost endpoint usage metrics.
+        ///
+        /// History of your Blockfrost usage metrics per endpoint in the past 30 days.
+        metrics_endpoints() -> Vec<MetricEndpoint> => "/metrics/endpoints";
+            ("https://docs.blockfrost.io/#tag/Metrics/paths/~1metrics~1endpoints/get"),
     }
 }
 

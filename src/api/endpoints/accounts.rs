@@ -3,97 +3,37 @@ use serde::{Deserialize, Serialize};
 use crate::*;
 
 impl BlockFrostApi {
-    /// Information about a specific stake account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}`].
-    ///
-    /// [`/accounts/{stake_address}`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}/get
-    pub async fn accounts(&self, stake_address: &str) -> Result<Account> {
-        let suffix = format!("/accounts/{stake_address}", stake_address = stake_address);
-        self.get(&suffix).await
-    }
-
-    /// Reward history of a specific account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/rewards`].
-    ///
-    /// [`/accounts/{stake_address}/rewards`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1rewards/get
-    pub async fn accounts_rewards(&self, stake_address: &str) -> Result<Vec<AccountReward>> {
-        let suffix = format!("/accounts/{stake_address}/rewards", stake_address = stake_address);
-        self.get(&suffix).await
-    }
-
-    /// History of a specific account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/history`].
-    ///
-    /// [`/accounts/{stake_address}/history`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1history/get
-    pub async fn accounts_history(&self, stake_address: &str) -> Result<Vec<AccountHistory>> {
-        let suffix = format!("/accounts/{stake_address}/history", stake_address = stake_address);
-        self.get(&suffix).await
-    }
-
-    /// Delegation information of a specific account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/delegations`].
-    ///
-    /// [`/accounts/{stake_address}/delegations`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1delegationsget
-    pub async fn accounts_delegations(&self, stake_address: &str) -> Result<Vec<AccountDelegation>> {
-        let suffix = format!("/accounts/{stake_address}/delegations", stake_address = stake_address);
-        self.get(&suffix).await
-    }
-
-    /// History of registrations and deregistrations of a specific account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/registrations`].
-    ///
-    /// [`/accounts/{stake_address}/registrations`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1registrationsget
-    pub async fn accounts_registrations(&self, stake_address: &str) -> Result<Vec<AccountRegistration>> {
-        let suffix = format!("/accounts/{stake_address}/registrations", stake_address = stake_address);
-        self.get(&suffix).await
-    }
-
-    /// Withdrawal history of a specific account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/withdrawals`].
-    ///
-    /// [`/accounts/{stake_address}/withdrawals`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1withdrawals/get
-    pub async fn accounts_withdrawals(&self, stake_address: &str) -> Result<Vec<AccountWithdrawal>> {
-        let suffix = format!("/accounts/{stake_address}/withdrawals", stake_address = stake_address);
-        self.get(&suffix).await
-    }
-
-    /// Obtain information about the MIRs of a specific account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/mirs`].
-    ///
-    /// [`/accounts/{stake_address}/mirs`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1mirs/get
-    pub async fn accounts_mirs(&self, stake_address: &str) -> Result<Vec<AccountMir>> {
-        let suffix = format!("/accounts/{stake_address}/mirs", stake_address = stake_address);
-        self.get(&suffix).await
-    }
-
-    /// Addresses associated with specific account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/addresses`].
-    ///
-    /// [`/accounts/{stake_address}/addresses`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1addresses/get
-    pub async fn accounts_addresses(&self, stake_address: &str) -> Result<Vec<AccountAddress>> {
-        let suffix = format!("/accounts/{stake_address}/addresses", stake_address = stake_address);
-        self.get(&suffix).await
-    }
-
-    /// Assets associated with specific account.
-    ///
-    /// **Be careful**, as an account could be part of a mangled address and does not necessarily
-    /// mean the addresses are owned by user as the account.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/addresses/assets`].
-    ///
-    /// [`/accounts/{stake_address}/addresses/assets`]: https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1addresses~1assets/get
-    pub async fn accounts_addresses_assets(&self, stake_address: &str) -> Result<Vec<AccountAddressAsset>> {
-        let suffix = format!("/accounts/{stake_address}/addresses/assets", stake_address = stake_address);
-        self.get(&suffix).await
+    endpoints! {
+        /// Information about a specific stake account.
+        accounts(stake_address: &str) -> Account => "/accounts/{stake_address}";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}/get"),
+        /// Reward history of a specific account.
+        accounts_rewards(stake_address: &str) -> Vec<AccountReward> => "/accounts/{stake_address}/rewards";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1rewards/get"),
+        /// History of a specific account.
+        accounts_history(stake_address: &str) -> Vec<AccountHistory> => "/accounts/{stake_address}";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1history/get"),
+        /// Delegation information of a specific account.
+        accounts_delegations(stake_address: &str) -> Vec<AccountDelegation> => "/accounts/{stake_address}/delegations";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1delegationsget"),
+        /// History of registrations and deregistrations of a specific account.
+        accounts_registrations(stake_address: &str) -> Vec<AccountRegistration> => "/accounts/{stake_address}/registrations";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1registrationsget"),
+        /// Withdrawal history of a specific account.
+        accounts_withdrawals(stake_address: &str) -> Vec<AccountWithdrawal> => "/accounts/{stake_address}/withdrawals";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1withdrawals/get"),
+        /// Obtain information about the MIRs of a specific account.
+        accounts_mirs(stake_address: &str) -> Vec<AccountMir> => "/accounts/{stake_address}/mirs";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1mirs/get"),
+        /// Addresses associated with specific account.
+        accounts_addresses(stake_address: &str) -> Vec<AccountAddress> => "/accounts/{stake_address}/addresses";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1addresses/get"),
+        /// Assets associated with specific account.
+        ///
+        /// **Be careful**, as an account could be part of a mangled address and does not necessarily
+        /// mean the addresses are owned by user as the account.
+        accounts_addresses_assets(stake_address: &str) -> Vec<AccountAddressAsset> => "/accounts/{stake_address}/addresses/assets";
+            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1addresses~1assets/get"),
     }
 }
 

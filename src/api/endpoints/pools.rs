@@ -1,103 +1,38 @@
+use crate::*;
 use serde::{Deserialize, Serialize};
 
-use crate::*;
-
 impl BlockFrostApi {
-    /// List of registered stake pools.
-    ///
-    /// OpenAPI endpoint reference: [`/pools`].
-    ///
-    /// [`/pools`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools/get
-    pub async fn pools(&self) -> Result<Vec<String>> {
-        self.get("/pools").await
-    }
-
-    /// List of already retired pools.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/retired`].
-    ///
-    /// [`/pools/retired`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retired/get
-    pub async fn pools_retired(&self) -> Result<Vec<RetiredPool>> {
-        self.get("/pools/retired").await
-    }
-
-    /// List of retiring stake pools.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/retiring`].
-    ///
-    /// [`/pools/retiring`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retiring/get
-    pub async fn pools_retiring(&self) -> Result<Vec<RetiringPool>> {
-        self.get("/pools/retired").await
-    }
-
-    /// Pool information.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/{pool_id}`].
-    ///
-    /// [`/pools/{pool_id}`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}/get
-    pub async fn pools_by_id(&self, pool_id: &str) -> Result<Pool> {
-        let prefix = format!("/pools/{pool_id}", pool_id = pool_id);
-        self.get(&prefix).await
-    }
-
-    /// History of stake pool parameters over epochs.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/{pool_id}/history`].
-    ///
-    /// [`/pools/{pool_id}/history`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1history/get
-    pub async fn pools_history(&self, pool_id: &str) -> Result<Vec<PoolHistory>> {
-        let prefix = format!("/pools/{pool_id}/history", pool_id = pool_id);
-        self.get(&prefix).await
-    }
-
-    /// Stake pool registration metadata.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/{pool_id}/metadata`].
-    ///
-    /// [`/pools/{pool_id}/metadata`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1metadata/get
-    pub async fn pools_metadata(&self, pool_id: &str) -> Result<PoolMetadata> {
-        let prefix = format!("/pools/{pool_id}/metadata", pool_id = pool_id);
-        self.get(&prefix).await
-    }
-
-    /// Relays of a stake pool.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/{pool_id}/relays`].
-    ///
-    /// [`/pools/{pool_id}/relays`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1relays/get
-    pub async fn pools_relays(&self, pool_id: &str) -> Result<Vec<PoolRelay>> {
-        let prefix = format!("/pools/{pool_id}/relays", pool_id = pool_id);
-        self.get(&prefix).await
-    }
-
-    /// List of current stake pools delegators.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/{pool_id}/delegators`].
-    ///
-    /// [`/pools/{pool_id}/delegators]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1delegators/get
-    pub async fn pools_delegators(&self, pool_id: &str) -> Result<Vec<PoolDelegator>> {
-        let prefix = format!("/pools/{pool_id}/delegators", pool_id = pool_id);
-        self.get(&prefix).await
-    }
-
-    /// List of stake pools blocks.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/{pool_id}/blocks`].    
-    ///
-    /// [`/pools/{pool_id}/blocks`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1blocks/get
-    pub async fn pools_blocks(&self, pool_id: &str) -> Result<Vec<String>> {
-        let prefix = format!("/pools/{pool_id}/delegators", pool_id = pool_id);
-        self.get(&prefix).await
-    }
-
-    /// List of certificate updates to the stake pool.
-    ///
-    /// OpenAPI endpoint reference: [`/pools/{pool_id}/updates`].    
-    ///
-    /// [`/pools/{pool_id}/updates`]: https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1updates/get
-    pub async fn pools_updates(&self, pool_id: &str) -> Result<Vec<PoolUpdate>> {
-        let prefix = format!("/pools/{pool_id}/updates", pool_id = pool_id);
-        self.get(&prefix).await
+    endpoints! {
+        /// List of registered stake pools.
+        pools() -> Vec<String> => "/pools";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools/get"),
+        /// List of already retired pools.
+        pools_retired() -> Vec<RetiredPool> => "/pools/retired";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retired/get"),
+        /// List of retiring stake pools.
+        pools_retiring() -> Vec<RetiringPool> => "/pools/retired";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retiring/get"),
+        /// Pool information.
+        pools_by_id(pool_id: &str) -> Pool => "/pools/{pool_id}";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}/get"),
+        /// History of stake pool parameters over epochs.
+        pools_history(pool_id: &str) -> Vec<PoolHistory> => "/pools/{pool_id}/history";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1history/get"),
+        /// Stake pool registration metadata.
+        pools_metadata(pool_id: &str) -> PoolMetadata => "/pools/{pool_id}/metadata";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1metadata/get"),
+        /// Relays of a stake pool.
+        pools_relays(pool_id: &str) -> Vec<PoolRelay> => "/pools/{pool_id}/relays";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1relays/get"),
+        /// List of current stake pools delegators.
+        pools_delegators(pool_id: &str) -> Vec<PoolRelay> => "/pools/{pool_id}/delegators";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1delegators/get"),
+        /// List of stake pool blocks.
+        pools_blocks(pool_id: &str) -> Vec<String> => "/pools/{pool_id}/delegators";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1blocks/get"),
+        /// List of certificate updates to the stake pool.
+        pools_updates(pool_id: &str) -> Vec<PoolUpdate> => "/pools/{pool_id}/updates";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1updates/get"),
     }
 }
 
@@ -119,7 +54,7 @@ pub struct RetiringPool {
     pub epoch: Integer,
 }
 
-/// Created by [`pools_by_id`](BlockFrostApi::pool_by_id) method.
+/// Created by [`pools_by_id`](BlockFrostApi::pools_by_id) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Pool {
     /// Bech32 pool ID.
