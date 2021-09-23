@@ -13,15 +13,15 @@ use crate::utils;
 
 #[derive(Debug)]
 pub enum Error {
-    Network(ReqwestError),
+    Reqwest(ReqwestError),
     Json(SerdeJsonError),
     Io(IoError),
     DotEnv(DotEnvError),
-    Http(HttpError),
+    Response(ResponseError),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct HttpError {
+pub struct ResponseError {
     status_code: u16,
     error: String,
     message: String,
@@ -37,16 +37,16 @@ pub struct DotEnvError {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Error::Network(source) => write!(f, "http err: {}.", source),
+            Error::Reqwest(source) => write!(f, "http err: {}.", source),
             Error::Json(source) => write!(f, "json err: {}.", source),
             Error::Io(source) => write!(f, "io err: {}.", source),
             Error::DotEnv(source) => source.fmt(f),
-            Error::Http(source) => source.fmt(f),
+            Error::Response(source) => source.fmt(f),
         }
     }
 }
 
-impl fmt::Display for HttpError {
+impl fmt::Display for ResponseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         writeln!(f, "http error:")?;
         writeln!(f, "  status code: {}", self.status_code)?;
@@ -64,16 +64,16 @@ impl fmt::Display for DotEnvError {
 impl error::Error for Error {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         Some(match self {
-            Error::Network(source) => source,
+            Error::Reqwest(source) => source,
             Error::Json(source) => source,
             Error::Io(source) => source,
             Error::DotEnv(source) => source,
-            Error::Http(source) => source,
+            Error::Response(source) => source,
         })
     }
 }
 
-impl error::Error for HttpError {}
+impl error::Error for ResponseError {}
 
 impl error::Error for DotEnvError {}
 
@@ -81,7 +81,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 impl From<reqwest::Error> for Error {
     fn from(source: reqwest::Error) -> Self {
-        Error::Network(source)
+        Error::Reqwest(source)
     }
 }
 
@@ -113,15 +113,15 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode) -> Err
         eprintln!("Warning: status code {} was not expected.", status_code);
     }
 
-    match serde_json::from_str::<HttpError>(text) {
-        Ok(http_error) => Error::Http(http_error),
+    match serde_json::from_str::<ResponseError>(text) {
+        Ok(http_error) => Error::Response(http_error),
         Err(_) => {
             // Try to format JSON body, or use unformatted body instead
             let formatted_body_text = utils::try_formatting_json(text).unwrap_or_else(|_| text.to_owned());
             let reason = "Could not parse error body to interpret the reason of the error".into();
 
-            let http_error = HttpError { status_code, error: reason, message: formatted_body_text };
-            Error::Http(http_error)
+            let http_error = ResponseError { status_code, error: reason, message: formatted_body_text };
+            Error::Response(http_error)
         }
     }
 }
