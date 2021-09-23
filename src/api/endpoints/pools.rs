@@ -54,7 +54,7 @@ pub struct RetiringPool {
     pub epoch: Integer,
 }
 
-/// Created by [`pools_by_id`](BlockFrostApi::pool_by_id) method.
+/// Created by [`pools_by_id`](BlockFrostApi::pools_by_id) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Pool {
     /// Bech32 pool ID.
