@@ -3,52 +3,27 @@ use serde::{Deserialize, Serialize};
 use crate::*;
 
 impl BlockFrostApi {
-    /// Specific address.
-    ///
-    /// Obtain information about a specific address.
-    ///
-    /// OpenAPI endpoint reference: [`/addresses/{address}`].
-    ///
-    /// [`/addresses/{address}`]: https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}/get
-    pub async fn addresses(&self, address: &str) -> Result<Address> {
-        let suffix = format!("/addresses/{address}", address = address);
-        self.get(&suffix).await
-    }
-
-    /// Address details.
-    ///
-    /// Obtain details about an address.
-    ///
-    /// OpenAPI endpoint reference: [`/addresses/{address}/total`].
-    ///
-    /// [`/addresses/{address}/total`]: https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1total/get
-    pub async fn addresses_total(&self, address: &str) -> Result<AddressTotal> {
-        let suffix = format!("/addresses/{address}/total", address = address);
-        self.get(&suffix).await
-    }
-
-    /// Address UTXOs.
-    ///
-    /// UTXOs of the address.
-    ///
-    /// OpenAPI endpoint reference: [`/addresses/{address}/utxos`].
-    ///
-    /// [`/addresses/{address}/utxos`]: https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1utxos/get
-    pub async fn addresses_utxos(&self, address: &str) -> Result<Vec<AddressUtxo>> {
-        let suffix = format!("/addresses/{address}/utxos", address = address);
-        self.get(&suffix).await
-    }
-
-    /// Address transactions.
-    ///
-    /// Transactions on the address.
-    ///
-    /// OpenAPI endpoint reference: [`/addresses/{address}/transactions`].
-    ///
-    /// [`/addresses/{address}/transactions`]: https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1transactions/get
-    pub async fn addresses_transactions(&self, address: &str) -> Result<Vec<AddressTransaction>> {
-        let suffix = format!("/addresses/{address}/transactions", address = address);
-        self.get(&suffix).await
+    endpoints! {
+        /// Specific address.
+        ///
+        /// Obtain information about a specific address.
+        addresses(address: &str) -> Address => "/addresses/{address}";
+            ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}/get"),
+        /// Address details.
+        ///
+        /// Obtain details about an address.
+        addresses_total(address: &str) -> AddressTotal => "/addresses/{address}/total";
+            ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1total/get"),
+        /// Address UTXOs.
+        ///
+        /// UTXOs of the address.
+        addresses_utxos(address: &str) -> Vec<AddressUtxo> => "/addresses/{address}/utxos";
+            ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1utxos/get"),
+        /// Address transactions.
+        ///
+        /// Transactions on the address.
+        addresses_transactions(address: &str) -> Vec<AddressTransaction> => "/addresses/{address}/transactions";
+            ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1transactions/get"),
     }
 }
 

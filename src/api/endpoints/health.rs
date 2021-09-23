@@ -3,39 +3,24 @@ use serde::{Deserialize, Serialize};
 use crate::*;
 
 impl crate::BlockFrostApi {
-    /// Root endpoint.
-    ///
-    /// Root endpoint has no other function than to point end users to documentation.
-    ///
-    /// OpenAPI endpoint reference: [`/`].
-    ///
-    /// [`/`]: https://docs.blockfrost.io/#tag/Health/paths/~1/get
-    pub async fn root(&self) -> Result<Root> {
-        self.get("/").await
-    }
-
-    /// Backend health status.
-    ///
-    /// Return backend status as a boolean. Your application should handle situations when backend
-    /// for the given chain is unavailable.
-    ///
-    /// OpenAPI endpoint reference: [`/health`].
-    ///
-    /// [`/health`]: https://docs.blockfrost.io/#tag/Health/paths/~1health/get
-    pub async fn health(&self) -> Result<Health> {
-        self.get("/health").await
-    }
-
-    /// Current backend time.
-    ///
-    /// This endpoint provides the current UNIX time. Your application might use this to verify
-    /// if the client clock is not out of sync.
-    ///
-    /// OpenAPI endpoint reference: [`/health/clock`].
-    ///
-    /// [`/health/clock`]: https://docs.blockfrost.io/#tag/Health/paths/~1health~1clock/get
-    pub async fn health_clock(&self) -> Result<HealthClock> {
-        self.get("/health/clock").await
+    endpoints! {
+        /// Root endpoint.
+        ///
+        /// Root endpoint has no other function than to point end users to documentation.
+        root() -> Root => "/";
+            ("https://docs.blockfrost.io/#tag/Health/paths/~1/get"),
+        /// Backend health status.
+        ///
+        /// Return backend status as a boolean. Your application should handle situations when backend
+        /// for the given chain is unavailable.
+        health() -> Health => "/health";
+            ("https://docs.blockfrost.io/#tag/Health/paths/~1health/get"),
+        /// Current backend time.
+        ///
+        /// This endpoint provides the current UNIX time. Your application might use this to verify
+        /// if the client clock is not out of sync.
+        health_clock() -> HealthClock => "/health/clock";
+            ("https://docs.blockfrost.io/#tag/Health/paths/~1health~1clock/get"),
     }
 }
 
