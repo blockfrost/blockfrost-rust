@@ -5,7 +5,7 @@ use reqwest::{header::HeaderMap, Client};
 use serde_json::from_str as serde_from_str;
 
 use crate::error::process_error_response;
-pub use settings::Settings;
+pub use settings::*;
 
 /// SDK version being used.
 pub const USER_AGENT: &str = concat!("blockfrost-rust/", env!("CARGO_PKG_VERSION"));
@@ -35,12 +35,12 @@ impl BlockFrostApi {
         T: serde::de::DeserializeOwned,
     {
         let url = self.gather_url(url_suffix);
-        let response = self.client.get(url).send().await?;
+        let response = self.client.get(&url).send().await?;
 
         let status_code = response.status();
         let text = response.text().await?;
 
-        let debug_info = format!("{}: {}", url_suffix, text);
+        let debug_info = format!("{}: {}", url, text);
         eprintln!("debug_info: {}.", debug_info);
 
         if !status_code.is_success() {
@@ -51,6 +51,40 @@ impl BlockFrostApi {
     }
 
     fn gather_url(&self, suffix: &str) -> String {
-        self.settings.network_endpoint.to_string() + suffix
+        let endpoint_url = self.settings.network_endpoint.to_string() + suffix;
+
+        fn append_query_parameter(string: &mut String, parameter_name: &str, parameter: impl AsRef<str>) {
+            if string.is_empty() {
+                // Query parameters come after the question mark
+                string.push('?');
+            } else {
+                // Separator between parameters
+                string.push('&');
+            }
+            string.push_str(parameter_name);
+            string.push('=');
+            string.push_str(parameter.as_ref());
+        }
+
+        let QueryParameters { count, page, order, from, to } = &self.settings.query_parameters;
+        let mut query_parameters = String::new();
+        if let Some(count) = count {
+            append_query_parameter(&mut query_parameters, "count", count.to_string());
+        }
+        if let Some(page) = page {
+            append_query_parameter(&mut query_parameters, "page", page.to_string());
+        }
+        if let Some(order) = order {
+            append_query_parameter(&mut query_parameters, "order", order.to_string());
+        }
+        if let Some(from) = from {
+            append_query_parameter(&mut query_parameters, "from", from);
+        }
+        if let Some(to) = to {
+            append_query_parameter(&mut query_parameters, "to", to);
+        }
+
+        // Finished url
+        endpoint_url + &query_parameters
     }
 }
