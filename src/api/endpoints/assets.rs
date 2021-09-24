@@ -7,18 +7,23 @@ impl BlockFrostApi {
         /// List of assets.
         assets() -> Vec<Asset> => "/assets";
             ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets/get"),
+
         /// Detailed information about a specific asset.
         assets_by_id(asset: &str) -> AssetDetails => "/assets/{asset}";
             ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}/get"),
+
         /// History of a specific asset.
         assets_history(asset: &str) -> Vec<AssetHistory> => "/assets/{asset}/history";
             ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1history/get"),
+
         /// List of a specific asset transactions.
         assets_transactions(asset: &str) -> Vec<AssetTransaction> => "/assets/{asset}/transactions";
             ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1transactions/get"),
+
         /// List of a addresses containing a specific asset.
         assets_addresses(asset: &str) -> Vec<AssetAddress> => "/assets/{asset}/addresses";
             ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}~1addresses/get"),
+
         /// List of asset minted under a specific policy.
         assets_policy_by_id(policy_id: &str) -> Vec<AssetPolicy> => "/assets/policy/{policy_id}";
             ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1policy~1{policy_id}/get"),

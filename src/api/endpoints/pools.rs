@@ -6,30 +6,39 @@ impl BlockFrostApi {
         /// List of registered stake pools.
         pools() -> Vec<String> => "/pools";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools/get"),
+
         /// List of already retired pools.
         pools_retired() -> Vec<RetiredPool> => "/pools/retired";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retired/get"),
+
         /// List of retiring stake pools.
         pools_retiring() -> Vec<RetiringPool> => "/pools/retired";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retiring/get"),
+
         /// Pool information.
         pools_by_id(pool_id: &str) -> Pool => "/pools/{pool_id}";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}/get"),
+
         /// History of stake pool parameters over epochs.
         pools_history(pool_id: &str) -> Vec<PoolHistory> => "/pools/{pool_id}/history";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1history/get"),
+
         /// Stake pool registration metadata.
         pools_metadata(pool_id: &str) -> PoolMetadata => "/pools/{pool_id}/metadata";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1metadata/get"),
+
         /// Relays of a stake pool.
         pools_relays(pool_id: &str) -> Vec<PoolRelay> => "/pools/{pool_id}/relays";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1relays/get"),
+
         /// List of current stake pools delegators.
-        pools_delegators(pool_id: &str) -> Vec<PoolRelay> => "/pools/{pool_id}/delegators";
+        pools_delegators(pool_id: &str) -> Vec<PoolDelegator> => "/pools/{pool_id}/delegators";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1delegators/get"),
+
         /// List of stake pool blocks.
-        pools_blocks(pool_id: &str) -> Vec<String> => "/pools/{pool_id}/delegators";
+        pools_blocks(pool_id: &str) -> Vec<String> => "/pools/{pool_id}/blocks";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1blocks/get"),
+
         /// List of certificate updates to the stake pool.
         pools_updates(pool_id: &str) -> Vec<PoolUpdate> => "/pools/{pool_id}/updates";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1updates/get"),

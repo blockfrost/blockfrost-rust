@@ -4,23 +4,18 @@ use crate::*;
 
 impl BlockFrostApi {
     endpoints! {
-        /// Specific address.
-        ///
         /// Obtain information about a specific address.
         addresses(address: &str) -> Address => "/addresses/{address}";
             ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}/get"),
-        /// Address details.
-        ///
+
         /// Obtain details about an address.
         addresses_total(address: &str) -> AddressTotal => "/addresses/{address}/total";
             ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1total/get"),
-        /// Address UTXOs.
-        ///
+
         /// UTXOs of the address.
         addresses_utxos(address: &str) -> Vec<AddressUtxo> => "/addresses/{address}/utxos";
             ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1utxos/get"),
-        /// Address transactions.
-        ///
+
         /// Transactions on the address.
         addresses_transactions(address: &str) -> Vec<AddressTransaction> => "/addresses/{address}/transactions";
             ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1transactions/get"),

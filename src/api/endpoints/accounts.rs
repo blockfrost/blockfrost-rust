@@ -7,31 +7,39 @@ impl BlockFrostApi {
         /// Information about a specific stake account.
         accounts(stake_address: &str) -> Account => "/accounts/{stake_address}";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}/get"),
+
         /// Reward history of a specific account.
         accounts_rewards(stake_address: &str) -> Vec<AccountReward> => "/accounts/{stake_address}/rewards";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1rewards/get"),
+
         /// History of a specific account.
-        accounts_history(stake_address: &str) -> Vec<AccountHistory> => "/accounts/{stake_address}";
+        accounts_history(stake_address: &str) -> Vec<AccountHistory> => "/accounts/{stake_address}/history";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1history/get"),
+
         /// Delegation information of a specific account.
         accounts_delegations(stake_address: &str) -> Vec<AccountDelegation> => "/accounts/{stake_address}/delegations";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1delegationsget"),
+
         /// History of registrations and deregistrations of a specific account.
         accounts_registrations(stake_address: &str) -> Vec<AccountRegistration> => "/accounts/{stake_address}/registrations";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1registrationsget"),
+
         /// Withdrawal history of a specific account.
         accounts_withdrawals(stake_address: &str) -> Vec<AccountWithdrawal> => "/accounts/{stake_address}/withdrawals";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1withdrawals/get"),
+
         /// Obtain information about the MIRs of a specific account.
         accounts_mirs(stake_address: &str) -> Vec<AccountMir> => "/accounts/{stake_address}/mirs";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1mirs/get"),
+
         /// Addresses associated with specific account.
         accounts_addresses(stake_address: &str) -> Vec<AccountAddress> => "/accounts/{stake_address}/addresses";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1addresses/get"),
+
         /// Assets associated with specific account.
         ///
-        /// **Be careful**, as an account could be part of a mangled address and does not necessarily
-        /// mean the addresses are owned by user as the account.
+        /// **Be careful**, as an account could be part of a mangled address and does
+        /// not necessarily mean the addresses are owned by user as the account.
         accounts_addresses_assets(stake_address: &str) -> Vec<AccountAddressAsset> => "/accounts/{stake_address}/addresses/assets";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1addresses~1assets/get"),
     }

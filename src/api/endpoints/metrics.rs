@@ -9,6 +9,7 @@ impl BlockFrostApi {
         /// History of your Blockfrost usage metrics in the past 30 days.
         metrics() -> Vec<Metric> => "/metrics";
             ("https://docs.blockfrost.io/#tag/Metrics/paths/~1metrics~1/get"),
+
         /// Blockfrost endpoint usage metrics.
         ///
         /// History of your Blockfrost usage metrics per endpoint in the past 30 days.

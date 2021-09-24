@@ -4,17 +4,16 @@ use crate::*;
 
 impl crate::BlockFrostApi {
     endpoints! {
-        /// Root endpoint.
-        ///
-        /// Root endpoint has no other function than to point end users to documentation.
+        /// Root endpoint, points end users to documentation.
         root() -> Root => "/";
             ("https://docs.blockfrost.io/#tag/Health/paths/~1/get"),
-        /// Backend health status.
+
+        /// Backend health status as a boolean.
         ///
-        /// Return backend status as a boolean. Your application should handle situations when backend
-        /// for the given chain is unavailable.
+        /// Your application should handle when backend is unavailable for the given chain.
         health() -> Health => "/health";
             ("https://docs.blockfrost.io/#tag/Health/paths/~1health/get"),
+
         /// Current backend time.
         ///
         /// This endpoint provides the current UNIX time. Your application might use this to verify

@@ -1,6 +1,7 @@
 //! Rust SDK for Blockfrost.io
 
 // Internal testing macros
+#[cfg(test)]
 #[macro_use]
 mod macros;
 

@@ -152,7 +152,7 @@ pub struct AddressStakePool {
 pub struct AddressStake {
     /// Stake address.
     pub stake_address: String,
-    /// Amount of active delegated stake in Lovelaces
+    /// Amount of active delegated stake in Lovelaces.
     pub amount: String,
 }
 
