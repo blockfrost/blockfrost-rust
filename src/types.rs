@@ -1,3 +1,6 @@
+use serde_json::Value as JsonValue;
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 
 // Use this module as an interface to export all types declared inside of endpoints/
@@ -14,6 +17,9 @@ pub type Integer = i128;
 
 /// Float used in other types.
 pub type Float = f64;
+
+/// Arbitrary JSON, for example protocol entropy, metadata, etc.
+pub type ArbitraryJson = HashMap<String, JsonValue>;
 
 /// Inner enum for [`PoolUpdate`] and [`AccountRegistration`].
 ///

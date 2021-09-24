@@ -1,7 +1,4 @@
-use std::collections::HashMap;
-
 use serde::{Deserialize, Serialize};
-use serde_json::Value as JsonValue;
 
 use crate::*;
 
@@ -62,9 +59,7 @@ pub struct AssetDetails {
     pub mint_or_burn_count: Integer,
     /// On-chain metadata stored in the minting transaction under label 721, community discussion
     /// around the standard ongoing at <https://github.com/cardano-foundation/CIPs/pull/85>
-    ///
-    /// HashMap used because it may contain additional properties.
-    pub onchain_metadata: Option<HashMap<String, JsonValue>>,
+    pub onchain_metadata: Option<ArbitraryJson>,
     pub metadata: Option<AssetMetadata>,
 }
 
