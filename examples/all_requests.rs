@@ -15,6 +15,7 @@ async fn main() -> blockfrost::Result<()> {
     // Arbitrary example text used in requisitions that require id or address
     let address = "example-address-01234567890123456789";
     let pool = "example-pool-01234567890123456789";
+    let epoch = 10;
 
     let root = api.root().await;
     let health = api.health().await;
@@ -50,6 +51,16 @@ async fn main() -> blockfrost::Result<()> {
     let pools_delegators = api.pools_delegators(pool).await;
     let pools_blocks = api.pools_blocks(pool).await;
     let pools_updates = api.pools_updates(pool).await;
+    let epochs_latest = api.epochs_latest().await;
+    let epochs_latest_parameters = api.epochs_latest_parameters().await;
+    let epochs_by_number = api.epochs_by_number(epoch).await;
+    let epochs_next = api.epochs_next(epoch).await;
+    let epochs_previous = api.epochs_previous(epoch).await;
+    let epochs_stakes = api.epochs_stakes(epoch).await;
+    let epochs_stakes_by_pool = api.epochs_stakes_by_pool(epoch, pool).await;
+    let epochs_blocks = api.epochs_blocks(epoch).await;
+    let epochs_blocks_by_pool = api.epochs_blocks_by_pool(epoch, pool).await;
+    let epochs_parameters = api.epochs_parameters(epoch).await;
 
     println!("{:#?}", root);
     println!("{:#?}", health);
@@ -85,6 +96,15 @@ async fn main() -> blockfrost::Result<()> {
     println!("{:#?}", pools_delegators);
     println!("{:#?}", pools_blocks);
     println!("{:#?}", pools_updates);
-
+    println!("{:#?}", epochs_latest);
+    println!("{:#?}", epochs_latest_parameters);
+    println!("{:#?}", epochs_by_number);
+    println!("{:#?}", epochs_next);
+    println!("{:#?}", epochs_previous);
+    println!("{:#?}", epochs_stakes);
+    println!("{:#?}", epochs_stakes_by_pool);
+    println!("{:#?}", epochs_blocks);
+    println!("{:#?}", epochs_blocks_by_pool);
+    println!("{:#?}", epochs_parameters);
     Ok(())
 }
