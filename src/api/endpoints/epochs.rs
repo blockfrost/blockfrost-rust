@@ -160,7 +160,7 @@ pub struct AddressStake {
 mod tests {
     use super::*;
 
-    test_schema! { test_epochs_latest, Epoch, r#"
+    test_example! { test_epochs_latest, Epoch, r#"
     {
         "epoch": 225,
         "start_time": 1603403091,
@@ -175,7 +175,7 @@ mod tests {
     }
     "# }
 
-    test_schema! { test_epochs_latest_parameters, EpochParameters, r#"
+    test_example! { test_epochs_latest_parameters, EpochParameters, r#"
     {
         "epoch": 225,
         "min_fee_a": 44,
@@ -210,7 +210,7 @@ mod tests {
     }
     "# }
 
-    test_schema! { test_epochs_next, Vec<Epoch>, r#"
+    test_example! { test_epochs_next, Vec<Epoch>, r#"
     [
         {
             "epoch": 225,
@@ -226,7 +226,7 @@ mod tests {
         }
     ]"#}
 
-    test_schema! { test_epochs_stakes, Vec<AddressStakePool>, r#"
+    test_example! { test_epochs_stakes, Vec<AddressStakePool>, r#"
     [
         {
             "stake_address": "stake1u9l5q5jwgelgagzyt6nuaasefgmn8pd25c8e9qpeprq0tdcp0e3uk",
@@ -236,7 +236,7 @@ mod tests {
     ]
     "#}
 
-    test_schema! { test_epochs_stakes_by_pool, Vec<AddressStake>, r#"
+    test_example! { test_epochs_stakes_by_pool, Vec<AddressStake>, r#"
     [
         {
             "stake_address": "stake1u9l5q5jwgelgagzyt6nuaasefgmn8pd25c8e9qpeprq0tdcp0e3uk",
@@ -245,7 +245,7 @@ mod tests {
     ]
     "#}
 
-    test_schema! { test_epochs_blocks, Vec<String>, r#"
+    test_example! { test_epochs_blocks, Vec<String>, r#"
     [
         "d0fa315687e99ccdc96b14cc2ea74a767405d64427b648c470731a9b69e4606e",
         "38bc6efb92a830a0ed22a64f979d120d26483fd3c811f6622a8c62175f530878",

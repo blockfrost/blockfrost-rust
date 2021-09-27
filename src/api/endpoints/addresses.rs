@@ -119,7 +119,7 @@ pub enum AdressType {
 mod tests {
     use super::*;
 
-    test_schema! { test_address, Address, r#"
+    test_example! { test_address, Address, r#"
     {
       "address": "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz",
       "amount": [
@@ -137,7 +137,7 @@ mod tests {
     }
     "# }
 
-    test_schema! { test_address_total, AddressTotal, r#"
+    test_example! { test_address_total, AddressTotal, r#"
     {
       "address": "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz",
       "received_sum": [
@@ -164,7 +164,7 @@ mod tests {
     }
     "# }
 
-    test_schema! { test_address_utxo, Vec<AddressUtxo>, r#"
+    test_example! { test_address_utxo, Vec<AddressUtxo>, r#"
     [
       {
         "tx_hash": "39a7a284c2a0948189dc45dec670211cd4d72f7b66c5726c08d9b3df11e44d58",
@@ -206,7 +206,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_address_transaction, Vec<AddressTransaction>, r#"
+    test_example! { test_address_transaction, Vec<AddressTransaction>, r#"
     [
       {
         "tx_hash": "8788591983aa73981fc92d6cddbbe643959f5a784e84b8bee0db15823f575a5b",
@@ -226,7 +226,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_transaction_amount, Amount, r#"
+    test_example! { test_transaction_amount, Amount, r#"
     {
       "unit": "lovelace",
       "quantity": "42000000"

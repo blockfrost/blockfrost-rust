@@ -174,7 +174,7 @@ pub struct PoolUpdate {
 mod tests {
     use super::*;
 
-    test_schema! { test_pools, Vec<String>, r#"
+    test_example! { test_pools, Vec<String>, r#"
     [
       "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
       "pool1hn7hlwrschqykupwwrtdfkvt2u4uaxvsgxyh6z63703p2knj288",
@@ -182,7 +182,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_pools_retired, Vec<RetiredPool>, r#"
+    test_example! { test_pools_retired, Vec<RetiredPool>, r#"
     [
       {
         "pool_id": "pool19u64770wqp6s95gkajc8udheske5e6ljmpq33awxk326zjaza0q",
@@ -199,7 +199,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_pools_retiring, Vec<RetiringPool>, r#"
+    test_example! { test_pools_retiring, Vec<RetiringPool>, r#"
     [
       {
         "pool_id": "pool19u64770wqp6s95gkajc8udheske5e6ljmpq33awxk326zjaza0q",
@@ -216,7 +216,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_pools_by_id, Pool, r#"
+    test_example! { test_pools_by_id, Pool, r#"
     {
       "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
       "hex": "0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735",
@@ -247,7 +247,7 @@ mod tests {
     }
     "# }
 
-    test_schema! { test_pools_history, Vec<PoolHistory>, r#"
+    test_example! { test_pools_history, Vec<PoolHistory>, r#"
     [
       {
         "epoch": 233,
@@ -261,7 +261,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_pools_metadata, PoolMetadata, r#"
+    test_example! { test_pools_metadata, PoolMetadata, r#"
     {
       "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
       "hex": "0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735",
@@ -274,7 +274,7 @@ mod tests {
     }
     "# }
 
-    test_schema! { test_pools_relays, Vec<PoolRelay>, r#"
+    test_example! { test_pools_relays, Vec<PoolRelay>, r#"
     [
       {
         "ipv4": "4.4.4.4",
@@ -286,7 +286,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_pool_delegators, Vec<PoolDelegator>, r#"
+    test_example! { test_pool_delegators, Vec<PoolDelegator>, r#"
     [
       {
         "address": "stake1ux4vspfvwuus9uwyp5p3f0ky7a30jq5j80jxse0fr7pa56sgn8kha",
@@ -303,7 +303,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_pools_blocks, Vec<String>, r#"
+    test_example! { test_pools_blocks, Vec<String>, r#"
     [
       "d8982ca42cfe76b747cc681d35d671050a9e41e9cfe26573eb214e94fe6ff21d",
       "026436c539e2ce84c7f77ffe669f4e4bbbb3b9c53512e5857dcba8bb0b4e9a8c",
@@ -312,7 +312,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_pools_updates, Vec<PoolUpdate>, r#"
+    test_example! { test_pools_updates, Vec<PoolUpdate>, r#"
     [
       {
         "tx_hash": "6804edf9712d2b619edb6ac86861fe93a730693183a262b165fcc1ba1bc99cad",

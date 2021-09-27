@@ -138,7 +138,7 @@ pub enum AssetHistoryActionType {
 mod tests {
     use super::*;
 
-    test_schema! { test_asset, Vec<Asset>, r#"
+    test_example! { test_asset, Vec<Asset>, r#"
     [
       {
         "asset": "b0d07d45fe9514f80213f4020e5a61241458be626841cde717cb38a76e7574636f696e",
@@ -155,7 +155,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_asset_details, AssetDetails, r#"
+    test_example! { test_asset_details, AssetDetails, r#"
     {
       "asset": "b0d07d45fe9514f80213f4020e5a61241458be626841cde717cb38a76e7574636f696e",
       "policy_id": "b0d07d45fe9514f80213f4020e5a61241458be626841cde717cb38a7",
@@ -180,7 +180,7 @@ mod tests {
     }
     "# }
 
-    test_schema! { test_asset_history, Vec<AssetHistory>, r#"
+    test_example! { test_asset_history, Vec<AssetHistory>, r#"
     [
       {
         "tx_hash": "2dd15e0ef6e6a17841cb9541c27724072ce4d4b79b91e58432fbaa32d9572531",
@@ -200,7 +200,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_asset_transaction, Vec<AssetTransaction>, r#"
+    test_example! { test_asset_transaction, Vec<AssetTransaction>, r#"
     [
       {
         "tx_hash": "8788591983aa73981fc92d6cddbbe643959f5a784e84b8bee0db15823f575a5b",
@@ -220,7 +220,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_asset_address, Vec<AssetAddress>, r#"
+    test_example! { test_asset_address, Vec<AssetAddress>, r#"
     [
       {
         "address": "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz",
@@ -237,7 +237,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_asset_policy_by_id, Vec<AssetPolicy>, r#"
+    test_example! { test_asset_policy_by_id, Vec<AssetPolicy>, r#"
     [
       {
         "asset": "b0d07d45fe9514f80213f4020e5a61241458be626841cde717cb38a76e7574636f696e",

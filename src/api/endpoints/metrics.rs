@@ -42,7 +42,7 @@ pub struct MetricEndpoint {
 mod tests {
     use super::*;
 
-    test_schema! { test_metric, Vec<Metric>, r#"
+    test_example! { test_metric, Vec<Metric>, r#"
     [
       {
         "time": 1612543884,
@@ -55,7 +55,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_metric_endpoint, Vec<MetricEndpoint>, r#"
+    test_example! { test_metric_endpoint, Vec<MetricEndpoint>, r#"
     [
       {
         "time": 1612543814,

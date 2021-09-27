@@ -50,20 +50,20 @@ pub struct HealthClock {
 mod tests {
     use super::*;
 
-    test_schema! { test_root, Root, r#"
+    test_example! { test_root, Root, r#"
     {
       "url": "https://blockfrost.io/",
       "version": "0.1.0"
     }
     "# }
 
-    test_schema! { test_health, Health, r#"
+    test_example! { test_health, Health, r#"
     {
       "is_healthy": true
     }
     "# }
 
-    test_schema! { test_health_clock, HealthClock, r#"
+    test_example! { test_health_clock, HealthClock, r#"
     {
       "server_time": 1603400958947
     }

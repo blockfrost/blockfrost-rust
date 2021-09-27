@@ -1,5 +1,5 @@
 /// Useful for testing our types against JSON examples in the documentation.
-macro_rules! test_schema {
+macro_rules! test_example {
     { $test_name:tt, $schema_name:ty, $text:expr } => {
         #[test]
         fn $test_name() {

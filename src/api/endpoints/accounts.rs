@@ -154,7 +154,7 @@ pub struct AccountAddressAsset {
 mod tests {
     use super::*;
 
-    test_schema! { test_accounts, Account, r#"
+    test_example! { test_accounts, Account, r#"
     {
       "stake_address": "stake1ux3g2c9dx2nhhehyrezyxpkstartcqmu9hk63qgfkccw5rqttygt7",
       "active": true,
@@ -169,7 +169,7 @@ mod tests {
     }
     "# }
 
-    test_schema! { test_account_reward, Vec<AccountReward>, r#"
+    test_example! { test_account_reward, Vec<AccountReward>, r#"
     [
       {
         "epoch": 215,
@@ -194,7 +194,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_account_history, Vec<AccountHistory>, r#"
+    test_example! { test_account_history, Vec<AccountHistory>, r#"
     [
       {
         "active_epoch": 210,
@@ -209,7 +209,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_account_delegation, Vec<AccountDelegation>, r#"
+    test_example! { test_account_delegation, Vec<AccountDelegation>, r#"
     [
       {
         "active_epoch": 210,
@@ -226,7 +226,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_account_registration, Vec<AccountRegistration>, r#"
+    test_example! { test_account_registration, Vec<AccountRegistration>, r#"
     [
       {
         "tx_hash": "2dd15e0ef6e6a17841cb9541c27724072ce4d4b79b91e58432fbaa32d9572531",
@@ -239,7 +239,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_account_withdrawal, Vec<AccountWithdrawal>, r#"
+    test_example! { test_account_withdrawal, Vec<AccountWithdrawal>, r#"
     [
       {
         "tx_hash": "48a9625c841eea0dd2bb6cf551eabe6523b7290c9ce34be74eedef2dd8f7ecc5",
@@ -252,7 +252,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_account_mir, Vec<AccountMir>, r#"
+    test_example! { test_account_mir, Vec<AccountMir>, r#"
     [
       {
         "tx_hash": "48a9625c841eea0dd2bb6cf551eabe6523b7290c9ce34be74eedef2dd8f7ecc5",
@@ -265,7 +265,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_account_address, Vec<AccountAddress>, r#"
+    test_example! { test_account_address, Vec<AccountAddress>, r#"
     [
       {
         "address": "addr1qx2kd28nq8ac5prwg32hhvudlwggpgfp8utlyqxu6wqgz62f79qsdmm5dsknt9ecr5w468r9ey0fxwkdrwh08ly3tu9sy0f4qd"
@@ -282,7 +282,7 @@ mod tests {
     ]
     "# }
 
-    test_schema! { test_account_address_asset, Vec<AccountAddressAsset>, r#"
+    test_example! { test_account_address_asset, Vec<AccountAddressAsset>, r#"
     [
       {
         "unit": "d5e6bf0500378d4f0da4e8dde6becec7621cd8cbf5cbb9b87013d4cc537061636542756433343132",
