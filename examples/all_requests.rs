@@ -81,19 +81,25 @@ async fn main() -> blockfrost::Result<()> {
     let pools_updates = api.pools_updates(pool_id).await;
 
     // Blocks
-    let block = 4874756.to_string();
+    let block = "4874756";
     let slot = 12268658;
     let blocks_latest = api.blocks_latest().await;
     let blocks_latest_txs = api.blocks_latest_txs().await;
-    let blocks_by_id = api.blocks_by_id(&block).await;
+    let blocks_by_id = api.blocks_by_id(block).await;
     let blocks_slot = api.blocks_slot(slot).await;
     let blocks_by_epoch_and_slot = api.blocks_by_epoch_and_slot(epoch, slot).await; // Not found
-    let blocks_next = api.blocks_next(&block).await;
-    let blocks_previous = api.blocks_previous(&block).await;
-    let blocks_txs = api.blocks_txs(&block).await;
+    let blocks_next = api.blocks_next(block).await;
+    let blocks_previous = api.blocks_previous(block).await;
+    let blocks_txs = api.blocks_txs(block).await;
 
     // Ledger
     let genesis = api.genesis().await;
+
+    // Metadata
+    let label = "1990";
+    let metadata_txs_labels = api.metadata_txs_labels().await;
+    let metadata_txs_by_label = api.metadata_txs_by_label(label).await;
+    let metadata_txs_by_label_cbor = api.metadata_txs_by_label_cbor(label).await;
 
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
@@ -148,6 +154,9 @@ async fn main() -> blockfrost::Result<()> {
     println!("blocks_previous: {:#?}", blocks_previous);
     println!("blocks_txs: {:#?}", blocks_txs);
     println!("genesis: {:#?}", genesis);
+    println!("metadata_txs_labels: {:#?}", metadata_txs_labels);
+    println!("metadata_txs_by_label: {:#?}", metadata_txs_by_label);
+    println!("metadata_txs_by_label_cbor: {:#?}", metadata_txs_by_label_cbor);
 
     Ok(())
 }
