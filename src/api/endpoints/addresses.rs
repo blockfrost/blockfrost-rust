@@ -73,12 +73,7 @@ pub struct AddressTransaction {
     pub block_height: Integer,
 }
 
-/// Represents an amount of some unit, reused in three other structs.
-///
-/// This struct is a member in the structs:
-/// - [`Address`].
-/// - [`AddressTotal`].
-/// - [`AddressUtxo`].
+/// Inner member of [`Address`], [`AddressTotal`] and [`AddressUtxo`].
 ///
 /// # Format:
 ///

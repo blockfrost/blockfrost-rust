@@ -64,7 +64,7 @@ pub struct AssetDetails {
     pub mint_or_burn_count: Integer,
     /// On-chain metadata stored in the minting transaction under label 721, community discussion
     /// around the standard ongoing at <https://github.com/cardano-foundation/CIPs/pull/85>
-    pub onchain_metadata: Option<ArbitraryJson>,
+    pub onchain_metadata: Option<JsonMap>,
     pub metadata: Option<AssetMetadata>,
 }
 
