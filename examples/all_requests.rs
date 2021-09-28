@@ -92,6 +92,9 @@ async fn main() -> blockfrost::Result<()> {
     let blocks_previous = api.blocks_previous(&block).await;
     let blocks_txs = api.blocks_txs(&block).await;
 
+    // Ledger
+    let genesis = api.genesis().await;
+
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
     println!("health_clock: {:#?}", health_clock);
@@ -144,6 +147,7 @@ async fn main() -> blockfrost::Result<()> {
     println!("blocks_next: {:#?}", blocks_next);
     println!("blocks_previous: {:#?}", blocks_previous);
     println!("blocks_txs: {:#?}", blocks_txs);
+    println!("genesis: {:#?}", genesis);
 
     Ok(())
 }

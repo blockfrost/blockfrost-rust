@@ -7,6 +7,7 @@ mod assets;
 mod blocks;
 mod epochs;
 mod health;
+mod ledger;
 mod metrics;
 mod pools;
 
@@ -16,5 +17,6 @@ pub use assets::*;
 pub use blocks::*;
 pub use epochs::*;
 pub use health::*;
+pub use ledger::*;
 pub use metrics::*;
 pub use pools::*;

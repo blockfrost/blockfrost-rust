@@ -38,7 +38,15 @@ impl BlockFrostApi {
     }
 }
 
-/// Created by [`blocks_latest`](BlockFrostApi::blocks_latest) method.
+/// Created by [`blocks_latest`](BlockFrostApi::blocks_latest) and other 5 methods.
+///
+/// Methods that can retrieve this type:
+/// [`BlockFrostApi::blocks_latest`].
+/// [`BlockFrostApi::blocks_by_id`].
+/// [`BlockFrostApi::blocks_slot`].
+/// [`BlockFrostApi::blocks_by_epoch_and_slot`].
+/// [`BlockFrostApi::blocks_next`].
+/// [`BlockFrostApi::blocks_previous`].
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Block {
     /// Block creation time in UNIX time.
