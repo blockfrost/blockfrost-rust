@@ -44,13 +44,15 @@ async fn main() -> blockfrost::Result<()> {
     let addresses_transactions = api.addresses_transactions(address).await;
 
     // Assets
-    let address = "b0d07d45fe9514f80213f4020e5a61241458be626841cde717cb38a76e7574636f696e";
+    let asset_name = "6e7574636f696e";
+    let policy_id = "00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87ae";
+    let asset = asset_name.to_string() + policy_id;
     let assets = api.assets().await;
-    let assets_by_id = api.assets_by_id(address).await;
-    let assets_history = api.assets_history(address).await;
-    let assets_transactions = api.assets_transactions(address).await;
-    let assets_addresses = api.assets_addresses(address).await;
-    let assets_policy_by_id = api.assets_policy_by_id(address).await;
+    let assets_by_id = api.assets_by_id(&asset).await;
+    let assets_history = api.assets_history(&asset).await;
+    let assets_transactions = api.assets_transactions(&asset).await;
+    let assets_addresses = api.assets_addresses(&asset).await;
+    let assets_policy_by_id = api.assets_policy_by_id(policy_id).await;
 
     // Epochs
     let epoch = 225;
@@ -77,6 +79,18 @@ async fn main() -> blockfrost::Result<()> {
     let pools_delegators = api.pools_delegators(pool_id).await;
     let pools_blocks = api.pools_blocks(pool_id).await;
     let pools_updates = api.pools_updates(pool_id).await;
+
+    // Blocks
+    let block = 4874756.to_string();
+    let slot = 12268658;
+    let blocks_latest = api.blocks_latest().await;
+    let blocks_latest_txs = api.blocks_latest_txs().await;
+    let blocks_by_id = api.blocks_by_id(&block).await;
+    let blocks_slot = api.blocks_slot(slot).await;
+    let blocks_by_epoch_and_slot = api.blocks_by_epoch_and_slot(epoch, slot).await; // Not found
+    let blocks_next = api.blocks_next(&block).await;
+    let blocks_previous = api.blocks_previous(&block).await;
+    let blocks_txs = api.blocks_txs(&block).await;
 
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
@@ -122,6 +136,14 @@ async fn main() -> blockfrost::Result<()> {
     println!("pools_delegators: {:#?}", pools_delegators);
     println!("pools_blocks: {:#?}", pools_blocks);
     println!("pools_updates: {:#?}", pools_updates);
+    println!("blocks_latest: {:#?}", blocks_latest);
+    println!("blocks_latest_txs: {:#?}", blocks_latest_txs);
+    println!("blocks_by_id: {:#?}", blocks_by_id);
+    println!("blocks_slot: {:#?}", blocks_slot);
+    println!("blocks_by_epoch_and_slot: {:#?}", blocks_by_epoch_and_slot);
+    println!("blocks_next: {:#?}", blocks_next);
+    println!("blocks_previous: {:#?}", blocks_previous);
+    println!("blocks_txs: {:#?}", blocks_txs);
 
     Ok(())
 }
