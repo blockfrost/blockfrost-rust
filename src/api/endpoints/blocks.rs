@@ -1,6 +1,42 @@
+use std::{
+    future::Future,
+    pin::Pin,
+    task::{Context, Poll},
+};
+
 use serde::{Deserialize, Serialize};
 
+use crate::stream::{FuturesOrdered, Stream};
 use crate::*;
+
+pub struct BlockLister<F: futures::Future> {
+    inner: FuturesOrdered<F>,
+    api: BlockFrostApi,
+    url_suffix: String,
+}
+
+impl<F> Stream for BlockLister<F>
+where
+    F: futures::Future,
+{
+    type Item = F::Output;
+
+    fn poll_next(mut self: Pin<&mut Self>, context: &mut Context) -> Poll<Option<Self::Item>> {
+        Pin::new(&mut self.inner).poll_next(context)
+    }
+}
+
+impl BlockFrostApi {
+    pub fn blocks_previous_all<F>(&self, hash_or_number: &str) -> BlockLister<F>
+    where
+        F: Future<Output = crate::Result<Vec<Block>>>,
+    {
+        let inner: FuturesOrdered<F> = FuturesOrdered::new();
+        let api = self.clone();
+        let url_suffix = format!("/blocks/{hash_or_number}/next", hash_or_number = hash_or_number);
+        BlockLister { inner, api, url_suffix }
+    }
+}
 
 impl BlockFrostApi {
     endpoints! {

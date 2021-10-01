@@ -19,6 +19,13 @@ pub use api::*;
 pub use error::*;
 pub use types::*;
 
+/// Re-exporting stream functionality from external crates.
+///
+/// These traits are necessary to work with asynchronous iterators.
+pub mod stream {
+    pub use futures::stream::{FuturesOrdered, Stream, StreamExt};
+}
+
 /// The URL of the BlockFrost API for the Cardano mainnet.
 pub const CARDANO_MAINNET_NETWORK: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
 /// The URL of the BlockFrost API for the Cardano testnet.
