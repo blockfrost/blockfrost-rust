@@ -10,13 +10,16 @@ macro_rules! def_endpoint {
     // Preserve the doc comments
     $(#[doc = $doc])*
     // Define the simple, unpaginated function, expanding out any parameters
-    pub async fn $name(&self$(, $param: $ptype)*) -> Result<$ret> {
-      // Build a paginated route, substituting in the params
-      // A cool property here is that the parameters defined in the macro will get checked against the route provided
-      let route = format!($route $(, $param = $param)*);
-      // Make a GET request!
-      // TODO: add support for HTTP method?
-      self.get(&route).await
+    pub fn $name<'api>(
+        &'api self
+        $(, $param: $ptype)*
+    ) -> impl std::future::Future<Output = Result<$ret>> + Send + 'api {
+        // Build a paginated route, substituting in the params
+        // A cool property here is that the parameters defined in the macro will get checked against the route provided
+        let route = format!($route $(, $param = $param)*);
+        // Make a GET request!
+        // TODO: add support for HTTP method?
+        self.get(&route)
     }
   };
 }

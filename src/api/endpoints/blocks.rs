@@ -1,6 +1,49 @@
+use std::{
+    future::Future,
+    pin::Pin,
+    task::{Context, Poll},
+};
+
 use serde::{Deserialize, Serialize};
 
-use crate::*;
+use crate::{
+    stream::{FuturesOrdered, Stream},
+    *,
+};
+
+type ListerFuture<'api> = dyn Future<Output = crate::Result<Vec<Block>>> + Send + 'api;
+type PinnedListerFuture<'api> = Pin<Box<ListerFuture<'api>>>;
+
+pub struct BlockLister<'api> {
+    inner: FuturesOrdered<PinnedListerFuture<'api>>,
+    api: &'api BlockFrostApi,
+    url_suffix: String,
+}
+
+impl<'api> Stream for BlockLister<'api> {
+    type Item = crate::Result<Vec<Block>>;
+
+    fn poll_next(mut self: Pin<&mut Self>, context: &mut Context) -> Poll<Option<Self::Item>> {
+        let item = Pin::new(&mut self.inner).poll_next(context);
+
+        if let Poll::Ready(Some(_)) = &item {
+            let future = self.api.blocks_next("foobar");
+            self.inner.push(Box::pin(future));
+        }
+
+        item
+    }
+}
+
+impl BlockFrostApi {
+    pub fn blocks_previous_all<'api>(&'api self, hash_or_number: &str) -> BlockLister<'api> {
+        let mut inner: FuturesOrdered<PinnedListerFuture> = FuturesOrdered::new();
+        let url_suffix = format!("/blocks/{hash_or_number}/next", hash_or_number = hash_or_number);
+        let future = self.blocks_previous(hash_or_number);
+        inner.push(Box::pin(future));
+        BlockLister { inner, api: self, url_suffix }
+    }
+}
 
 impl BlockFrostApi {
     endpoints! {

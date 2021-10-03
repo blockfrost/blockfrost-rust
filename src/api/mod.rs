@@ -1,6 +1,8 @@
 pub(crate) mod endpoints;
 mod settings;
 
+use std::future::Future;
+
 use reqwest::{header::HeaderMap, Client};
 use serde_json::from_str as serde_from_str;
 
@@ -30,24 +32,27 @@ impl BlockFrostApi {
         Self { settings, client }
     }
 
-    async fn get<T>(&self, url_suffix: &str) -> crate::Result<T>
+    fn get<T>(&self, url_suffix: &str) -> impl Future<Output = crate::Result<T>> + Send
     where
         T: serde::de::DeserializeOwned,
     {
         let url = self.gather_url(url_suffix);
-        let response = self.client.get(&url).send().await?;
+        let response_future = self.client.get(&url).send();
+        async move {
+            let response = response_future.await?;
 
-        let status_code = response.status();
-        let text = response.text().await?;
+            let status_code = response.status();
+            let text = response.text().await?;
 
-        let debug_info = format!("{}: {}", url, text);
-        eprintln!("debug_info: {}", debug_info);
+            let debug_info = format!("{}: {}", url, text);
+            eprintln!("debug_info: {}", debug_info);
 
-        if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code));
+            if !status_code.is_success() {
+                return Err(process_error_response(&text, status_code));
+            }
+            // This gon have to be removed
+            Ok(serde_from_str::<T>(&text)?)
         }
-        // This gon have to be removed
-        Ok(serde_from_str::<T>(&text)?)
     }
 
     fn gather_url(&self, suffix: &str) -> String {
