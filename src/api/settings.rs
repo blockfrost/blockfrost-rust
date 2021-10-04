@@ -123,18 +123,3 @@ impl fmt::Display for QueryOrder {
         }
     }
 }
-
-// // Bitflags might be used to use query parameters only in
-// // the specific requests who require them
-//
-// bitflags! {
-//     pub(crate) struct QueryFlags: u32 {
-//         const NONE  = 0b000000;
-//         const COUNT = 0b000001;
-//         const PAGE  = 0b000010;
-//         const ORDER = 0b000100;
-//         const FROM  = 0b001000;
-//         const TO    = 0b010000;
-//         const ALL   = 0b011111;
-//     }
-// }
