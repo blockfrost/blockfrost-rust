@@ -6,6 +6,7 @@
 mod macros;
 
 mod api;
+mod url;
 mod utils;
 
 /// Utils for loading common settings from config file and environment variables.

@@ -36,6 +36,10 @@ impl Settings {
         &self.network_endpoint
     }
 
+    pub fn query_parameters(&self) -> &QueryParameters {
+        &self.query_parameters
+    }
+
     pub fn configure<F>(mut self, function: F) -> Self
     where
         F: FnOnce(&mut QueryParameters),

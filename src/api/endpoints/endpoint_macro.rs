@@ -19,7 +19,7 @@ macro_rules! def_endpoint {
         let route = format!($route $(, $param = $param)*);
         // Make a GET request!
         // TODO: add support for HTTP method?
-        self.get(&route)
+        self.get_from_endpoint(&route)
     }
   };
 }

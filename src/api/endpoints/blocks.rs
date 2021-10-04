@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     stream::{FuturesOrdered, Stream},
+    url::Url,
     *,
 };
 
@@ -17,7 +18,8 @@ type PinnedListerFuture<'api> = Pin<Box<ListerFuture<'api>>>;
 pub struct BlocksPreviousLister<'api> {
     inner: FuturesOrdered<PinnedListerFuture<'api>>,
     api: &'api BlockFrostApi,
-    // url_suffix: String,
+    endpoint: String,
+    current_page: u64,
 }
 
 impl<'api> Stream for BlocksPreviousLister<'api> {
@@ -27,8 +29,17 @@ impl<'api> Stream for BlocksPreviousLister<'api> {
         let item = Pin::new(&mut self.inner).poll_next(context);
 
         if let Poll::Ready(Some(_)) = &item {
-            let future = self.api.blocks_previous("6316012");
+            // Making the next request
+            let settings = self.api.settings();
+            let endpoint = &self.endpoint;
+            let page = Some(self.current_page);
+
+            let Url(url) = Url::from_endpoint_with_page(settings, endpoint, page);
+            let future = self.api.get_from_url(url);
             self.inner.push(Box::pin(future));
+
+            // Increment page for next futures
+            self.current_page += 1;
         }
 
         item
@@ -37,11 +48,11 @@ impl<'api> Stream for BlocksPreviousLister<'api> {
 
 impl BlockFrostApi {
     pub fn blocks_previous_all<'api>(&'api self, hash_or_number: &str) -> BlocksPreviousLister<'api> {
-        let mut inner: FuturesOrdered<PinnedListerFuture> = FuturesOrdered::new();
-        // let url_suffix = format!("/blocks/{hash_or_number}/next", hash_or_number = hash_or_number);
-        let future = self.blocks_previous(hash_or_number);
-        inner.push(Box::pin(future));
-        BlocksPreviousLister { inner, api: self /*, url_suffix*/ }
+        let inner = FuturesOrdered::<PinnedListerFuture>::new();
+        let endpoint = format!("/blocks/{hash_or_number}/next", hash_or_number = hash_or_number);
+        let api = self;
+        let current_page = api.settings().query_parameters().page.unwrap_or(1);
+        BlocksPreviousLister { inner, endpoint, api, current_page }
     }
 }
 
