@@ -2,10 +2,10 @@ use blockfrost::{env, BlockFrostApi, Settings};
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
     let project_id = env::load_project_id()?.expect("BLOCKFROST_PROJECT_ID not found.");
-    let settings = Settings::new(project_id).configure(|query| {
+    let settings = Settings::new().configure(|query| {
         query.set_count(3);
     });
-    let api = BlockFrostApi::new(settings);
+    let api = BlockFrostApi::new(project_id, settings);
 
     Ok(api)
 }

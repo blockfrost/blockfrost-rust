@@ -5,12 +5,12 @@ use blockfrost::{env, stream::*, BlockFrostApi, Settings};
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
     let project_id = env::load_project_id()?.expect("BLOCKFROST_PROJECT_ID not found.");
-    let settings = Settings::new(project_id).configure(|query| {
+    let settings = Settings::new().configure(|query| {
         // Show 2 elements per page to make the output cleaner, as this is just an usage example
         query.set_count(2);
     });
 
-    let api = BlockFrostApi::new(settings);
+    let api = BlockFrostApi::new(project_id, settings);
     Ok(api)
 }
 

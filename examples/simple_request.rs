@@ -2,8 +2,8 @@ use blockfrost::{env, BlockFrostApi, Settings};
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
     let project_id = env::load_project_id()?.expect("BLOCKFROST_PROJECT_ID not found.");
-    let settings = Settings::new(project_id);
-    let api = BlockFrostApi::new(settings);
+    let settings = Settings::new();
+    let api = BlockFrostApi::new(project_id, settings);
 
     Ok(api)
 }

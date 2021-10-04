@@ -4,18 +4,13 @@ use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK};
 
 #[derive(Debug, Clone)]
 pub struct Settings {
-    pub(crate) project_id: String,
     pub(crate) network_endpoint: String,
     pub(crate) query_parameters: QueryParameters,
 }
 
 impl Settings {
-    pub fn new(project_id: impl AsRef<str>) -> Self {
-        Self {
-            network_endpoint: CARDANO_MAINNET_NETWORK.to_string(),
-            project_id: project_id.as_ref().to_string(),
-            query_parameters: QueryParameters::default(),
-        }
+    pub fn new() -> Self {
+        Self { network_endpoint: CARDANO_MAINNET_NETWORK.to_string(), query_parameters: QueryParameters::default() }
     }
 
     pub fn use_mainnet(mut self) -> Self {

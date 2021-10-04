@@ -1,9 +1,12 @@
-pub(crate) mod endpoints;
+pub(super) mod endpoints; // Will be reexported
 mod settings;
 
 use std::future::Future;
 
-use reqwest::{header::HeaderMap, Client};
+use reqwest::{
+    header::{HeaderMap, HeaderValue},
+    Client,
+};
 use serde_json::from_str as serde_from_str;
 
 use crate::error::process_error_response;
@@ -19,15 +22,28 @@ pub struct BlockFrostApi {
     client: reqwest::Client,
 }
 
-// Public interface
 impl BlockFrostApi {
-    pub fn new(settings: Settings) -> Self {
+    /// Create a [`BlockFrostApi`] with custom settings.
+    ///
+    /// # Panics
+    ///
+    /// This function might panic if `project_id` could not be converted into a [`HeaderValue`] with
+    /// the function [`HeaderValue::from_str`].
+    ///
+    /// [`HeaderValue`]: (reqwest::header::HeaderValue)
+    /// [`HeaderValue::from_str`]: (reqwest::header::HeaderValue::from_str)
+    pub fn new(project_id: impl AsRef<str>, settings: Settings) -> Self {
         let mut headers = HeaderMap::new();
 
-        let project_id = settings.project_id.parse().unwrap();
+        let project_id = project_id.as_ref();
+        let mut project_id = HeaderValue::from_str(project_id)
+            .unwrap_or_else(|_| panic!("Could not parse given project_id '{}' into HeaderValue", project_id));
+        project_id.set_sensitive(true);
+
+        let user_agent = HeaderValue::from_static(USER_AGENT);
 
         headers.insert("project_id", project_id);
-        headers.insert("User-Agent", USER_AGENT.parse().unwrap());
+        headers.insert("User-Agent", user_agent);
 
         let client = Client::builder().default_headers(headers).build().unwrap();
         Self { settings, client }
