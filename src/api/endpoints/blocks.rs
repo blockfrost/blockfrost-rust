@@ -4,7 +4,8 @@ use crate::*;
 
 impl BlockFrostApi {
     pub fn blocks_previous_all<'api>(&'api self, hash_or_number: &str) -> Lister<'api, Vec<Block>> {
-        let endpoint = format!("/blocks/{hash_or_number}/next", hash_or_number = hash_or_number);
+        let endpoint =
+            format!("/blocks/{hash_or_number}/previous", hash_or_number = hash_or_number);
         Lister::list_from_endpoint(self, endpoint)
     }
 }
