@@ -33,19 +33,9 @@ impl BlockFrostApi {
     /// [`HeaderValue`]: (reqwest::header::HeaderValue)
     /// [`HeaderValue::from_str`]: (reqwest::header::HeaderValue::from_str)
     pub fn new(project_id: impl AsRef<str>, settings: Settings) -> Self {
-        let mut headers = HeaderMap::new();
+        let header_map = build_header_map(project_id.as_ref());
+        let client = Client::builder().default_headers(header_map).build().unwrap();
 
-        let project_id = project_id.as_ref();
-        let mut project_id = HeaderValue::from_str(project_id)
-            .unwrap_or_else(|_| panic!("Could not parse given project_id '{}' into HeaderValue", project_id));
-        project_id.set_sensitive(true);
-
-        let user_agent = HeaderValue::from_static(USER_AGENT);
-
-        headers.insert("project_id", project_id);
-        headers.insert("User-Agent", user_agent);
-
-        let client = Client::builder().default_headers(headers).build().unwrap();
         Self { settings, client }
     }
 
@@ -85,4 +75,19 @@ impl BlockFrostApi {
             Ok(serde_from_str::<T>(&text)?)
         }
     }
+}
+
+fn build_header_map(project_id: &str) -> HeaderMap {
+    let mut header_map = HeaderMap::new();
+
+    let project_id = project_id.as_ref();
+    let mut project_id = HeaderValue::from_str(project_id)
+        .unwrap_or_else(|_| panic!("Could not parse given project_id '{}' into HeaderValue", project_id));
+    project_id.set_sensitive(true);
+
+    let user_agent = HeaderValue::from_static(USER_AGENT);
+
+    header_map.insert("project_id", project_id);
+    header_map.insert("User-Agent", user_agent);
+    header_map
 }
