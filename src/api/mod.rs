@@ -83,7 +83,6 @@ impl BlockFrostApi {
 fn build_header_map(project_id: &str) -> HeaderMap {
     let mut header_map = HeaderMap::new();
 
-    let project_id = project_id.as_ref();
     let mut project_id = HeaderValue::from_str(project_id).unwrap_or_else(|_| {
         panic!("Could not parse given project_id '{}' into HeaderValue", project_id)
     });

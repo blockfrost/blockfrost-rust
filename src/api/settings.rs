@@ -107,10 +107,22 @@ impl QueryParameters {
     }
 }
 
+impl Default for Settings {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[derive(Debug, Clone)]
 pub enum QueryOrder {
     Ascending,
     Descending,
+}
+
+impl Default for QueryOrder {
+    fn default() -> Self {
+        Self::Ascending
+    }
 }
 
 impl fmt::Display for QueryOrder {
