@@ -57,7 +57,11 @@ impl fmt::Display for ResponseError {
 
 impl fmt::Display for DotEnvError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "dotenv err: parse error at line {} of file '{:#?}': {}.", self.line_number, self.path, self.reason)
+        write!(
+            f,
+            "dotenv err: parse error at line {} of file '{:#?}': {}.",
+            self.line_number, self.path, self.reason
+        )
     }
 }
 
@@ -117,10 +121,12 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode) -> Err
         Ok(http_error) => Error::Response(http_error),
         Err(_) => {
             // Try to format JSON body, or use unformatted body instead
-            let formatted_body_text = utils::try_formatting_json(text).unwrap_or_else(|_| text.to_owned());
+            let formatted_body_text =
+                utils::try_formatting_json(text).unwrap_or_else(|_| text.to_owned());
             let reason = "Could not parse error body to interpret the reason of the error".into();
 
-            let http_error = ResponseError { status_code, error: reason, message: formatted_body_text };
+            let http_error =
+                ResponseError { status_code, error: reason, message: formatted_body_text };
             Error::Response(http_error)
         }
     }

@@ -44,7 +44,10 @@ impl BlockFrostApi {
     }
 
     // Url endpoint example: "/blocks"
-    fn get_from_endpoint<T>(&self, url_endpoint: &str) -> impl Future<Output = crate::Result<T>> + Send
+    fn get_from_endpoint<T>(
+        &self,
+        url_endpoint: &str,
+    ) -> impl Future<Output = crate::Result<T>> + Send
     where
         T: serde::de::DeserializeOwned,
     {
@@ -81,8 +84,9 @@ fn build_header_map(project_id: &str) -> HeaderMap {
     let mut header_map = HeaderMap::new();
 
     let project_id = project_id.as_ref();
-    let mut project_id = HeaderValue::from_str(project_id)
-        .unwrap_or_else(|_| panic!("Could not parse given project_id '{}' into HeaderValue", project_id));
+    let mut project_id = HeaderValue::from_str(project_id).unwrap_or_else(|_| {
+        panic!("Could not parse given project_id '{}' into HeaderValue", project_id)
+    });
     project_id.set_sensitive(true);
 
     let user_agent = HeaderValue::from_static(USER_AGENT);

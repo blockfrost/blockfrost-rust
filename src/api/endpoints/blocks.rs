@@ -47,7 +47,10 @@ impl<'api> Stream for BlocksPreviousLister<'api> {
 }
 
 impl BlockFrostApi {
-    pub fn blocks_previous_all<'api>(&'api self, hash_or_number: &str) -> BlocksPreviousLister<'api> {
+    pub fn blocks_previous_all<'api>(
+        &'api self,
+        hash_or_number: &str,
+    ) -> BlocksPreviousLister<'api> {
         let inner = FuturesOrdered::<PinnedListerFuture>::new();
         let endpoint = format!("/blocks/{hash_or_number}/next", hash_or_number = hash_or_number);
         let api = self;

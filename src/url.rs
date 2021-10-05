@@ -14,7 +14,11 @@ impl Url {
     // Enables us to overwrite/ignore the page argument in the api
     //
     // This is useful when using a lister that increments internally it's page value
-    pub fn from_endpoint_with_page(settings: &Settings, endpoint_url: &str, page: Option<u64>) -> Self {
+    pub fn from_endpoint_with_page(
+        settings: &Settings,
+        endpoint_url: &str,
+        page: Option<u64>,
+    ) -> Self {
         // Example:
         // url := "https://cardano-mainnet.blockfrost.io/api/v0" + "/blocks" + "?page=77&order=desc"
         let mut url = settings.network_endpoint.clone();

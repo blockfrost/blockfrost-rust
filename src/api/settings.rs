@@ -10,7 +10,10 @@ pub struct Settings {
 
 impl Settings {
     pub fn new() -> Self {
-        Self { network_endpoint: CARDANO_MAINNET_NETWORK.to_string(), query_parameters: QueryParameters::default() }
+        Self {
+            network_endpoint: CARDANO_MAINNET_NETWORK.to_string(),
+            query_parameters: QueryParameters::default(),
+        }
     }
 
     pub fn use_mainnet(mut self) -> Self {

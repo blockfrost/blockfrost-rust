@@ -1,4 +1,4 @@
-max_width = 120
+max_width = 100
 use_field_init_shorthand = true
 newline_style = "Unix"
 edition = "2018"

@@ -56,11 +56,19 @@ pub fn load_settings() -> crate::Result<EnvSettings> {
             let value = &value[1..];
 
             if key.is_empty() {
-                return Err(Error::DotEnv(DotEnvError { reason: "KEY is empty", path: dotenv_file, line_number }));
+                return Err(Error::DotEnv(DotEnvError {
+                    reason: "KEY is empty",
+                    path: dotenv_file,
+                    line_number,
+                }));
             }
 
             if value.is_empty() {
-                return Err(Error::DotEnv(DotEnvError { reason: "VALUE is empty", path: dotenv_file, line_number }));
+                return Err(Error::DotEnv(DotEnvError {
+                    reason: "VALUE is empty",
+                    path: dotenv_file,
+                    line_number,
+                }));
             }
 
             if key == "BLOCKFROST_NETWORK_ADDRESS" {
