@@ -12,18 +12,29 @@ use crate::{
     *,
 };
 
-type ListerFuture<'api> = dyn Future<Output = crate::Result<Vec<Block>>> + Send + 'api;
-type PinnedListerFuture<'api> = Pin<Box<ListerFuture<'api>>>;
+type ListerFutureInner<'api, T> = dyn Future<Output = crate::Result<T>> + Send + 'api;
+type ListerFuture<'api, T> = Pin<Box<ListerFutureInner<'api, T>>>;
 
-pub struct BlocksPreviousLister<'api> {
-    inner: FuturesOrdered<PinnedListerFuture<'api>>,
+pub struct Lister<'api, T> {
+    inner: FuturesOrdered<ListerFuture<'api, T>>,
     api: &'api BlockFrostApi,
     endpoint: String,
     current_page: u64,
 }
 
-impl<'api> Stream for BlocksPreviousLister<'api> {
-    type Item = crate::Result<Vec<Block>>;
+impl<T> Lister<'_, T> {
+    pub(crate) fn list_from_endpoint<'api>(
+        api: &'api BlockFrostApi,
+        endpoint: String,
+    ) -> Lister<'api, T> {
+        let inner = FuturesOrdered::<ListerFuture<T>>::new();
+        let current_page = api.settings().query_parameters().page.unwrap_or(1);
+        Lister { inner, endpoint, api, current_page }
+    }
+}
+
+impl<'api, T: 'api + for<'de> serde::Deserialize<'de>> Stream for Lister<'api, T> {
+    type Item = crate::Result<T>;
 
     fn poll_next(mut self: Pin<&mut Self>, context: &mut Context) -> Poll<Option<Self::Item>> {
         let item = Pin::new(&mut self.inner).poll_next(context);
@@ -47,15 +58,9 @@ impl<'api> Stream for BlocksPreviousLister<'api> {
 }
 
 impl BlockFrostApi {
-    pub fn blocks_previous_all<'api>(
-        &'api self,
-        hash_or_number: &str,
-    ) -> BlocksPreviousLister<'api> {
-        let inner = FuturesOrdered::<PinnedListerFuture>::new();
+    pub fn blocks_previous_all<'api>(&'api self, hash_or_number: &str) -> Lister<'api, Vec<Block>> {
         let endpoint = format!("/blocks/{hash_or_number}/next", hash_or_number = hash_or_number);
-        let api = self;
-        let current_page = api.settings().query_parameters().page.unwrap_or(1);
-        BlocksPreviousLister { inner, endpoint, api, current_page }
+        Lister::list_from_endpoint(self, endpoint)
     }
 }
 
