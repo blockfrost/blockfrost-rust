@@ -1,6 +1,9 @@
 pub(super) mod endpoints; // Will be reexported
 mod settings;
 
+/// Type for asynchronous and infinite pagination.
+pub mod lister;
+
 use std::future::Future;
 
 use reqwest::{

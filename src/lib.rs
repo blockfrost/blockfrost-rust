@@ -18,6 +18,7 @@ pub mod types;
 
 pub use api::*;
 pub use error::*;
+pub use lister::*;
 pub use types::*;
 
 /// Re-exporting stream functionality from external crates.
