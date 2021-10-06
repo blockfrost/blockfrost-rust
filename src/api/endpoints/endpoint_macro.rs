@@ -1,7 +1,7 @@
 /// A helpful macro for defining one specific endpoint returning a singular object or a single page
 macro_rules! def_endpoint {
   // Matches:
-  // - Any number of doc comments
+  // - A doc comment
   // - A function name
   // - Any number of parameters
   // - A route
