@@ -3,22 +3,10 @@ use serde::{Deserialize, Serialize};
 use crate::*;
 
 impl BlockFrostApi {
-    pub fn blocks_previous_all<'api>(&'api self, hash_or_number: &str) -> Lister<'api, Vec<Block>> {
-        let endpoint =
-            format!("/blocks/{hash_or_number}/previous", hash_or_number = hash_or_number);
-        Lister::list_from_endpoint(self, endpoint)
-    }
-}
-
-impl BlockFrostApi {
     endpoints! {
         /// Return the latest block available to the backends, also known as the tip of the blockchain.
         blocks_latest() -> Block => "/blocks/latest";
             ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1latest/get"),
-
-        /// Return the transactions within the latest block.
-        blocks_latest_txs() -> Vec<String> => "/blocks/latest/txs";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1latest~1txs/get"),
 
         /// Return the content of a requested block.
         blocks_by_id(hash_or_number: &str) -> Block => "/blocks/{hash_or_number}";
@@ -31,6 +19,11 @@ impl BlockFrostApi {
         /// Return the content of a requested block for a specific slot in an epoch.
         blocks_by_epoch_and_slot(epoch_number: Integer, slot_number: Integer) -> Block => "/blocks/epoch/{epoch_number}/slot/{slot_number}";
             ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1epoch~1{epoch_number}~1slot~1{slot_number}/get"),
+    }
+    paged_endpoints! {
+        /// Return the transactions within the latest block.
+        blocks_latest_txs() -> Vec<String> => "/blocks/latest/txs";
+            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1latest~1txs/get"),
 
         /// Return the list of blocks following a specific block.
         blocks_next(hash_or_number: &str) -> Vec<Block> => "/blocks/{hash_or_number}/next";

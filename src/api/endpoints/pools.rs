@@ -3,6 +3,15 @@ use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
     endpoints! {
+        /// Pool information.
+        pools_by_id(pool_id: &str) -> Pool => "/pools/{pool_id}";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}/get"),
+
+        /// Stake pool registration metadata.
+        pools_metadata(pool_id: &str) -> PoolMetadata => "/pools/{pool_id}/metadata";
+            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1metadata/get"),
+    }
+    paged_endpoints! {
         /// List of registered stake pools.
         pools() -> Vec<String> => "/pools";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools/get"),
@@ -15,17 +24,9 @@ impl BlockFrostApi {
         pools_retiring() -> Vec<RetiringPool> => "/pools/retired";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retiring/get"),
 
-        /// Pool information.
-        pools_by_id(pool_id: &str) -> Pool => "/pools/{pool_id}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}/get"),
-
         /// History of stake pool parameters over epochs.
         pools_history(pool_id: &str) -> Vec<PoolHistory> => "/pools/{pool_id}/history";
             ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1history/get"),
-
-        /// Stake pool registration metadata.
-        pools_metadata(pool_id: &str) -> PoolMetadata => "/pools/{pool_id}/metadata";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1metadata/get"),
 
         /// Relays of a stake pool.
         pools_relays(pool_id: &str) -> Vec<PoolRelay> => "/pools/{pool_id}/relays";

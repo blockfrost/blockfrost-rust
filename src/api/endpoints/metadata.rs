@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::*;
 
 impl BlockFrostApi {
-    endpoints! {
+    paged_endpoints! {
         /// List of all used transaction metadata labels.
         metadata_txs_labels() -> Vec<MetadataTxsLabel> => "/metadata/txs/labels";
             ("https://docs.blockfrost.io/#tag/Cardano-Metadata/paths/~1metadata~1txs~1labels/get"),

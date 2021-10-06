@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::*;
 
 impl BlockFrostApi {
-    endpoints! {
+    paged_endpoints! {
         /// Blockfrost usage metrics.
         ///
         /// History of your Blockfrost usage metrics in the past 30 days.
