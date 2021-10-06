@@ -16,6 +16,11 @@ impl BlockFrostApi {
         epochs_by_number(number: Integer) -> Epoch => "/epochs/{number}";
             ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}/get"),
 
+        /// Return the protocol parameters for the epoch specified
+        epochs_parameters(number: Integer) -> EpochParameters => "/epochs/{number}/parameters";
+            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1parameters/get"),
+    }
+    paged_endpoints! {
         /// Return the list of epochs following a specific epoch.
         epochs_next(number: Integer) -> Vec<Epoch> => "/epochs/{number}/next";
             ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1next/get"),
@@ -40,9 +45,6 @@ impl BlockFrostApi {
         epochs_blocks_by_pool(number: Integer, pool_id: &str) -> Vec<String> => "/epochs/{number}/blocks/{pool_id}";
             ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1blocks~1{pool_id}/get"),
 
-        /// Return the protocol parameters for the epoch specified
-        epochs_parameters(number: Integer) -> EpochParameters => "/epochs/{number}/parameters";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1parameters/get"),
     }
 }
 

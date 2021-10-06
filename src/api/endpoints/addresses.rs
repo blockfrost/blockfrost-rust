@@ -11,7 +11,8 @@ impl BlockFrostApi {
         /// Obtain details about an address.
         addresses_total(address: &str) -> AddressTotal => "/addresses/{address}/total";
             ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1total/get"),
-
+    }
+    paged_endpoints! {
         /// UTXOs of the address.
         addresses_utxos(address: &str) -> Vec<AddressUtxo> => "/addresses/{address}/utxos";
             ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1utxos/get"),

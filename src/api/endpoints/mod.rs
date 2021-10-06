@@ -1,3 +1,5 @@
+pub use paste::paste;
+
 #[macro_use]
 mod endpoint_macro;
 

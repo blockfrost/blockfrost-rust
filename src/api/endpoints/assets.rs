@@ -4,13 +4,14 @@ use crate::*;
 
 impl BlockFrostApi {
     endpoints! {
-        /// List of assets.
-        assets() -> Vec<Asset> => "/assets";
-            ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets/get"),
-
         /// Detailed information about a specific asset.
         assets_by_id(asset: &str) -> AssetDetails => "/assets/{asset}";
             ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets~1{asset}/get"),
+    }
+    paged_endpoints! {
+        /// List of assets.
+        assets() -> Vec<Asset> => "/assets";
+            ("https://docs.blockfrost.io/#tag/Cardano-Assets/paths/~1assets/get"),
 
         /// History of a specific asset.
         assets_history(asset: &str) -> Vec<AssetHistory> => "/assets/{asset}/history";

@@ -6,8 +6,10 @@ impl BlockFrostApi {
     endpoints! {
         /// Information about a specific stake account.
         accounts(stake_address: &str) -> Account => "/accounts/{stake_address}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}/get"),
+           ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}/get"),
+    }
 
+    paged_endpoints! {
         /// Reward history of a specific account.
         accounts_rewards(stake_address: &str) -> Vec<AccountReward> => "/accounts/{stake_address}/rewards";
             ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1rewards/get"),
