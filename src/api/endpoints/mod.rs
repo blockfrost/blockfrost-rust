@@ -1,4 +1,4 @@
-pub use paste::paste;
+pub(crate) use paste::paste;
 
 #[macro_use]
 mod endpoint_macro;
