@@ -12,6 +12,7 @@ mod health;
 mod ledger;
 mod metadata;
 mod metrics;
+mod network;
 mod pools;
 
 pub use accounts::*;
@@ -23,4 +24,5 @@ pub use health::*;
 pub use ledger::*;
 pub use metadata::*;
 pub use metrics::*;
+pub use network::*;
 pub use pools::*;

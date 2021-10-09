@@ -101,6 +101,9 @@ async fn main() -> blockfrost::Result<()> {
     let metadata_txs_by_label = api.metadata_txs_by_label(label).await;
     let metadata_txs_by_label_cbor = api.metadata_txs_by_label_cbor(label).await;
 
+    // Network
+    let network = api.network().await;
+
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
     println!("health_clock: {:#?}", health_clock);
@@ -157,6 +160,7 @@ async fn main() -> blockfrost::Result<()> {
     println!("metadata_txs_labels: {:#?}", metadata_txs_labels);
     println!("metadata_txs_by_label: {:#?}", metadata_txs_by_label);
     println!("metadata_txs_by_label_cbor: {:#?}", metadata_txs_by_label_cbor);
+    println!("network: {:#?}", network);
 
     Ok(())
 }
