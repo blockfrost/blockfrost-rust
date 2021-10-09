@@ -14,6 +14,7 @@ mod metadata;
 mod metrics;
 mod network;
 mod pools;
+mod scripts;
 
 pub use accounts::*;
 pub use addresses::*;
@@ -26,3 +27,4 @@ pub use metadata::*;
 pub use metrics::*;
 pub use network::*;
 pub use pools::*;
+pub use scripts::*;

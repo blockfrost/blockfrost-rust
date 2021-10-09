@@ -104,6 +104,12 @@ async fn main() -> blockfrost::Result<()> {
     // Network
     let network = api.network().await;
 
+    // Scripts
+    let script_hash = "e1457a0c47dfb7a2f6b8fbb059bdceab163c05d34f195b87b9f2b30e";
+    let scripts = api.scripts().await;
+    let scripts_by_id = api.scripts_by_id(script_hash).await;
+    let scripts_redeemers = api.scripts_redeemers(script_hash).await;
+
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
     println!("health_clock: {:#?}", health_clock);
@@ -161,6 +167,9 @@ async fn main() -> blockfrost::Result<()> {
     println!("metadata_txs_by_label: {:#?}", metadata_txs_by_label);
     println!("metadata_txs_by_label_cbor: {:#?}", metadata_txs_by_label_cbor);
     println!("network: {:#?}", network);
+    println!("scripts: {:#?}", scripts);
+    println!("scripts_by_id: {:#?}", scripts_by_id);
+    println!("scripts_redeemers: {:#?}", scripts_redeemers);
 
     Ok(())
 }
