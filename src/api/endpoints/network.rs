@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::*;
 
-impl crate::BlockFrostApi {
+impl BlockFrostApi {
     endpoints! {
         /// Return detailed network information.
         network() -> Network => "/network";

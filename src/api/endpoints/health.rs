@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::*;
 
-impl crate::BlockFrostApi {
+impl BlockFrostApi {
     endpoints! {
         /// Root endpoint, points end users to documentation.
         root() -> Root => "/";

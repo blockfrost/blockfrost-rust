@@ -1,5 +1,6 @@
-use crate::*;
 use serde::{Deserialize, Serialize};
+
+use crate::*;
 
 impl BlockFrostApi {
     endpoints! {

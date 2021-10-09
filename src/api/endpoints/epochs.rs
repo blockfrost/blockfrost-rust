@@ -130,7 +130,8 @@ pub struct EpochParameters {
     pub max_block_ex_steps: Option<String>,
     /// The maximum Val size.
     pub max_val_size: Option<String>,
-    /// The percentage of the transactions fee which must be provided as collateral when including non-native scripts.
+    /// The percentage of the transactions fee which must be provided as collateral when including
+    /// non-native scripts.
     pub collateral_percent: Option<Float>,
     /// The maximum number of collateral inputs allowed in a transaction.
     pub max_collateral_inputs: Option<Integer>,
