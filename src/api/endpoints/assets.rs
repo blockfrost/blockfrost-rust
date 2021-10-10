@@ -91,7 +91,7 @@ pub struct AssetHistory {
     /// Hash of the transaction containing the asset action.
     pub tx_hash: String,
     /// Action executed upon the asset policy.
-    pub action: String, // "minted" | "burned"
+    pub action: AssetHistoryActionType, // "minted" | "burned"
     /// Asset amount of the specific action.
     pub amount: String,
 }
