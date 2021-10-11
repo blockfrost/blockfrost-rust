@@ -14,7 +14,7 @@ impl BlockFrostApi {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Network {
     pub supply: Supply,
-    pub stake: Stake,
+    pub stake: NetworkStake,
 }
 
 /// Inner member of [`Network`].
@@ -32,7 +32,7 @@ pub struct Supply {
 
 /// Inner member of [`Network`].
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Stake {
+pub struct NetworkStake {
     /// Current live stake in Lovelaces.
     pub live: String,
     /// Current active stake in Lovelaces.

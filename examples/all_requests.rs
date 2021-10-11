@@ -110,6 +110,20 @@ async fn main() -> blockfrost::Result<()> {
     let scripts_by_id = api.scripts_by_id(script_hash).await;
     let scripts_redeemers = api.scripts_redeemers(script_hash).await;
 
+    // Transactions
+    let transaction_hash = "cb0e7b0cd0f0edbe5c6e260c369f5f0f0069cd41f501243ab67f1052040de28f";
+    let transaction_by_hash = api.transaction_by_hash(transaction_hash).await;
+    let transactions_utxos = api.transactions_utxos(transaction_hash).await;
+    let transactions_stakes = api.transactions_stakes(transaction_hash).await;
+    let transactions_delegations = api.transactions_delegations(transaction_hash).await;
+    let transactions_withdrawals = api.transactions_withdrawals(transaction_hash).await;
+    let transactions_mirs = api.transactions_mirs(transaction_hash).await;
+    let transactions_pool_updates = api.transactions_pool_updates(transaction_hash).await;
+    let transactions_pool_retires = api.transactions_pool_retires(transaction_hash).await;
+    let transactions_metadata = api.transactions_metadata(transaction_hash).await;
+    let transactions_metadata_cbor = api.transactions_metadata_cbor(transaction_hash).await;
+    let transactions_redeemers = api.transactions_redeemers(transaction_hash).await;
+
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
     println!("health_clock: {:#?}", health_clock);
@@ -170,6 +184,17 @@ async fn main() -> blockfrost::Result<()> {
     println!("scripts: {:#?}", scripts);
     println!("scripts_by_id: {:#?}", scripts_by_id);
     println!("scripts_redeemers: {:#?}", scripts_redeemers);
+    println!("transaction_by_hash: {:#?}", transaction_by_hash);
+    println!("transactions_utxos: {:#?}", transactions_utxos);
+    println!("transactions_stakes: {:#?}", transactions_stakes);
+    println!("transactions_delegations: {:#?}", transactions_delegations);
+    println!("transactions_withdrawals: {:#?}", transactions_withdrawals);
+    println!("transactions_mirs: {:#?}", transactions_mirs);
+    println!("transactions_pool_updates: {:#?}", transactions_pool_updates);
+    println!("transactions_pool_retires: {:#?}", transactions_pool_retires);
+    println!("transactions_metadata: {:#?}", transactions_metadata);
+    println!("transactions_metadata_cbor: {:#?}", transactions_metadata_cbor);
+    println!("transactions_redeemers: {:#?}", transactions_redeemers);
 
     Ok(())
 }
