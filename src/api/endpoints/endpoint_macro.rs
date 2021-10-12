@@ -18,7 +18,6 @@ macro_rules! def_endpoint {
         // A cool property here is that the parameters defined in the macro will get checked against the route provided
         let route = format!($route $(, $param = $param)*);
         // Make a GET request!
-        // TODO: add support for HTTP method?
         self.get_from_endpoint(&route)
     }
   };

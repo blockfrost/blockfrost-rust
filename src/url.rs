@@ -19,11 +19,16 @@ impl Url {
         endpoint_url: &str,
         page: Option<u64>,
     ) -> Self {
-        // Example:
         // url := "https://cardano-mainnet.blockfrost.io/api/v0" + "/blocks" + "?page=77&order=desc"
-        let mut url = settings.network_endpoint.clone();
-        url += endpoint_url;
-        url += &create_query_parameters_suffix(settings.query_parameters(), page);
+        let url = settings.network_endpoint.clone()
+            + endpoint_url
+            + &create_query_parameters_suffix(settings.query_parameters(), page);
+        Self(url)
+    }
+
+    pub fn from_endpoint_without_parameters(settings: &Settings, endpoint_url: &str) -> Self {
+        // url := "https://cardano-mainnet.blockfrost.io/api/v0" + "/blocks"
+        let url = settings.network_endpoint.clone() + endpoint_url;
         Self(url)
     }
 }

@@ -1,8 +1,38 @@
+use reqwest::{header::HeaderValue, Body, Method};
 use serde::{Deserialize, Serialize};
 
-use crate::*;
+use crate::{url::Url, *};
 
 impl BlockFrostApi {
+    /// Obtain information about Move Instantaneous Rewards (MIRs) of a specific transaction.
+    ///
+    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/mirs`].
+    ///
+    /// [`/accounts/{stake_address}/mirs`]: https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1tx~1submit/post
+    pub async fn transactions_submit(&self, transaction_data: Vec<u8>) -> crate::Result<String> {
+        let body = Body::from(transaction_data);
+        let content_type_header = ("Content-Type", HeaderValue::from_static("application/cbor"));
+
+        let endpoint_suffix = "/tx/submit";
+        let Url(url) = Url::from_endpoint_without_parameters(&self.settings, endpoint_suffix);
+
+        let response = self
+            .client
+            .request(Method::POST, url)
+            .header(content_type_header.0, content_type_header.1)
+            .body(body)
+            .send()
+            .await?;
+
+        let status_code = response.status();
+        let text = response.text().await?;
+
+        if !status_code.is_success() {
+            return Err(process_error_response(&text, status_code));
+        }
+        Ok(serde_json::from_str(&text)?)
+    }
+
     endpoints! {
         /// Return content of the requested transaction.
         transaction_by_hash(hash: &str) -> Transaction => "/txs/{hash}";

@@ -10,7 +10,6 @@ use reqwest::{
     header::{HeaderMap, HeaderValue},
     Client,
 };
-use serde_json::from_str as serde_from_str;
 
 use crate::error::process_error_response;
 use crate::url::Url;
@@ -74,7 +73,7 @@ impl BlockFrostApi {
                 return Err(process_error_response(&text, status_code));
             }
             // This gon have to be removed
-            Ok(serde_from_str::<T>(&text)?)
+            Ok(serde_json::from_str::<T>(&text)?)
         }
     }
 }
@@ -86,7 +85,6 @@ fn build_header_map(project_id: &str) -> HeaderMap {
         panic!("Could not parse given project_id '{}' into HeaderValue", project_id)
     });
     project_id.set_sensitive(true);
-
     let user_agent = HeaderValue::from_static(USER_AGENT);
 
     header_map.insert("project_id", project_id);
