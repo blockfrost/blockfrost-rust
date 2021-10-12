@@ -21,7 +21,7 @@ pub const USER_AGENT: &str = concat!("blockfrost-rust/", env!("CARGO_PKG_VERSION
 
 #[derive(Debug, Clone)]
 pub struct BlockFrostApi {
-    settings: Settings,
+    pub settings: Settings,
     client: reqwest::Client,
 }
 
@@ -42,10 +42,6 @@ impl BlockFrostApi {
         Self { settings, client }
     }
 
-    pub fn settings(&self) -> &Settings {
-        &self.settings
-    }
-
     // Url endpoint example: "/blocks"
     fn get_from_endpoint<T>(
         &self,
@@ -54,7 +50,7 @@ impl BlockFrostApi {
     where
         T: serde::de::DeserializeOwned,
     {
-        let Url(url) = Url::from_endpoint(self.settings(), url_endpoint);
+        let Url(url) = Url::from_endpoint(&self.settings, url_endpoint);
         Self::get_from_url(self, url)
     }
 
