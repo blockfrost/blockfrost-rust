@@ -1,21 +1,27 @@
 # blockfrost-rust
 Rust SDK for Blockfrost.io
 
-Demo:
+You can find multiple usage examples in the [`examples folder`](./examples)
+
 ```rust
-use blockfrost::{BlockFrostApi, Settings};
+use blockfrost::{env, BlockFrostApi, Settings};
+
+fn build_api() -> blockfrost::Result<BlockFrostApi> {
+    let project_id = env::load_project_id()?.expect("BLOCKFROST_PROJECT_ID not found.");
+    let settings = Settings::new();
+    let api = BlockFrostApi::new(project_id, settings);
+
+    Ok(api)
+}
 
 #[tokio::main]
-async fn main() {
-    let project_id = "YOUR_KEY_HERE"; // Generate your key at https://blockfrost.io/
-    let api = BlockFrostApi::new(project_id, Settings::default());
+async fn main() -> blockfrost::Result<()> {
+    let api = build_api()?;
 
-    let latest_block = api.blocks_latest().await.unwrap();
-    let latest_epoch = api.epochs_latest().await.unwrap();
-    let health = api.health().await.unwrap();
+    // A request example
+    let health = api.health().await?;
+    println!("{:#?}", health);
 
-    println!("latest_block: {:?}.", latest_block);
-    println!("latest_epoch: {:?}.", latest_epoch);
-    println!("health: {:?}.", health);
+    Ok(())
 }
 ```
