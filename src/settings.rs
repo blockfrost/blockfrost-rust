@@ -2,6 +2,7 @@ use std::fmt;
 
 use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK};
 
+/// Configuration of parameters for the requests.
 #[derive(Debug, Clone)]
 pub struct BlockFrostSettings {
     pub(crate) network_address: String,
@@ -9,6 +10,12 @@ pub struct BlockFrostSettings {
 }
 
 impl BlockFrostSettings {
+    /// Create [`BlockFrostSettings`] with the default settings.
+    ///
+    /// Defaults are:
+    ///
+    /// - Network: [`CARDANO_MAINNET_NETWORK`].
+    /// - Query parameters: empty.
     pub fn new() -> Self {
         Self {
             network_address: CARDANO_MAINNET_NETWORK.to_string(),

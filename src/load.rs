@@ -1,6 +1,7 @@
-/// Loader function to help configuring your API usage.
-///
-/// See [`configurations_from_env`].
+//! Utils for loading common settings from config file and environment variables.
+//!
+//! See [`configurations_from_env`].
+
 use std::{
     env, fs,
     path::{Path, PathBuf},

@@ -11,11 +11,8 @@ mod settings;
 mod url;
 mod utils;
 
-/// Custom errors from this crate.
 pub mod error;
-/// Utils for loading common settings from config file and environment variables.
 pub mod load;
-/// Definitions for types returned in requests.
 pub mod types;
 
 pub use api::*;
@@ -27,7 +24,7 @@ pub use types::*;
 
 /// Re-exporting stream functionality from external crates.
 ///
-/// These traits are necessary to work with asynchronous iterators.
+/// The traits are useful to iterate on streams.
 pub mod stream {
     pub use futures::stream::{FuturesOrdered, Stream, StreamExt};
 }

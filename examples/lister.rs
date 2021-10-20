@@ -1,6 +1,7 @@
 //! Example using a concurrent lister for listing 20 pages
+//!
+//! You shall use `StreamExt` to iterate on a `Lister` (implements `Stream`).
 
-// NOTE: StreamExt helps treating listers like iterators (actually, they are Streams)
 use blockfrost::{load, stream::StreamExt, BlockFrostApi, BlockFrostSettings};
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {

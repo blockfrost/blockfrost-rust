@@ -1,5 +1,6 @@
-pub(super) mod endpoints; // Will be reexported
-/// Type for asynchronous and infinite pagination.
+// Will be reexported by the parent module.
+pub(super) mod endpoints;
+
 pub mod lister;
 
 use std::future::Future;
@@ -8,6 +9,7 @@ use reqwest::Client;
 
 use crate::{error::process_error_response, url::Url, utils::build_header_map, BlockFrostSettings};
 
+/// Provides methods for making requests to the [`BlockFrost API`](https://docs.blockfrost.io).
 #[derive(Debug, Clone)]
 pub struct BlockFrostApi {
     pub settings: BlockFrostSettings,
@@ -15,7 +17,7 @@ pub struct BlockFrostApi {
 }
 
 impl BlockFrostApi {
-    /// Create a [`BlockFrostApi`] with custom settings.
+    /// Create a [`BlockFrostApi`] with [`custom settings`](BlockFrostSettings).
     ///
     /// # Panics
     ///

@@ -1,3 +1,4 @@
+//! Custom errors from this crate.
 use std::{error, fmt, io};
 
 use reqwest::StatusCode;

@@ -1,3 +1,4 @@
+//! Definitions for types returned in requests.
 use serde::{Deserialize, Serialize};
 
 // Use this module as an interface to export all types declared inside of endpoints/

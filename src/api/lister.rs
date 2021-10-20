@@ -1,3 +1,7 @@
+//! Asynchronous and infinite lister.
+//!
+//! See [`Lister`].
+
 use std::{
     future::Future,
     pin::Pin,
@@ -13,6 +17,12 @@ use crate::{
 type ListerFutureInner<'api, T> = dyn Future<Output = crate::Result<T>> + Send + 'api;
 type ListerFuture<'api, T> = Pin<Box<ListerFutureInner<'api, T>>>;
 
+/// Infinite stream for paginated results.
+///
+/// Implements [`Stream`] from [`futures`], it's highly recommended to be used with
+/// [`blockfrost::stream`](crate::stream).
+///
+/// To fully use the potential of this crate
 pub struct Lister<'api, T> {
     inner: FuturesOrdered<ListerFuture<'api, T>>,
     api: &'api BlockFrostApi,
