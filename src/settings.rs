@@ -4,34 +4,34 @@ use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK};
 
 #[derive(Debug, Clone)]
 pub struct BlockFrostSettings {
-    pub(crate) network_endpoint: String,
+    pub(crate) network_address: String,
     pub(crate) query_parameters: QueryParameters,
 }
 
 impl BlockFrostSettings {
     pub fn new() -> Self {
         Self {
-            network_endpoint: CARDANO_MAINNET_NETWORK.to_string(),
+            network_address: CARDANO_MAINNET_NETWORK.to_string(),
             query_parameters: QueryParameters::default(),
         }
     }
 
     pub fn use_mainnet(mut self) -> Self {
-        self.network_endpoint = CARDANO_MAINNET_NETWORK.to_string();
+        self.network_address = CARDANO_MAINNET_NETWORK.to_string();
         self
     }
 
     pub fn use_testnet(mut self) -> Self {
-        self.network_endpoint = CARDANO_TESTNET_NETWORK.to_string();
+        self.network_address = CARDANO_TESTNET_NETWORK.to_string();
         self
     }
 
     pub fn set_network(&mut self, network: impl AsRef<str>) {
-        self.network_endpoint = network.as_ref().to_string();
+        self.network_address = network.as_ref().to_string();
     }
 
     pub fn current_network(&self) -> &str {
-        &self.network_endpoint
+        &self.network_address
     }
 
     pub fn query_parameters(&self) -> &QueryParameters {
@@ -44,6 +44,21 @@ impl BlockFrostSettings {
     {
         function(&mut self.query_parameters);
         self
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct IpfsSettings {
+    pub(crate) network_address: String,
+    pub(crate) _query_parameters: QueryParameters,
+}
+
+impl IpfsSettings {
+    pub fn new() -> Self {
+        Self {
+            network_address: "https://ipfs.blockfrost.io/api/v0".to_string(),
+            _query_parameters: QueryParameters::default(),
+        }
     }
 }
 
@@ -108,6 +123,12 @@ impl QueryParameters {
 }
 
 impl Default for BlockFrostSettings {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl Default for IpfsSettings {
     fn default() -> Self {
         Self::new()
     }

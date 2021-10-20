@@ -1,14 +1,12 @@
 pub(super) mod endpoints; // Will be reexported
 /// Type for asynchronous and infinite pagination.
 pub mod lister;
-mod settings;
 
 use std::future::Future;
 
 use reqwest::Client;
 
-use crate::{error::process_error_response, url::Url, utils::build_header_map};
-pub use settings::*;
+use crate::{error::process_error_response, url::Url, utils::build_header_map, BlockFrostSettings};
 
 #[derive(Debug, Clone)]
 pub struct BlockFrostApi {

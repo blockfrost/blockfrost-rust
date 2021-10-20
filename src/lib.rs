@@ -7,6 +7,7 @@ mod macros;
 
 mod api;
 mod ipfs;
+mod settings;
 mod url;
 mod utils;
 
@@ -21,6 +22,7 @@ pub use api::*;
 pub use error::*;
 pub use ipfs::*;
 pub use lister::*;
+pub use settings::*;
 pub use types::*;
 
 /// Re-exporting stream functionality from external crates.

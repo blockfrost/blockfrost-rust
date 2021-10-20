@@ -20,7 +20,7 @@ impl Url {
         page: Option<u64>,
     ) -> Self {
         // url := "https://cardano-mainnet.blockfrost.io/api/v0" + "/blocks" + "?page=77&order=desc"
-        let url = settings.network_endpoint.clone()
+        let url = settings.network_address.clone()
             + endpoint_url
             + &create_query_parameters_suffix(settings.query_parameters(), page);
         Self(url)
@@ -31,7 +31,7 @@ impl Url {
         endpoint_url: &str,
     ) -> Self {
         // url := "https://cardano-mainnet.blockfrost.io/api/v0" + "/blocks"
-        let url = settings.network_endpoint.clone() + endpoint_url;
+        let url = settings.network_address.clone() + endpoint_url;
         Self(url)
     }
 }
