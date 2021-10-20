@@ -1,4 +1,4 @@
-use std::{fmt, ops::FnOnce};
+use std::fmt;
 
 use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK};
 

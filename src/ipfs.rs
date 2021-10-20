@@ -9,13 +9,17 @@ use crate::{error::process_error_response, utils::build_header_map};
 #[derive(Debug, Clone)]
 pub struct Ipfs {
     client: reqwest::Client,
+    pub settings: IpfsSettings,
 }
 
+#[derive(Debug, Clone, Default)]
+pub struct IpfsSettings;
+
 impl Ipfs {
-    pub fn new(project_id: impl AsRef<str>) -> Self {
+    pub fn new(project_id: impl AsRef<str>, settings: IpfsSettings) -> Self {
         let header_map = build_header_map(project_id.as_ref());
         let client = Client::builder().default_headers(header_map).build().unwrap();
-        Self { client }
+        Self { client, settings }
     }
 
     /// You need to `/ipfs/pin/add` an object to avoid it being garbage collected.
