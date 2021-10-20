@@ -3,12 +3,12 @@ use std::{fmt, ops::FnOnce};
 use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK};
 
 #[derive(Debug, Clone)]
-pub struct Settings {
+pub struct BlockFrostSettings {
     pub(crate) network_endpoint: String,
     pub(crate) query_parameters: QueryParameters,
 }
 
-impl Settings {
+impl BlockFrostSettings {
     pub fn new() -> Self {
         Self {
             network_endpoint: CARDANO_MAINNET_NETWORK.to_string(),
@@ -107,7 +107,7 @@ impl QueryParameters {
     }
 }
 
-impl Default for Settings {
+impl Default for BlockFrostSettings {
     fn default() -> Self {
         Self::new()
     }

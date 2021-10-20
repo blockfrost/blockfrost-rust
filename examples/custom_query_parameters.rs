@@ -1,8 +1,8 @@
-use blockfrost::{env, BlockFrostApi, QueryOrder, Settings};
+use blockfrost::{env, BlockFrostApi, BlockFrostSettings, QueryOrder};
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
     let project_id = env::load_project_id()?.expect("BLOCKFROST_PROJECT_ID not found.");
-    let settings = Settings::new().configure(|query| {
+    let settings = BlockFrostSettings::new().configure(|query| {
         query.set_count(5).set_page(10).set_order(QueryOrder::Descending);
     });
     let api = BlockFrostApi::new(project_id, settings);

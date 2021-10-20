@@ -1,11 +1,11 @@
 //! Example using a concurrent lister for listing 20 pages
 
 // NOTE: StreamExt helps treating listers like iterators (actually, they are Streams)
-use blockfrost::{env, stream::StreamExt, BlockFrostApi, Settings};
+use blockfrost::{env, stream::StreamExt, BlockFrostApi, BlockFrostSettings};
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
     let project_id = env::load_project_id()?.expect("BLOCKFROST_PROJECT_ID not found.");
-    let settings = Settings::new().configure(|query| {
+    let settings = BlockFrostSettings::new().configure(|query| {
         // Show 3 elements per page (just for this example)
         query.set_count(3);
     });

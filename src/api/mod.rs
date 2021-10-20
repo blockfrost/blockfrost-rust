@@ -12,7 +12,7 @@ pub use settings::*;
 
 #[derive(Debug, Clone)]
 pub struct BlockFrostApi {
-    pub settings: Settings,
+    pub settings: BlockFrostSettings,
     client: reqwest::Client,
 }
 
@@ -26,7 +26,7 @@ impl BlockFrostApi {
     ///
     /// [`HeaderValue`]: (reqwest::header::HeaderValue)
     /// [`HeaderValue::from_str`]: (reqwest::header::HeaderValue::from_str)
-    pub fn new(project_id: impl AsRef<str>, settings: Settings) -> Self {
+    pub fn new(project_id: impl AsRef<str>, settings: BlockFrostSettings) -> Self {
         let header_map = build_header_map(project_id.as_ref());
         let client = Client::builder().default_headers(header_map).build().unwrap();
 

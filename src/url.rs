@@ -1,12 +1,12 @@
 //! Internal crate type to help building the URLs for the requests.
 
-use crate::{QueryParameters, Settings};
+use crate::{BlockFrostSettings, QueryParameters};
 
 #[derive(Clone, Debug)]
 pub(crate) struct Url(pub String);
 
 impl Url {
-    pub fn from_endpoint(settings: &Settings, endpoint_url: &str) -> Self {
+    pub fn from_endpoint(settings: &BlockFrostSettings, endpoint_url: &str) -> Self {
         let page = settings.query_parameters().page;
         Self::from_endpoint_with_page(settings, endpoint_url, page)
     }
@@ -15,7 +15,7 @@ impl Url {
     //
     // This is useful when using a lister that increments internally it's page value
     pub fn from_endpoint_with_page(
-        settings: &Settings,
+        settings: &BlockFrostSettings,
         endpoint_url: &str,
         page: Option<u64>,
     ) -> Self {
@@ -26,7 +26,10 @@ impl Url {
         Self(url)
     }
 
-    pub fn from_endpoint_without_parameters(settings: &Settings, endpoint_url: &str) -> Self {
+    pub fn from_endpoint_without_parameters(
+        settings: &BlockFrostSettings,
+        endpoint_url: &str,
+    ) -> Self {
         // url := "https://cardano-mainnet.blockfrost.io/api/v0" + "/blocks"
         let url = settings.network_endpoint.clone() + endpoint_url;
         Self(url)
