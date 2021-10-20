@@ -58,9 +58,6 @@ impl BlockFrostApi {
             let status_code = response.status();
             let text = response.text().await?;
 
-            // let debug_info = format!("{}: {}", url, text);
-            // eprintln!("debug_info: {}", debug_info);
-
             if !status_code.is_success() {
                 return Err(process_error_response(&text, status_code));
             }
