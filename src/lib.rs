@@ -6,6 +6,7 @@
 mod macros;
 
 mod api;
+mod ipfs;
 mod url;
 mod utils;
 
@@ -18,6 +19,7 @@ pub mod types;
 
 pub use api::*;
 pub use error::*;
+pub use ipfs::*;
 pub use lister::*;
 pub use types::*;
 
@@ -32,3 +34,5 @@ pub mod stream {
 pub const CARDANO_MAINNET_NETWORK: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
 /// The URL of the BlockFrost API for the Cardano testnet.
 pub const CARDANO_TESTNET_NETWORK: &str = "https://cardano-testnet.blockfrost.io/api/v0";
+/// SDK version being used.
+pub const USER_AGENT: &str = concat!("blockfrost-rust/", env!("CARGO_PKG_VERSION"));

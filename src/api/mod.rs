@@ -1,22 +1,14 @@
 pub(super) mod endpoints; // Will be reexported
-mod settings;
-
 /// Type for asynchronous and infinite pagination.
 pub mod lister;
+mod settings;
 
 use std::future::Future;
 
-use reqwest::{
-    header::{HeaderMap, HeaderValue},
-    Client,
-};
+use reqwest::Client;
 
-use crate::error::process_error_response;
-use crate::url::Url;
+use crate::{error::process_error_response, url::Url, utils::build_header_map};
 pub use settings::*;
-
-/// SDK version being used.
-pub const USER_AGENT: &str = concat!("blockfrost-rust/", env!("CARGO_PKG_VERSION"));
 
 #[derive(Debug, Clone)]
 pub struct BlockFrostApi {
@@ -76,18 +68,4 @@ impl BlockFrostApi {
             Ok(serde_json::from_str::<T>(&text)?)
         }
     }
-}
-
-fn build_header_map(project_id: &str) -> HeaderMap {
-    let mut header_map = HeaderMap::new();
-
-    let mut project_id = HeaderValue::from_str(project_id).unwrap_or_else(|_| {
-        panic!("Could not parse given project_id '{}' into HeaderValue", project_id)
-    });
-    project_id.set_sensitive(true);
-    let user_agent = HeaderValue::from_static(USER_AGENT);
-
-    header_map.insert("project_id", project_id);
-    header_map.insert("User-Agent", user_agent);
-    header_map
 }
