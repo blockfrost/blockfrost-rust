@@ -1,4 +1,3 @@
-use std::path::PathBuf;
 use std::{error, fmt, io};
 
 use reqwest::StatusCode;
@@ -8,30 +7,19 @@ use serde::{Deserialize, Serialize};
 use io::Error as IoError;
 use reqwest::Error as ReqwestError;
 use serde_json::Error as SerdeJsonError;
+use toml::de::Error as SerdeTomlError;
 
 use crate::utils;
+
+pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug)]
 pub enum Error {
     Reqwest(ReqwestError),
     Json(SerdeJsonError),
     Io(IoError),
-    DotEnv(DotEnvError),
+    Toml(SerdeTomlError),
     Response(ResponseError),
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ResponseError {
-    status_code: u16,
-    error: String,
-    message: String,
-}
-
-#[derive(Debug, Clone)]
-pub struct DotEnvError {
-    pub reason: &'static str,
-    pub path: PathBuf,
-    pub line_number: usize,
 }
 
 impl fmt::Display for Error {
@@ -40,10 +28,29 @@ impl fmt::Display for Error {
             Error::Reqwest(source) => write!(f, "http err: {}.", source),
             Error::Json(source) => write!(f, "json err: {}.", source),
             Error::Io(source) => write!(f, "io err: {}.", source),
-            Error::DotEnv(source) => source.fmt(f),
+            Error::Toml(source) => write!(f, "toml err: {}.", source),
             Error::Response(source) => source.fmt(f),
         }
     }
+}
+
+impl error::Error for Error {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        match self {
+            Error::Reqwest(source) => Some(source),
+            Error::Json(source) => Some(source),
+            Error::Io(source) => Some(source),
+            Error::Toml(source) => Some(source),
+            Error::Response(source) => Some(source),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ResponseError {
+    status_code: u16,
+    error: String,
+    message: String,
 }
 
 impl fmt::Display for ResponseError {
@@ -55,49 +62,35 @@ impl fmt::Display for ResponseError {
     }
 }
 
-impl fmt::Display for DotEnvError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "dotenv err: parse error at line {} of file '{:#?}': {}.",
-            self.line_number, self.path, self.reason
-        )
-    }
-}
-
-impl error::Error for Error {
-    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
-        Some(match self {
-            Error::Reqwest(source) => source,
-            Error::Json(source) => source,
-            Error::Io(source) => source,
-            Error::DotEnv(source) => source,
-            Error::Response(source) => source,
-        })
-    }
-}
-
 impl error::Error for ResponseError {}
 
-impl error::Error for DotEnvError {}
-
-pub type Result<T> = std::result::Result<T, Error>;
-
-impl From<reqwest::Error> for Error {
-    fn from(source: reqwest::Error) -> Self {
+impl From<ReqwestError> for Error {
+    fn from(source: ReqwestError) -> Self {
         Error::Reqwest(source)
     }
 }
 
-impl From<serde_json::Error> for Error {
-    fn from(source: serde_json::Error) -> Self {
+impl From<SerdeJsonError> for Error {
+    fn from(source: SerdeJsonError) -> Self {
         Error::Json(source)
     }
 }
 
-impl From<io::Error> for Error {
-    fn from(source: io::Error) -> Self {
+impl From<IoError> for Error {
+    fn from(source: IoError) -> Self {
         Error::Io(source)
+    }
+}
+
+impl From<SerdeTomlError> for Error {
+    fn from(source: SerdeTomlError) -> Self {
+        Error::Toml(source)
+    }
+}
+
+impl From<ResponseError> for Error {
+    fn from(source: ResponseError) -> Self {
+        Error::Response(source)
     }
 }
 

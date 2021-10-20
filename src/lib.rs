@@ -11,10 +11,10 @@ mod settings;
 mod url;
 mod utils;
 
-/// Utils for loading common settings from config file and environment variables.
-pub mod env;
 /// Custom errors from this crate.
 pub mod error;
+/// Utils for loading common settings from config file and environment variables.
+pub mod load;
 /// Definitions for types returned in requests.
 pub mod types;
 
