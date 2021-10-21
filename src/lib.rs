@@ -1,5 +1,10 @@
 //! Rust SDK for Blockfrost.io
 
+#![doc(
+    html_logo_url = "https://raw.githubusercontent.com/blockfrost/blockfrost-rust/master/docs_logo.svg"
+)]
+#![doc = include_str!("../README.md")]
+
 // Internal macros for testing and implementing endpoints
 #[macro_use]
 mod macros;
