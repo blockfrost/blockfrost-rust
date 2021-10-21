@@ -44,7 +44,6 @@ impl BlockFrostApi {
         /// Return the block minted for the epoch specified by stake pool.
         epochs_blocks_by_pool(number: Integer, pool_id: &str) -> Vec<String> => "/epochs/{number}/blocks/{pool_id}";
             ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1blocks~1{pool_id}/get"),
-
     }
 }
 

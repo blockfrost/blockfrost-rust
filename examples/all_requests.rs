@@ -124,6 +124,14 @@ async fn main() -> blockfrost::Result<()> {
     let transactions_metadata_cbor = api.transactions_metadata_cbor(transaction_hash).await;
     let transactions_redeemers = api.transactions_redeemers(transaction_hash).await;
 
+    // Nutlink
+    let address = "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz";
+    let ticker = "ADAUSD";
+    let nutlink_address = api.nutlink_address(address).await;
+    let nutlink_address_tickers = api.nutlink_address_tickers(address).await;
+    let nutlink_address_ticker_by_id = api.nutlink_address_ticker_by_id(address, ticker).await;
+    let nutlink_ticker_by_id = api.nutlink_ticker_by_id(ticker).await;
+
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
     println!("health_clock: {:#?}", health_clock);
@@ -195,6 +203,10 @@ async fn main() -> blockfrost::Result<()> {
     println!("transactions_metadata: {:#?}", transactions_metadata);
     println!("transactions_metadata_cbor: {:#?}", transactions_metadata_cbor);
     println!("transactions_redeemers: {:#?}", transactions_redeemers);
+    println!("nutlink_address: {:#?}", nutlink_address);
+    println!("nutlink_address_tickers: {:#?}", nutlink_address_tickers);
+    println!("nutlink_address_ticker_by_id: {:#?}", nutlink_address_ticker_by_id);
+    println!("nutlink_ticker_by_id: {:#?}", nutlink_ticker_by_id);
 
     Ok(())
 }
