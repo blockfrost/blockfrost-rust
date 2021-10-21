@@ -1,5 +1,3 @@
-//! Rust SDK for Blockfrost.io
-
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/blockfrost/blockfrost-rust/master/docs-logo.svg"
 )]

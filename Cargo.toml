@@ -2,6 +2,10 @@
 name = "blockfrost"
 version = "0.1.0"
 edition = "2018"
+description = "A Rust SDK for Blockfrost.io API"
+license = "Apache-2.0"
+repository = "https://github.com/blockfrost/blockfrost-rust"
+homepage = "blockfrost.io/"
 
 [dependencies]
 futures = "0.3.17"
