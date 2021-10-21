@@ -23,7 +23,7 @@ impl BlockFrostApi {
     }
 }
 
-/// Created by [`nutlink_by_id`](BlockFrostApi::nutlink_by_id) method.
+/// Created by [`nutlink_address`](BlockFrostApi::nutlink_address) method.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NutlinkAddress {
     /// Bech32 encoded address.
