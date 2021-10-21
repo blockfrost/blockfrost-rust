@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 94.18793 95.374631"
+   version="1.1"
+   sodipodi:docname="docs_logo.svg"
+   width="94.187927"
+   height="95.374634"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview37"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     fit-margin-left="8"
+     fit-margin-top="8"
+     fit-margin-right="8"
+     fit-margin-bottom="8"
+     lock-margins="true"
+     inkscape:snap-global="true"
+     inkscape:zoom="4.1506881"
+     inkscape:cx="84.564293"
+     inkscape:cy="87.214456"
+     inkscape:window-width="1261"
+     inkscape:window-height="1036"
+     inkscape:window-x="1285"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#51bcef;}.cls-2{fill:#0a60dd;}</style>
+  </defs>
+  <title
+     id="title6">blockfrost logo</title>
+  <path
+     class="cls-1"
+     d="m 86.187927,70.459634 a 3.93,3.93 0 0 1 -3.92,3.92 h -70.15 a 3.92,3.92 0 1 1 0,-7.83 h 70.2 a 3.91,3.91 0 0 1 3.87,3.91 z"
+     id="path8" />
+  <path
+     class="cls-1"
+     d="m 66.607927,83.459634 a 3.93,3.93 0 0 1 -3.92,3.91 h -31 a 3.92,3.92 0 1 1 0,-7.83 h 31 a 3.92,3.92 0 0 1 3.92,3.92 z"
+     id="path10" />
+  <path
+     class="cls-1"
+     d="m 51.197927,41.349634 a 3.91,3.91 0 0 1 -3.57,2.11 3.83,3.83 0 0 1 -1.67,-0.4 l -22,-10.93 v 29.33 h -7.84 v -34 a 7.66,7.66 0 0 1 0.35,-2.4 6.61,6.61 0 0 1 0.65,-1.27 3.92,3.92 0 0 1 5,-1.27 l 6.13,3 21.17,10.59 a 3.93,3.93 0 0 1 1.78,5.24 z"
+     id="path12" />
+  <path
+     class="cls-2"
+     d="m 77.457927,24.089634 a 0.42,0.42 0 0 0 0,-0.1 c 0,-0.08 -0.09,-0.15 -0.14,-0.23 -0.05,-0.08 -0.16,-0.28 -0.25,-0.42 v 0 a 7.64,7.64 0 0 0 -2.95,-2.62 l -24.62,-12.18 a 5.15,5.15 0 0 0 -4.59,0 l -24.55,12.18 a 7.5,7.5 0 0 0 -3.24,3.07 3.91,3.91 0 0 1 5,-1.26 l 6.13,3 19,-9.42 18.47,9.22 -20.18,9.92 a 3.92,3.92 0 0 0 -2.24,3.54 v 22.67 h 7.82 v -19.85 a 0.54,0.54 0 0 1 0.31,-0.49 l 19,-9.37 v 29.71 h 7.84 v -34 a 7.5,7.5 0 0 0 -0.81,-3.37 z"
+     id="path14" />
+  <metadata
+     id="metadata119">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>blockfrost logo</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
