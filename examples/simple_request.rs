@@ -10,8 +10,8 @@ fn build_api() -> blockfrost::Result<BlockFrostApi> {
 #[tokio::main]
 async fn main() -> blockfrost::Result<()> {
     let api = build_api()?;
-    let health = api.health().await?;
+    let genesis = api.genesis().await?;
 
-    println!("{:#?}", health);
+    println!("{:#?}", genesis);
     Ok(())
 }
