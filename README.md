@@ -6,8 +6,6 @@
 
 # blockfrost-rust
 
-<br/>
-
 <p align="center">A Rust SDK for Blockfrost.io API.</p>
 <p align="center">
   <a href="#getting-started">Getting started</a> •
@@ -23,8 +21,6 @@ your API key.
 
 <img src="https://i.imgur.com/smY12ro.png">
 
-<br/>
-
 ## Installation
 
 Add to your project's `Cargo.toml`:
@@ -32,8 +28,6 @@ Add to your project's `Cargo.toml`:
 ```toml
 blockfrost = "0.1.0"
 ```
-
-<br/>
 
 ## Usage
 
