@@ -1,18 +1,26 @@
-[![Crates.io](https://img.shields.io/crates/v/blockfrost.svg)](https://crates.io/crates/blockfrost)
-[![Docs.rs](https://docs.rs/blockfrost/badge.svg)](https://docs.rs/blockfrost)
-[![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](https://github.com/blockfrost/blockfrost-rust/blob/master/LICENSE)
+<p align="center">
+  <a href="https://crates.io/crates/blockfrost">
+    <img src="https://img.shields.io/crates/v/blockfrost?color=0A60DD" alt="Crates.io link">
+  </a>
+  <a href="https://docs.rs/blockfrost">
+    <img src="https://img.shields.io/docsrs/blockfrost?color=%230A60DD" alt="Docs.rs link">
+  </a>
+  <a href="https://github.com/blockfrost/blockfrost-rust/blob/master/LICENSE">
+    <img src="https://img.shields.io/crates/l/blockfrost?color=%230A60DD" alt="License">
+  </a>
+</p>
+
 
 <img src="https://blockfrost.io/images/logo.svg" width="250" align="right" height="90">
 
 # blockfrost-rust
 
-<p align="center">A Rust SDK for Blockfrost.io API.</p>
+<p align="center">A Rust SDK for <a href="https://blockfrost.io">Blockfrost.io</a> API.</p>
 <p align="center">
   <a href="#getting-started">Getting started</a> •
   <a href="#installation">Installation</a> •
   <a href="#usage">Usage</a>
 </p>
-<br>
 
 ## Getting started
 
