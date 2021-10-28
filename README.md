@@ -1,5 +1,5 @@
-<!-- [![Crates.io](https://img.shields.io/crates/v/file_type_enum.svg)](https://crates.io/crates/file_type_enum) -->
-<!-- [![Docs.rs](https://docs.rs/file_type_enum/badge.svg)](https://docs.rs/file_type_enum) -->
+[![Crates.io](https://img.shields.io/crates/v/blockfrost.svg)](https://crates.io/crates/blockfrost)
+[![Docs.rs](https://docs.rs/blockfrost/badge.svg)](https://docs.rs/blockfrost)
 [![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](https://github.com/blockfrost/blockfrost-rust/blob/master/LICENSE)
 
 <img src="https://blockfrost.io/images/logo.svg" width="250" align="right" height="90">
