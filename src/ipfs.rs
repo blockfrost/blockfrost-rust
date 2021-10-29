@@ -52,7 +52,7 @@ impl IpfsApi {
         let text = response.text().await?;
 
         if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code));
+            return Err(process_error_response(&text, status_code, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
@@ -77,7 +77,7 @@ impl IpfsApi {
             // Safety:
             //   The error responses are guaranteed to be UTF-8.
             let text = std::str::from_utf8(&bytes).unwrap();
-            return Err(process_error_response(text, status_code));
+            return Err(process_error_response(text, status_code, &url));
         }
 
         Ok(bytes.to_vec())
@@ -96,7 +96,7 @@ impl IpfsApi {
         let status_code = response.status();
         let text = response.text().await?;
         if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code));
+            return Err(process_error_response(&text, status_code, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
@@ -114,7 +114,7 @@ impl IpfsApi {
         let status_code = response.status();
         let text = response.text().await?;
         if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code));
+            return Err(process_error_response(&text, status_code, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
@@ -133,7 +133,7 @@ impl IpfsApi {
         let status_code = response.status();
         let text = response.text().await?;
         if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code));
+            return Err(process_error_response(&text, status_code, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
@@ -152,7 +152,7 @@ impl IpfsApi {
         let status_code = response.status();
         let text = response.text().await?;
         if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code));
+            return Err(process_error_response(&text, status_code, &url));
         }
 
         Ok(serde_json::from_str(&text)?)

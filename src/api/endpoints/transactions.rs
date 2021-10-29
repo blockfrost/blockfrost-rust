@@ -18,7 +18,7 @@ impl BlockFrostApi {
 
         let response = self
             .client
-            .request(Method::POST, url)
+            .request(Method::POST, &url)
             .header(content_type_header.0, content_type_header.1)
             .body(body)
             .send()
@@ -28,7 +28,7 @@ impl BlockFrostApi {
         let text = response.text().await?;
 
         if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code));
+            return Err(process_error_response(&text, status_code, &url));
         }
         Ok(serde_json::from_str(&text)?)
     }

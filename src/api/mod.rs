@@ -59,7 +59,7 @@ impl BlockFrostApi {
             let text = response.text().await?;
 
             if !status_code.is_success() {
-                return Err(process_error_response(&text, status_code));
+                return Err(process_error_response(&text, status_code, &url));
             }
             // This gon have to be removed
             Ok(serde_json::from_str::<T>(&text)?)

@@ -20,7 +20,7 @@ pub enum Error {
     Json(SerdeJsonError),
     Io(IoError),
     Toml(SerdeTomlError),
-    Response(ResponseError),
+    Response { request_url: String, reason: ResponseError },
 }
 
 impl fmt::Display for Error {
@@ -30,7 +30,7 @@ impl fmt::Display for Error {
             Error::Json(source) => write!(f, "json err: {}.", source),
             Error::Io(source) => write!(f, "io err: {}.", source),
             Error::Toml(source) => write!(f, "toml err: {}.", source),
-            Error::Response(source) => source.fmt(f),
+            Error::Response { reason, .. } => reason.fmt(f),
         }
     }
 }
@@ -42,7 +42,7 @@ impl error::Error for Error {
             Error::Json(source) => Some(source),
             Error::Io(source) => Some(source),
             Error::Toml(source) => Some(source),
-            Error::Response(source) => Some(source),
+            Error::Response { reason, .. } => Some(reason),
         }
     }
 }
@@ -89,12 +89,6 @@ impl From<SerdeTomlError> for Error {
     }
 }
 
-impl From<ResponseError> for Error {
-    fn from(source: ResponseError) -> Self {
-        Error::Response(source)
-    }
-}
-
 // Parsing the error response is tricky, it's necessary to check if the json body is
 // malformed, if so, we will catch an error trying to get the cause to another error
 //
@@ -103,16 +97,17 @@ impl From<ResponseError> for Error {
 // TODO: CHANGE ERROR_RESPONSE NAME
 //
 // This function can only return Error::ErrorResponse.
-pub(crate) fn process_error_response(text: &str, status_code: StatusCode) -> Error {
+pub(crate) fn process_error_response(text: &str, status_code: StatusCode, url: &str) -> Error {
     let status_code = status_code.as_u16();
 
     let expected_error_codes = &[400, 403, 404, 418, 429, 500];
     if !expected_error_codes.contains(&status_code) {
         eprintln!("Warning: status code {} was not expected.", status_code);
     }
+    let request_url = url.into();
 
     match serde_json::from_str::<ResponseError>(text) {
-        Ok(http_error) => Error::Response(http_error),
+        Ok(http_error) => Error::Response { reason: http_error, request_url },
         Err(_) => {
             // Try to format JSON body, or use unformatted body instead
             let formatted_body_text =
@@ -121,7 +116,7 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode) -> Err
 
             let http_error =
                 ResponseError { status_code, error: reason, message: formatted_body_text };
-            Error::Response(http_error)
+            Error::Response { reason: http_error, request_url }
         }
     }
 }
