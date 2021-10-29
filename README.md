@@ -10,7 +10,7 @@
   </a>
 </p>
 
-<img src="https://blockfrost.io/images/logo.svg" width="250" align="right" height="90" style="margin-bottom: 50px">
+<img src="https://blockfrost.io/images/logo.svg" width="250" align="right" height="90" style="margin-bottom: -50px">
 
 # blockfrost-rust
 
