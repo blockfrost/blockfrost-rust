@@ -22,8 +22,8 @@ impl IpfsApi {
     /// This function might panic if `project_id` could not be converted into a [`HeaderValue`] with
     /// the function [`HeaderValue::from_str`].
     ///
-    /// [`HeaderValue`]: (reqwest::header::HeaderValue)
-    /// [`HeaderValue::from_str`]: (reqwest::header::HeaderValue::from_str)
+    /// [`HeaderValue`]: reqwest::header::HeaderValue
+    /// [`HeaderValue::from_str`]: reqwest::header::HeaderValue::from_str
     pub fn new(project_id: impl AsRef<str>, settings: IpfsSettings) -> Self {
         let header_map = build_header_map(project_id.as_ref());
         let client = Client::builder().default_headers(header_map).build().unwrap();
