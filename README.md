@@ -19,7 +19,7 @@
 <p align="center">
   <a href="#getting-started">Getting started</a> •
   <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a>
+  <a href="#examples">Examples</a>
 </p>
 
 ## Getting started
@@ -37,11 +37,14 @@ Add to your project's `Cargo.toml`:
 blockfrost = "0.1.1"
 ```
 
-## Usage
+## Examples
 
-There are multiple other examples in the [`examples/`](./examples) folder.
+All the examples are located at the [`examples/`](./examples) folder.
 
-### Simple example
+You might want to check [all_requests.rs] and [ipfs.rs].
+
+Here is [simple_request.rs] with the basic setup necessary and no settings
+customization:
 
 ```rust
 use blockfrost::{load, BlockFrostApi};
@@ -62,3 +65,7 @@ async fn main() -> blockfrost::Result<()> {
     Ok(())
 }
 ```
+
+[all_requests.rs]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/all_requests.rs
+[ipfs.rs]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/ipfs.rs
+[simple_request.rs]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/simple_request.rs
