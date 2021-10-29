@@ -34,7 +34,7 @@ your API key.
 Add to your project's `Cargo.toml`:
 
 ```toml
-blockfrost = "0.1.0"
+blockfrost = "0.1.1"
 ```
 
 ## Usage
