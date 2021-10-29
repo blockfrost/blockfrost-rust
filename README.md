@@ -1,12 +1,12 @@
 <p align="center">
   <a href="https://crates.io/crates/blockfrost">
-    <img src="https://img.shields.io/crates/v/blockfrost?color=0A60DD" alt="Crates.io link">
+    <img src="https://img.shields.io/crates/v/blockfrost?color=2E83FA" alt="Crates.io link">
   </a>
   <a href="https://docs.rs/blockfrost">
-    <img src="https://img.shields.io/docsrs/blockfrost?color=%230A60DD" alt="Docs.rs link">
+    <img src="https://img.shields.io/docsrs/blockfrost?color=2E83FA" alt="Docs.rs link">
   </a>
   <a href="https://github.com/blockfrost/blockfrost-rust/blob/master/LICENSE">
-    <img src="https://img.shields.io/crates/l/blockfrost?color=%230A60DD" alt="License">
+    <img src="https://img.shields.io/crates/l/blockfrost?color=2E83FA" alt="License">
   </a>
 </p>
 
