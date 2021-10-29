@@ -10,11 +10,11 @@
   </a>
 </p>
 
-
-<img src="https://blockfrost.io/images/logo.svg" width="250" align="right" height="90">
+<img src="https://blockfrost.io/images/logo.svg" width="250" align="right" height="90" style="margin-bottom: 50px">
 
 # blockfrost-rust
 
+<br>
 <p align="center">A Rust SDK for <a href="https://blockfrost.io">Blockfrost.io</a> API.</p>
 <p align="center">
   <a href="#getting-started">Getting started</a> •
