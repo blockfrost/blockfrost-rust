@@ -24,8 +24,8 @@
 
 ## Getting started
 
-To use this SDK, you first need login into to [blockfrost.io](https://blockfrost.io) create your project to retrieve
-your API key.
+To use this SDK you need to login at [blockfrost.io](https://blockfrost.io)
+and create a new project to receive an API key.
 
 <img src="https://i.imgur.com/smY12ro.png">
 
