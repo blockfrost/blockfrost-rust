@@ -72,7 +72,9 @@ pub fn configurations_from_env() -> crate::Result<TomlValue> {
 }
 
 fn load_toml_from_path(path: &Path) -> crate::Result<TomlValue> {
-    Ok(toml::from_str(&fs::read_to_string(path)?)?)
+    let text = &fs::read_to_string(path)?;
+
+    toml::from_str(text).map_err(|reason| crate::Error::Toml { reason, path: path.to_owned() })
 }
 
 // Scans for the first 'blockfrost.toml' or '.blockfrost.toml' file in the current or parent

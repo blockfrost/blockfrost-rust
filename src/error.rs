@@ -1,5 +1,5 @@
 //! Custom errors from this crate.
-use std::{error, fmt, io};
+use std::{error, fmt, io, path::PathBuf};
 
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
@@ -19,7 +19,7 @@ pub enum Error {
     Reqwest(ReqwestError),
     Json(SerdeJsonError),
     Io(IoError),
-    Toml(SerdeTomlError),
+    Toml { path: PathBuf, reason: SerdeTomlError },
     Response { request_url: String, reason: ResponseError },
 }
 
@@ -29,7 +29,9 @@ impl fmt::Display for Error {
             Error::Reqwest(source) => write!(f, "http err: {}.", source),
             Error::Json(source) => write!(f, "json err: {}.", source),
             Error::Io(source) => write!(f, "io err: {}.", source),
-            Error::Toml(source) => write!(f, "toml err: {}.", source),
+            Error::Toml { path, reason } => {
+                write!(f, "toml err: at '{}', reason: {}.", path.display(), reason)
+            }
             Error::Response { reason, .. } => reason.fmt(f),
         }
     }
@@ -41,7 +43,7 @@ impl error::Error for Error {
             Error::Reqwest(source) => Some(source),
             Error::Json(source) => Some(source),
             Error::Io(source) => Some(source),
-            Error::Toml(source) => Some(source),
+            Error::Toml { reason, .. } => Some(reason),
             Error::Response { reason, .. } => Some(reason),
         }
     }
@@ -83,18 +85,10 @@ impl From<IoError> for Error {
     }
 }
 
-impl From<SerdeTomlError> for Error {
-    fn from(source: SerdeTomlError) -> Self {
-        Error::Toml(source)
-    }
-}
-
 // Parsing the error response is tricky, it's necessary to check if the json body is
 // malformed, if so, we will catch an error trying to get the cause to another error
 //
 // Catching a Error::Json when trying to interpret a Error::ErrorResponse
-//
-// TODO: CHANGE ERROR_RESPONSE NAME
 //
 // This function can only return Error::ErrorResponse.
 pub(crate) fn process_error_response(text: &str, status_code: StatusCode, url: &str) -> Error {
