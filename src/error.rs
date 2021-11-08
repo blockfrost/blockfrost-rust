@@ -61,7 +61,7 @@ impl fmt::Display for ResponseError {
         writeln!(f, "http error:")?;
         writeln!(f, "  status code: {}", self.status_code)?;
         writeln!(f, "  error: {}", self.error)?;
-        write!(f, "  message: {}", self.message)
+        writeln!(f, "  message: {}", self.message)
     }
 }
 
