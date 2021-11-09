@@ -57,14 +57,14 @@ impl BlockFrostSettings {
 #[derive(Debug, Clone)]
 pub struct IpfsSettings {
     pub(crate) network_address: String,
-    pub(crate) _query_parameters: QueryParameters,
+    pub(crate) query_parameters: QueryParameters,
 }
 
 impl IpfsSettings {
     pub fn new() -> Self {
         Self {
             network_address: "https://ipfs.blockfrost.io/api/v0".to_string(),
-            _query_parameters: QueryParameters::default(),
+            query_parameters: QueryParameters::default(),
         }
     }
 }

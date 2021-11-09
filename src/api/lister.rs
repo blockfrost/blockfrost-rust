@@ -22,8 +22,6 @@ type ListerFuture<'api, T> = Pin<Box<ListerFutureInner<'api, T>>>;
 ///
 /// Implements [`Stream`] from [`futures`], it's highly recommended to be used with
 /// [`blockfrost::stream`](crate::stream).
-///
-/// To fully use the potential of this crate
 pub struct Lister<'api, T> {
     inner: FuturesOrdered<ListerFuture<'api, T>>,
     api: &'api BlockFrostApi,
