@@ -71,6 +71,8 @@ impl IpfsApi {
 
         let response = self.client.get(&url).send().await?;
         let status_code = response.status();
+        // response.bytes() consumes the response, so we need to reuse it when calling
+        // process_error_response(_).
         let bytes = response.bytes().await?;
 
         if !status_code.is_success() {

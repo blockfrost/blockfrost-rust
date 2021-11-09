@@ -9,6 +9,7 @@ mod macros;
 
 mod api;
 mod ipfs;
+mod request;
 mod settings;
 mod url;
 mod utils;

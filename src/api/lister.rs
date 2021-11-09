@@ -9,6 +9,7 @@ use std::{
 };
 
 use crate::{
+    request::send_get_request,
     stream::{FuturesOrdered, Stream},
     url::Url,
     *,
@@ -44,12 +45,11 @@ impl<'api, T: 'api + for<'de> serde::Deserialize<'de>> Stream for Lister<'api, T
     fn poll_next(mut self: Pin<&mut Self>, context: &mut Context) -> Poll<Option<Self::Item>> {
         while self.inner.len() < 10 {
             // Making the next requests
-            let settings = &self.api.settings;
-            let endpoint = &self.endpoint;
+            let BlockFrostApi { settings, client } = &self.api;
             let page = Some(self.current_page);
 
-            let Url(url) = Url::from_endpoint_with_page(settings, endpoint, page);
-            let future = self.api.get_from_url(url);
+            let Url(url) = Url::from_endpoint_with_page(settings, &self.endpoint, page);
+            let future = send_get_request(client, url);
             self.inner.push(Box::pin(future));
 
             // Increment page for next futures
