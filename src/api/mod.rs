@@ -4,9 +4,9 @@ pub mod lister;
 
 use std::future::Future;
 
-use reqwest::Client;
-
-use crate::{request::send_get_request, url::Url, utils::build_header_map, BlockFrostSettings};
+use crate::{
+    request::send_get_request, url::Url, utils::create_client_with_project_id, BlockFrostSettings,
+};
 
 /// Provides methods for making requests to the [`BlockFrost API`](https://docs.blockfrost.io).
 #[derive(Debug, Clone)]
@@ -26,9 +26,7 @@ impl BlockFrostApi {
     /// [`HeaderValue`]: reqwest::header::HeaderValue
     /// [`HeaderValue::from_str`]: reqwest::header::HeaderValue::from_str
     pub fn new(project_id: impl AsRef<str>, settings: BlockFrostSettings) -> Self {
-        let header_map = build_header_map(project_id.as_ref());
-        let client = Client::builder().default_headers(header_map).build().unwrap();
-
+        let client = create_client_with_project_id(project_id.as_ref());
         Self { settings, client }
     }
 

@@ -1,10 +1,9 @@
-use reqwest::{
-    multipart::{Form, Part},
-    Client,
-};
+use reqwest::multipart::{Form, Part};
 use serde::{Deserialize, Serialize};
 
-use crate::{error::process_error_response, utils::build_header_map, Integer, IpfsSettings};
+use crate::{
+    error::process_error_response, utils::create_client_with_project_id, Integer, IpfsSettings,
+};
 
 /// Provides methods for making requests to the
 /// [`IPFS API`](https://docs.blockfrost.io/#tag/IPFS-Add).
@@ -25,8 +24,7 @@ impl IpfsApi {
     /// [`HeaderValue`]: reqwest::header::HeaderValue
     /// [`HeaderValue::from_str`]: reqwest::header::HeaderValue::from_str
     pub fn new(project_id: impl AsRef<str>, settings: IpfsSettings) -> Self {
-        let header_map = build_header_map(project_id.as_ref());
-        let client = Client::builder().default_headers(header_map).build().unwrap();
+        let client = create_client_with_project_id(project_id.as_ref());
         Self { client, settings }
     }
 
