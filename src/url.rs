@@ -1,4 +1,4 @@
-//! Internal crate type to help building the URLs for the requests.
+//! Internal type to help building the URLs for the requests.
 
 use crate::{BlockFrostSettings, QueryParameters};
 

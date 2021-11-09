@@ -2,7 +2,7 @@ use std::{fmt, time::Duration};
 
 use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK, IPFS_NETWORK};
 
-/// Configuration of parameters for the requests.
+/// Customizable settings for requests made with [`BlockFrostApi`](crate::BlockFrostApi).
 #[derive(Debug, Clone)]
 pub struct BlockFrostSettings {
     pub network_address: String,
@@ -39,13 +39,7 @@ impl BlockFrostSettings {
     }
 }
 
-/// Create a customizable [`IpfsSettings`].
-///
-/// # Default settings:
-///
-/// - Network: [`IPFS_NETWORK`].
-/// - Query parameters: empty.
-/// - Retry settings: disabled.
+/// Customizable settings for requests made with [`IpfsApi`](crate::IpfsApi).
 #[derive(Debug, Clone)]
 pub struct IpfsSettings {
     pub network_address: String,
@@ -54,6 +48,13 @@ pub struct IpfsSettings {
 }
 
 impl IpfsSettings {
+    /// Create a customizable [`IpfsSettings`].
+    ///
+    /// # Default settings:
+    ///
+    /// - Network: [`IPFS_NETWORK`].
+    /// - Query parameters: empty.
+    /// - Retry settings: disabled.
     pub fn new() -> Self {
         Self {
             network_address: IPFS_NETWORK.to_owned(),
@@ -174,12 +175,14 @@ impl QueryParameters {
     }
 }
 
+/// Uses the default network [`CARDANO_MAINNET_NETWORK`].
 impl Default for BlockFrostSettings {
     fn default() -> Self {
         Self::new()
     }
 }
 
+/// Uses the default network [`IPFS_NETWORK`].
 impl Default for IpfsSettings {
     fn default() -> Self {
         Self::new()
@@ -197,12 +200,14 @@ pub enum QueryOrder {
     Descending,
 }
 
+/// Defaults to [`QueryOrder::Ascending`].
 impl Default for QueryOrder {
     fn default() -> Self {
         Self::Ascending
     }
 }
 
+/// Shows if order is "asc" or "desc", used in URLs.
 impl fmt::Display for QueryOrder {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         match self {
