@@ -7,6 +7,7 @@ use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK};
 pub struct BlockFrostSettings {
     pub(crate) network_address: String,
     pub(crate) query_parameters: QueryParameters,
+    pub(crate) retry_settings: RetrySettings,
 }
 
 impl BlockFrostSettings {
@@ -20,6 +21,7 @@ impl BlockFrostSettings {
         Self {
             network_address: CARDANO_MAINNET_NETWORK.to_string(),
             query_parameters: QueryParameters::default(),
+            retry_settings: RetrySettings::default(),
         }
     }
 
@@ -164,12 +166,15 @@ impl fmt::Display for QueryOrder {
 
 /// Settings for retrying when API rate limit is reached.
 ///
-/// Retries are only performed when you reach the rate limits (429 status code is retrieved),
-/// different plans have different limits.
+/// Amount and delay are set to zero by default, you will need to change both to enable retrying.
 ///
-/// Check different plans and their limits at <https://blockfrost.io/#pricing>.
+/// Retries are only performed when you reach the rate limits (429 status code is retrieved), the
+/// quantity depends on your account plan.
+///
+/// Check different BlockFrost plans and their limits at <https://blockfrost.io/#pricing>.
 ///
 /// Note: You can disable delay between retries with [`Duration::ZERO`].
+#[derive(Default, Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct RetrySettings {
     pub amount: u64,
     pub delay: Duration,

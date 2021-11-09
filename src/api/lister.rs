@@ -47,7 +47,7 @@ impl<'api, T: 'api + for<'de> serde::Deserialize<'de>> Stream for Lister<'api, T
             let page = Some(self.current_page);
 
             let Url(url) = Url::from_endpoint_with_page(settings, &self.endpoint, page);
-            let future = send_get_request(client, url);
+            let future = send_get_request(client, url, settings.retry_settings);
             self.inner.push(Box::pin(future));
 
             // Increment page for next futures

@@ -11,6 +11,7 @@ use crate::{process_error_response, RetrySettings};
 pub(crate) fn send_get_request<T>(
     client: &Client,
     url: String,
+    retry_settings: RetrySettings,
 ) -> impl Future<Output = crate::Result<T>> + Send
 where
     T: serde::de::DeserializeOwned,
@@ -18,7 +19,7 @@ where
     let request = client.get(&url);
 
     async move {
-        let response = request.send().await?;
+        let response = send_request_with_retries(request, retry_settings).await?;
 
         let status_code = response.status();
         let text = response.text().await?;

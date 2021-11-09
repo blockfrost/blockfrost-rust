@@ -41,6 +41,6 @@ impl BlockFrostApi {
         T: serde::de::DeserializeOwned,
     {
         let Url(url) = Url::from_endpoint(&self.settings, url_endpoint);
-        send_get_request(&self.client, url)
+        send_get_request(&self.client, url, self.settings.retry_settings)
     }
 }
