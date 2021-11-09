@@ -11,13 +11,15 @@ use toml::Value as TomlValue;
 
 /// Loads configuration from env vars and config file.
 ///
-/// First searches for the configuration files `blockfrost.toml` and `.blockfrost.toml` in the
-/// current and parent directories.
+/// Searches for the files `blockfrost.toml` and `.blockfrost.toml` in the current, if not found,
+/// scans each parent directory up to the filesystem root, if found, the file is loaded into a
+/// [`toml::TomlValue`].
 ///
-/// Scan starts at the current directory and goes up to the filesystem root, if found, the file is
-/// loaded into a [`TomlValue`].
+/// After that, loads configs from ENV vars, possibly overwriting configurations loaded from config
+/// file.
 ///
-/// After that, load configs from ENV vars, possibly overwriting what was loaded before.
+/// Note: if no config file is found, this function only loads configurations from ENV vars, and
+/// it's guaranteed to not panic or return errors.
 ///
 /// | `TOML` key        | Environment variable         |
 /// |-------------------|------------------------------|
@@ -53,7 +55,7 @@ use toml::Value as TomlValue;
 /// }
 /// ```
 pub fn configurations_from_env() -> crate::Result<TomlValue> {
-    let config_file = scan_first_config_file()?;
+    let config_file = scan_directories_for_config_file()?;
 
     let mut toml_value = match &config_file {
         Some(file_path) => load_toml_from_path(file_path)?,
@@ -79,7 +81,7 @@ fn load_toml_from_path(path: &Path) -> crate::Result<TomlValue> {
 
 // Scans for the first 'blockfrost.toml' or '.blockfrost.toml' file in the current or parent
 // directories. Scan goes up to the root of the filesystem.
-fn scan_first_config_file() -> crate::Result<Option<PathBuf>> {
+fn scan_directories_for_config_file() -> crate::Result<Option<PathBuf>> {
     let current_dir = env::current_dir()?;
     let mut current_dir = current_dir.as_path();
 
