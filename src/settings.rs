@@ -81,50 +81,101 @@ pub struct QueryParameters {
 }
 
 impl QueryParameters {
+    /// Set the "count" query parameter.
+    ///
+    /// The amount of items that will be retrieved from each page request.
+    ///
+    /// Defaults to 1.
+    ///
+    /// The accepted range is 1..=100, if not in range, will be set to the default.
     pub fn set_count(&mut self, count: u8) -> &mut Self {
+        let count = if (1..=100).contains(&count) { count } else { 100 };
         self.count = Some(count);
         self
     }
 
+    /// Set the "page" query parameter.
+    ///
+    /// The number of the page that will be requested, starts at 1.
+    ///
+    /// Defaults to the first page.
+    ///
+    /// The accepted range is 1..=21474836, if not in range, will be set to the default.
     pub fn set_page(&mut self, page: u64) -> &mut Self {
+        let page = if (1..=100).contains(&page) { page } else { 1 };
         self.page = Some(page);
         self
     }
 
+    /// Set the "order" query parameter.
+    ///
+    /// The ordering of items inside of the returned page.
+    ///
+    /// By default, oldest comes first, newest last.
+    ///
+    /// Defaults to [`QueryOrder::Ascending`].
     pub fn set_order(&mut self, order: QueryOrder) -> &mut Self {
         self.order = Some(order);
         self
     }
+
+    /// Set the "from" query parameter.
+    ///
+    /// The block number that delimits the start (inclusive) search for results.
+    ///
+    /// Has to be lower than or equal to the "to" parameter.
+    ///
+    /// Can optionally contain the index of the block, concatenated using colon.
+    ///
+    /// # Examples
+    /// - Without index: `"8929261"`
+    /// - with index: `"8929261:10"`
     pub fn set_from(&mut self, from: String) -> &mut Self {
         self.from = Some(from);
         self
     }
 
+    /// Set the "to" query parameter.
+    ///
+    /// The block number that delimits the end (inclusive) search for results.
+    ///
+    /// Has to be higher than or equal to the "from" parameter.
+    ///
+    /// Can optionally contain the index of the block, concatenated using colon.
+    ///
+    /// # Examples
+    /// - Without index: `"9999269"`
+    /// - with index: `"9999269:10"`
     pub fn set_to(&mut self, to: String) -> &mut Self {
         self.to = Some(to);
         self
     }
 
+    /// Removes the parameter added by the [`set_count`] function.
     pub fn unset_count(&mut self) -> &mut Self {
         self.count = None;
         self
     }
 
+    /// Removes the parameter added by the [`set_page`] function.
     pub fn unset_page(&mut self) -> &mut Self {
         self.page = None;
         self
     }
 
+    /// Removes the parameter added by the [`set_order`] function.
     pub fn unset_order(&mut self) -> &mut Self {
         self.order = None;
         self
     }
 
+    /// Removes the parameter added by the [`set_from`] function.
     pub fn unset_from(&mut self) -> &mut Self {
         self.from = None;
         self
     }
 
+    /// Removes the parameter added by the [`set_to`] function.
     pub fn unset_to(&mut self) -> &mut Self {
         self.to = None;
         self
@@ -143,6 +194,11 @@ impl Default for IpfsSettings {
     }
 }
 
+/// The ordering of items inside of a page.
+///
+/// By default, oldest comes first, newest last.
+///
+/// Defaults to [`QueryOrder::Ascending`].
 #[derive(Debug, Clone)]
 pub enum QueryOrder {
     Ascending,
