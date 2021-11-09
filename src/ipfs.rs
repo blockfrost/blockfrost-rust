@@ -69,18 +69,14 @@ impl IpfsApi {
 
         let response = self.client.get(&url).send().await?;
         let status_code = response.status();
-        // response.bytes() consumes the response, so we need to reuse it when calling
-        // process_error_response(_).
-        let bytes = response.bytes().await?;
 
         if !status_code.is_success() {
-            // Safety:
-            //   The error responses are guaranteed to be UTF-8.
-            let text = std::str::from_utf8(&bytes).unwrap();
-            return Err(process_error_response(text, status_code, &url));
+            let text = response.text().await?;
+            return Err(process_error_response(&text, status_code, &url));
+        } else {
+            let bytes = response.bytes().await?;
+            Ok(bytes.to_vec())
         }
-
-        Ok(bytes.to_vec())
     }
 
     /// Pinned objects are counted in your user storage quota.
