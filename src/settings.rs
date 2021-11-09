@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, time::Duration};
 
 use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK};
 
@@ -159,5 +159,25 @@ impl fmt::Display for QueryOrder {
             QueryOrder::Ascending => write!(formatter, "asc"),
             QueryOrder::Descending => write!(formatter, "desc"),
         }
+    }
+}
+
+/// Settings for retrying when API rate limit is reached.
+///
+/// Retries are only performed when you reach the rate limits (429 status code is retrieved),
+/// different plans have different limits.
+///
+/// Check different plans and their limits at <https://blockfrost.io/#pricing>.
+///
+/// Note: You can disable delay between retries with [`Duration::ZERO`].
+pub struct RetrySettings {
+    pub amount: u64,
+    pub delay: Duration,
+}
+
+impl RetrySettings {
+    /// Create a new `RetrySettings`, with retry amount and delay.
+    pub fn new(amount: u64, delay: Duration) -> Self {
+        Self { amount, delay }
     }
 }

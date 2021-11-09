@@ -1,10 +1,10 @@
 //! Module for common requests logic.
 
-use std::future::Future;
+use std::{future::Future, thread};
 
-use reqwest::{Client, RequestBuilder, Response};
+use reqwest::{Client, RequestBuilder, Response, StatusCode};
 
-use crate::process_error_response;
+use crate::{process_error_response, RetrySettings};
 
 // Used only for simple and common GET requests.
 // Functions that require extra logic may not call this.
@@ -18,7 +18,7 @@ where
     let request = client.get(&url);
 
     async move {
-        let response = send_request(request).await?;
+        let response = request.send().await?;
 
         let status_code = response.status();
         let text = response.text().await?;
@@ -31,6 +31,30 @@ where
     }
 }
 
-pub async fn send_request(request: RequestBuilder) -> crate::Result<Response> {
+// Send requests with delayed retries, cloning the request builder only when necessary.
+pub(crate) async fn send_request_with_retries(
+    request: RequestBuilder,
+    retry_settings: RetrySettings,
+) -> crate::Result<Response> {
+    for _ in 1..retry_settings.amount {
+        let request = clone_request(&request);
+        let response = request.send().await;
+
+        if let Err(err) = &response {
+            if let Some(StatusCode::TOO_MANY_REQUESTS) = err.status() {
+                thread::sleep(retry_settings.delay);
+                continue;
+            }
+        }
+
+        return Ok(response?);
+    }
     Ok(request.send().await?)
+}
+
+fn clone_request(request: &RequestBuilder) -> RequestBuilder {
+    // Safety:
+    //     Requests in this crate never use streams.
+    //     .try_clone() will always succeed.
+    request.try_clone().unwrap()
 }
