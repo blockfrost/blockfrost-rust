@@ -1,72 +1,64 @@
 use std::{fmt, time::Duration};
 
-use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK};
+use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK, IPFS_NETWORK};
 
 /// Configuration of parameters for the requests.
 #[derive(Debug, Clone)]
 pub struct BlockFrostSettings {
-    pub(crate) network_address: String,
-    pub(crate) query_parameters: QueryParameters,
-    pub(crate) retry_settings: RetrySettings,
+    pub network_address: String,
+    pub query_parameters: QueryParameters,
+    pub retry_settings: RetrySettings,
 }
 
 impl BlockFrostSettings {
-    /// Create [`BlockFrostSettings`] with the default settings.
+    /// Create a customizable [`BlockFrostSettings`].
     ///
-    /// Defaults are:
+    /// Default settings are:
     ///
     /// - Network: [`CARDANO_MAINNET_NETWORK`].
     /// - Query parameters: empty.
+    /// - Retry settings: disabled.
     pub fn new() -> Self {
         Self {
-            network_address: CARDANO_MAINNET_NETWORK.to_string(),
+            network_address: CARDANO_MAINNET_NETWORK.to_owned(),
             query_parameters: QueryParameters::default(),
             retry_settings: RetrySettings::default(),
         }
     }
 
+    /// Change network to [`CARDANO_MAINNET_NETWORK`].
     pub fn use_mainnet(mut self) -> Self {
-        self.network_address = CARDANO_MAINNET_NETWORK.to_string();
+        self.network_address = CARDANO_MAINNET_NETWORK.to_owned();
         self
     }
 
+    /// Change network to [`CARDANO_TESTNET_NETWORK`].
     pub fn use_testnet(mut self) -> Self {
-        self.network_address = CARDANO_TESTNET_NETWORK.to_string();
-        self
-    }
-
-    pub fn set_network(&mut self, network: impl AsRef<str>) {
-        self.network_address = network.as_ref().to_string();
-    }
-
-    pub fn current_network(&self) -> &str {
-        &self.network_address
-    }
-
-    pub fn query_parameters(&self) -> &QueryParameters {
-        &self.query_parameters
-    }
-
-    pub fn configure<F>(mut self, function: F) -> Self
-    where
-        F: FnOnce(&mut QueryParameters),
-    {
-        function(&mut self.query_parameters);
+        self.network_address = CARDANO_TESTNET_NETWORK.to_owned();
         self
     }
 }
 
+/// Create a customizable [`IpfsSettings`].
+///
+/// # Default settings:
+///
+/// - Network: [`IPFS_NETWORK`].
+/// - Query parameters: empty.
+/// - Retry settings: disabled.
 #[derive(Debug, Clone)]
 pub struct IpfsSettings {
-    pub(crate) network_address: String,
-    pub(crate) query_parameters: QueryParameters,
+    pub network_address: String,
+    pub query_parameters: QueryParameters,
+    pub retry_settings: RetrySettings,
 }
 
 impl IpfsSettings {
     pub fn new() -> Self {
         Self {
-            network_address: "https://ipfs.blockfrost.io/api/v0".to_string(),
+            network_address: IPFS_NETWORK.to_owned(),
             query_parameters: QueryParameters::default(),
+            retry_settings: RetrySettings::default(),
         }
     }
 }
@@ -74,7 +66,7 @@ impl IpfsSettings {
 #[derive(Debug, Clone, Default)]
 pub struct QueryParameters {
     pub(crate) count: Option<u8>,
-    pub(crate) page: Option<u64>,
+    pub(crate) page: Option<u32>,
     pub(crate) order: Option<QueryOrder>,
     pub(crate) from: Option<String>,
     pub(crate) to: Option<String>,
@@ -101,7 +93,7 @@ impl QueryParameters {
     /// Defaults to the first page.
     ///
     /// The accepted range is 1..=21474836, if not in range, will be set to the default.
-    pub fn set_page(&mut self, page: u64) -> &mut Self {
+    pub fn set_page(&mut self, page: u32) -> &mut Self {
         let page = if (1..=100).contains(&page) { page } else { 1 };
         self.page = Some(page);
         self

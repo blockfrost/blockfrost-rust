@@ -36,5 +36,8 @@ pub mod stream {
 pub const CARDANO_MAINNET_NETWORK: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
 /// The URL of the BlockFrost API for the Cardano testnet.
 pub const CARDANO_TESTNET_NETWORK: &str = "https://cardano-testnet.blockfrost.io/api/v0";
+/// The URL BlockFrost provided IPFS network.
+pub const IPFS_NETWORK: &str = "https://ipfs.blockfrost.io/api/v0";
+
 /// SDK version being used.
 pub const USER_AGENT: &str = concat!("blockfrost-rust/", env!("CARGO_PKG_VERSION"));

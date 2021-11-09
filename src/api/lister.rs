@@ -26,13 +26,13 @@ pub struct Lister<'api, T> {
     inner: FuturesOrdered<ListerFuture<'api, T>>,
     api: &'api BlockFrostApi,
     endpoint: String,
-    current_page: u64,
+    current_page: u32,
 }
 
 impl<T> Lister<'_, T> {
     pub(crate) fn list_from_endpoint(api: &BlockFrostApi, endpoint: String) -> Lister<'_, T> {
         let inner = FuturesOrdered::<ListerFuture<T>>::new();
-        let current_page = api.settings.query_parameters().page.unwrap_or(1);
+        let current_page = api.settings.query_parameters.page.unwrap_or(1);
         Lister { inner, endpoint, api, current_page }
     }
 }
