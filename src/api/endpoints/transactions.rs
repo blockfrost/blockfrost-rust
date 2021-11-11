@@ -1,7 +1,7 @@
 use reqwest::{header::HeaderValue, Body, Method};
 use serde::{Deserialize, Serialize};
 
-use crate::{url::Url, *};
+use crate::{request::send_request_with_retries, url::Url, *};
 
 impl BlockFrostApi {
     /// Obtain information about Move Instantaneous Rewards (MIRs) of a specific transaction.
@@ -16,13 +16,12 @@ impl BlockFrostApi {
         let endpoint_suffix = "/tx/submit";
         let Url(url) = Url::from_endpoint_without_parameters(&self.settings, endpoint_suffix);
 
-        let response = self
+        let request = self
             .client
             .request(Method::POST, &url)
             .header(content_type_header.0, content_type_header.1)
-            .body(body)
-            .send()
-            .await?;
+            .body(body);
+        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
 
         let status_code = response.status();
         let text = response.text().await?;

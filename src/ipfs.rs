@@ -2,7 +2,8 @@ use reqwest::multipart::{Form, Part};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    error::process_error_response, utils::create_client_with_project_id, Integer, IpfsSettings,
+    error::process_error_response, request::send_request_with_retries,
+    utils::create_client_with_project_id, Integer, IpfsSettings,
 };
 
 /// Provides methods for making requests to the
@@ -44,7 +45,7 @@ impl IpfsApi {
         let form = Form::new().part("file", part);
 
         let request = self.client.post(&url).multipart(form);
-        let response = request.send().await?;
+        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
 
         let status_code = response.status();
         let text = response.text().await?;
@@ -67,7 +68,8 @@ impl IpfsApi {
         let url = self.settings.network_address.clone()
             + &format!("/ipfs/gateway/{IPFS_path}", IPFS_path = ipfs_path);
 
-        let response = self.client.get(&url).send().await?;
+        let request = self.client.get(&url);
+        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
         let status_code = response.status();
 
         if !status_code.is_success() {
@@ -88,7 +90,8 @@ impl IpfsApi {
         let url = self.settings.network_address.clone()
             + &format!("/ipfs/pin/add/{IPFS_path}", IPFS_path = ipfs_path);
 
-        let response = self.client.post(&url).send().await?;
+        let request = self.client.post(&url);
+        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
         let status_code = response.status();
         let text = response.text().await?;
         if !status_code.is_success() {
@@ -106,7 +109,9 @@ impl IpfsApi {
     pub async fn pin_list(&self) -> crate::Result<Vec<IpfsPinList>> {
         let url = self.settings.network_address.clone() + "/ipfs/pin/list";
 
-        let response = self.client.get(&url).send().await?;
+        let request = self.client.get(&url);
+        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
+
         let status_code = response.status();
         let text = response.text().await?;
         if !status_code.is_success() {
@@ -125,7 +130,8 @@ impl IpfsApi {
         let url = self.settings.network_address.clone()
             + &format!("/ipfs/pin/list/{IPFS_path}", IPFS_path = ipfs_path);
 
-        let response = self.client.get(&url).send().await?;
+        let request = self.client.get(&url);
+        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
         let status_code = response.status();
         let text = response.text().await?;
         if !status_code.is_success() {
@@ -144,7 +150,8 @@ impl IpfsApi {
         let url = self.settings.network_address.clone()
             + &format!("/ipfs/pin/remove/{IPFS_path}", IPFS_path = ipfs_path);
 
-        let response = self.client.post(&url).send().await?;
+        let request = self.client.post(&url);
+        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
         let status_code = response.status();
         let text = response.text().await?;
         if !status_code.is_success() {
