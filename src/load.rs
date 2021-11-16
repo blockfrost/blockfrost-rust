@@ -9,6 +9,8 @@ use std::{
 
 use toml::Value as TomlValue;
 
+use crate::Error;
+
 /// Loads configuration from env vars and config file.
 ///
 /// Searches for the files `blockfrost.toml` and `.blockfrost.toml` in the current, if not found,
@@ -63,20 +65,20 @@ pub fn configurations_from_env() -> crate::Result<TomlValue> {
     };
 
     if let Ok(var) = env::var("BLOCKFROST_NETWORK_ADDRESS") {
-        toml_value["blockfrost-network-address"] = toml::Value::String(var);
+        toml_value["blockfrost-network-address"] = TomlValue::String(var);
     }
 
     if let Ok(var) = env::var("BLOCKFROST_NETWORK_ADDRESS") {
-        toml_value["blockfrost-project-id"] = toml::Value::String(var);
+        toml_value["blockfrost-project-id"] = TomlValue::String(var);
     }
 
     Ok(toml_value)
 }
 
 fn load_toml_from_path(path: &Path) -> crate::Result<TomlValue> {
-    let text = &fs::read_to_string(path)?;
-
-    toml::from_str(text).map_err(|reason| crate::Error::Toml { reason, path: path.to_owned() })
+    let path = path.to_owned();
+    let text = fs::read_to_string(&path)?;
+    toml::from_str(&text).map_err(|reason| Error::Toml { reason, path })
 }
 
 // Scans for the first 'blockfrost.toml' or '.blockfrost.toml' file in the current or parent
