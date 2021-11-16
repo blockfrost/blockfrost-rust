@@ -19,10 +19,7 @@ where
     let request = client.get(&url);
 
     async move {
-        let response = send_request_with_retries(request, retry_settings).await?;
-
-        let status_code = response.status();
-        let text = response.text().await?;
+        let (status_code, text) = send_request(request, retry_settings).await?;
 
         if !status_code.is_success() {
             return Err(process_error_response(&text, status_code, &url));
@@ -33,7 +30,7 @@ where
 }
 
 // Send requests with delayed retries, cloning the request builder only when necessary.
-pub(crate) async fn send_request_with_retries(
+pub(crate) async fn send_request_unprocessed(
     request: RequestBuilder,
     retry_settings: RetrySettings,
 ) -> crate::Result<Response> {
@@ -51,6 +48,18 @@ pub(crate) async fn send_request_with_retries(
         return Ok(response?);
     }
     Ok(request.send().await?)
+}
+
+// Calls send_request_unprocessed but break is down
+pub(crate) async fn send_request(
+    request: RequestBuilder,
+    retry_settings: RetrySettings,
+) -> crate::Result<(StatusCode, String)> {
+    let response = send_request_unprocessed(request, retry_settings).await?;
+    let status_code = response.status();
+    let text = response.text().await?;
+
+    Ok((status_code, text))
 }
 
 fn clone_request(request: &RequestBuilder) -> RequestBuilder {

@@ -2,8 +2,10 @@ use reqwest::multipart::{Form, Part};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    error::process_error_response, request::send_request_with_retries,
-    utils::create_client_with_project_id, Integer, IpfsSettings,
+    error::process_error_response,
+    request::{send_request, send_request_unprocessed},
+    utils::create_client_with_project_id,
+    Integer, IpfsSettings, RetrySettings,
 };
 
 /// Provides methods for making requests to the
@@ -45,10 +47,8 @@ impl IpfsApi {
         let form = Form::new().part("file", part);
 
         let request = self.client.post(&url).multipart(form);
-        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
 
-        let status_code = response.status();
-        let text = response.text().await?;
+        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
 
         if !status_code.is_success() {
             return Err(process_error_response(&text, status_code, &url));
@@ -69,12 +69,12 @@ impl IpfsApi {
             + &format!("/ipfs/gateway/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.get(&url);
-        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
+        let response = send_request_unprocessed(request, self.retry_settings()).await?;
         let status_code = response.status();
 
         if !status_code.is_success() {
             let text = response.text().await?;
-            return Err(process_error_response(&text, status_code, &url));
+            Err(process_error_response(&text, status_code, &url))
         } else {
             let bytes = response.bytes().await?;
             Ok(bytes.to_vec())
@@ -91,9 +91,7 @@ impl IpfsApi {
             + &format!("/ipfs/pin/add/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.post(&url);
-        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
-        let status_code = response.status();
-        let text = response.text().await?;
+        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
         if !status_code.is_success() {
             return Err(process_error_response(&text, status_code, &url));
         }
@@ -110,10 +108,8 @@ impl IpfsApi {
         let url = self.settings.network_address.clone() + "/ipfs/pin/list";
 
         let request = self.client.get(&url);
-        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
+        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
 
-        let status_code = response.status();
-        let text = response.text().await?;
         if !status_code.is_success() {
             return Err(process_error_response(&text, status_code, &url));
         }
@@ -131,9 +127,8 @@ impl IpfsApi {
             + &format!("/ipfs/pin/list/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.get(&url);
-        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
-        let status_code = response.status();
-        let text = response.text().await?;
+        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
+
         if !status_code.is_success() {
             return Err(process_error_response(&text, status_code, &url));
         }
@@ -151,14 +146,17 @@ impl IpfsApi {
             + &format!("/ipfs/pin/remove/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.post(&url);
-        let response = send_request_with_retries(request, self.settings.retry_settings).await?;
-        let status_code = response.status();
-        let text = response.text().await?;
+        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
+
         if !status_code.is_success() {
             return Err(process_error_response(&text, status_code, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
+    }
+
+    pub(crate) fn retry_settings(&self) -> RetrySettings {
+        self.settings.retry_settings
     }
 }
 
