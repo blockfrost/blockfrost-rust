@@ -30,9 +30,13 @@ impl fmt::Display for Error {
             Error::Json(source) => write!(f, "json err: {}.", source),
             Error::Io(source) => write!(f, "io err: {}.", source),
             Error::Toml { path, reason } => {
-                write!(f, "toml err: at '{}', reason: {}.", path.display(), reason)
+                write!(f, "toml err, url: '{}', reason: {}.", path.display(), reason)
             }
-            Error::Response { reason, .. } => reason.fmt(f),
+            Error::Response { reason, request_url } => {
+                writeln!(f, "response error:")?;
+                writeln!(f, "  url: {}", request_url)?;
+                reason.fmt(f)
+            }
         }
     }
 }
@@ -58,7 +62,6 @@ pub struct ResponseError {
 
 impl fmt::Display for ResponseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        writeln!(f, "http error:")?;
         writeln!(f, "  status code: {}", self.status_code)?;
         writeln!(f, "  error: {}", self.error)?;
         writeln!(f, "  message: {}", self.message)
