@@ -15,7 +15,7 @@ use crate::Error;
 ///
 /// Searches for the files `blockfrost.toml` and `.blockfrost.toml` in the current, if not found,
 /// scans each parent directory up to the filesystem root, if found, the file is loaded into a
-/// [`toml::TomlValue`].
+/// [`toml::Value`].
 ///
 /// After that, loads configs from ENV vars, possibly overwriting configurations loaded from config
 /// file.

@@ -144,31 +144,31 @@ impl QueryParameters {
         self
     }
 
-    /// Removes the parameter added by the [`set_count`] function.
+    /// Removes the parameter added by the [`QueryParameters::set_count`] function.
     pub fn unset_count(&mut self) -> &mut Self {
         self.count = None;
         self
     }
 
-    /// Removes the parameter added by the [`set_page`] function.
+    /// Removes the parameter added by the [`QueryParameters::set_page`] function.
     pub fn unset_page(&mut self) -> &mut Self {
         self.page = None;
         self
     }
 
-    /// Removes the parameter added by the [`set_order`] function.
+    /// Removes the parameter added by the [`QueryParameters::set_order`] function.
     pub fn unset_order(&mut self) -> &mut Self {
         self.order = None;
         self
     }
 
-    /// Removes the parameter added by the [`set_from`] function.
+    /// Removes the parameter added by the [`QueryParameters::set_from`] function.
     pub fn unset_from(&mut self) -> &mut Self {
         self.from = None;
         self
     }
 
-    /// Removes the parameter added by the [`set_to`] function.
+    /// Removes the parameter added by the [`QueryParameters::set_to`] function.
     pub fn unset_to(&mut self) -> &mut Self {
         self.to = None;
         self
