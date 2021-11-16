@@ -103,7 +103,7 @@ pub struct EpochParameters {
     pub tau: Float,
     /// Percentage of blocks produced by federated nodes
     pub decentralisation_param: Float,
-    /// Seed for extra entropy. TODO: how to represent arbitrary objects?
+    /// Seed for extra entropy.
     pub extra_entropy: Option<JsonMap>,
     /// Accepted protocol major version.
     pub protocol_major_ver: Integer,

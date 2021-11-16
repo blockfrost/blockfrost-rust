@@ -22,7 +22,7 @@ pub enum Error {
     Json { url: String, text: String, reason: SerdeJsonError },
     Io(IoError),
     Toml { path: PathBuf, reason: SerdeTomlError },
-    Response { request_url: String, reason: ResponseError },
+    Response { url: String, reason: ResponseError },
 }
 
 impl fmt::Display for Error {
@@ -45,9 +45,9 @@ impl fmt::Display for Error {
                 write!(f, "url: {}\n", path.display())?;
                 write!(f, "reason: {}.", reason)
             }
-            Error::Response { reason, request_url } => {
+            Error::Response { reason, url } => {
                 write!(f, "response error:\n")?;
-                write!(f, "  url: {}\n", request_url)?;
+                write!(f, "  url: {}\n", url)?;
                 reason.fmt(f)
             }
         }
@@ -102,10 +102,10 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode, url: &
     if !expected_error_codes.contains(&status_code) {
         eprintln!("Warning: status code {} was not expected.", status_code);
     }
-    let request_url = url.into();
+    let url = url.into();
 
     match json_from::<ResponseError>(text) {
-        Ok(http_error) => Error::Response { reason: http_error, request_url },
+        Ok(http_error) => Error::Response { reason: http_error, url },
         Err(_) => {
             // Try to format JSON body, or use unformatted body instead
             let formatted_body_text =
@@ -114,7 +114,7 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode, url: &
 
             let http_error =
                 ResponseError { status_code, error: reason, message: formatted_body_text };
-            Error::Response { reason: http_error, request_url }
+            Error::Response { reason: http_error, url }
         }
     }
 }
