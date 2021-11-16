@@ -4,7 +4,7 @@ use std::{future::Future, thread};
 
 use reqwest::{Client, RequestBuilder, Response, StatusCode};
 
-use crate::{process_error_response, RetrySettings};
+use crate::{process_error_response, Error, RetrySettings};
 
 // Used only for simple and common GET requests.
 // Functions that require extra logic may not call this.
@@ -19,10 +19,11 @@ where
     let request = client.get(&url);
 
     async move {
-        let (status_code, text) = send_request(request, retry_settings).await?;
+        let (status, text) =
+            send_request(request, retry_settings).await.map_err(|reason| Error::Reqwest(reason))?;
 
-        if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code, &url));
+        if !status.is_success() {
+            return Err(process_error_response(&text, status, &url));
         }
         // This gon have to be removed
         Ok(serde_json::from_str::<T>(&text)?)
@@ -33,7 +34,7 @@ where
 pub(crate) async fn send_request_unprocessed(
     request: RequestBuilder,
     retry_settings: RetrySettings,
-) -> crate::Result<Response> {
+) -> reqwest::Result<Response> {
     for _ in 1..retry_settings.amount {
         let request = clone_request(&request);
         let response = request.send().await;
@@ -54,12 +55,12 @@ pub(crate) async fn send_request_unprocessed(
 pub(crate) async fn send_request(
     request: RequestBuilder,
     retry_settings: RetrySettings,
-) -> crate::Result<(StatusCode, String)> {
+) -> reqwest::Result<(StatusCode, String)> {
     let response = send_request_unprocessed(request, retry_settings).await?;
-    let status_code = response.status();
+    let status = response.status();
     let text = response.text().await?;
 
-    Ok((status_code, text))
+    Ok((status, text))
 }
 
 fn clone_request(request: &RequestBuilder) -> RequestBuilder {

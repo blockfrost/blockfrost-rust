@@ -5,7 +5,7 @@ use crate::{
     error::process_error_response,
     request::{send_request, send_request_unprocessed},
     utils::create_client_with_project_id,
-    Integer, IpfsSettings, RetrySettings,
+    Error, Integer, IpfsSettings, RetrySettings,
 };
 
 /// Provides methods for making requests to the
@@ -48,10 +48,12 @@ impl IpfsApi {
 
         let request = self.client.post(&url).multipart(form);
 
-        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| Error::Reqwest(reason))?;
 
-        if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code, &url));
+        if !status.is_success() {
+            return Err(process_error_response(&text, status, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
@@ -69,14 +71,16 @@ impl IpfsApi {
             + &format!("/ipfs/gateway/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.get(&url);
-        let response = send_request_unprocessed(request, self.retry_settings()).await?;
-        let status_code = response.status();
+        let response = send_request_unprocessed(request, self.retry_settings())
+            .await
+            .map_err(|reason| Error::Reqwest(reason))?;
+        let status = response.status();
 
-        if !status_code.is_success() {
-            let text = response.text().await?;
-            Err(process_error_response(&text, status_code, &url))
+        if !status.is_success() {
+            let text = response.text().await.map_err(|reason| Error::Reqwest(reason))?;
+            Err(process_error_response(&text, status, &url))
         } else {
-            let bytes = response.bytes().await?;
+            let bytes = response.bytes().await.map_err(|reason| Error::Reqwest(reason))?;
             Ok(bytes.to_vec())
         }
     }
@@ -91,9 +95,11 @@ impl IpfsApi {
             + &format!("/ipfs/pin/add/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.post(&url);
-        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
-        if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code, &url));
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| Error::Reqwest(reason))?;
+        if !status.is_success() {
+            return Err(process_error_response(&text, status, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
@@ -108,10 +114,12 @@ impl IpfsApi {
         let url = self.settings.network_address.clone() + "/ipfs/pin/list";
 
         let request = self.client.get(&url);
-        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| Error::Reqwest(reason))?;
 
-        if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code, &url));
+        if !status.is_success() {
+            return Err(process_error_response(&text, status, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
@@ -127,10 +135,12 @@ impl IpfsApi {
             + &format!("/ipfs/pin/list/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.get(&url);
-        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| Error::Reqwest(reason))?;
 
-        if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code, &url));
+        if !status.is_success() {
+            return Err(process_error_response(&text, status, &url));
         }
 
         Ok(serde_json::from_str(&text)?)
@@ -146,10 +156,12 @@ impl IpfsApi {
             + &format!("/ipfs/pin/remove/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.post(&url);
-        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| Error::Reqwest(reason))?;
 
-        if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code, &url));
+        if !status.is_success() {
+            return Err(process_error_response(&text, status, &url));
         }
 
         Ok(serde_json::from_str(&text)?)

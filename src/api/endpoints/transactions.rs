@@ -22,10 +22,12 @@ impl BlockFrostApi {
             .header(content_type_header.0, content_type_header.1)
             .body(body);
 
-        let (status_code, text) = send_request(request, self.settings.retry_settings).await?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| Error::Reqwest(reason))?;
 
-        if !status_code.is_success() {
-            return Err(process_error_response(&text, status_code, &url));
+        if !status.is_success() {
+            return Err(process_error_response(&text, status, &url));
         }
         Ok(serde_json::from_str(&text)?)
     }

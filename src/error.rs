@@ -70,12 +70,6 @@ impl fmt::Display for ResponseError {
 
 impl error::Error for ResponseError {}
 
-impl From<ReqwestError> for Error {
-    fn from(source: ReqwestError) -> Self {
-        Error::Reqwest(source)
-    }
-}
-
 impl From<SerdeJsonError> for Error {
     fn from(source: SerdeJsonError) -> Self {
         Error::Json(source)
