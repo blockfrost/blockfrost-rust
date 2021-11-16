@@ -22,9 +22,8 @@ impl BlockFrostApi {
             .header(content_type_header.0, content_type_header.1)
             .body(body);
 
-        let (status, text) = send_request(request, self.settings.retry_settings)
-            .await
-            .map_err(|reason| Error::Reqwest(reason))?;
+        let (status, text) =
+            send_request(request, self.settings.retry_settings).await.map_err(Error::Reqwest)?;
 
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));

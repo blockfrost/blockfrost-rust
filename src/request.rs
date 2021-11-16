@@ -19,8 +19,7 @@ where
     let request = client.get(&url);
 
     async move {
-        let (status, text) =
-            send_request(request, retry_settings).await.map_err(|reason| Error::Reqwest(reason))?;
+        let (status, text) = send_request(request, retry_settings).await.map_err(Error::Reqwest)?;
 
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
@@ -46,7 +45,7 @@ pub(crate) async fn send_request_unprocessed(
             }
         }
 
-        return Ok(response?);
+        return response;
     }
     Ok(request.send().await?)
 }

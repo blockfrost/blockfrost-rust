@@ -125,7 +125,8 @@ async fn main() -> blockfrost::Result<()> {
     let transactions_redeemers = api.transactions_redeemers(transaction_hash).await;
 
     // Nutlink
-    let address = "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz";
+    let address =
+        "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz";
     let ticker = "ADAUSD";
     let nutlink_address = api.nutlink_address(address).await;
     let nutlink_address_tickers = api.nutlink_address_tickers(address).await;

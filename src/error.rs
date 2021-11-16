@@ -1,12 +1,10 @@
 //! Custom errors from this crate.
 use std::{error, fmt, io, path::PathBuf};
 
-use reqwest::StatusCode;
-use serde::{Deserialize, Serialize};
-
 // Imports with bindings improve how Error is shown in docs
 use io::Error as IoError;
-use reqwest::Error as ReqwestError;
+use reqwest::{Error as ReqwestError, StatusCode};
+use serde::{Deserialize, Serialize};
 use serde_json::Error as SerdeJsonError;
 use toml::de::Error as SerdeTomlError;
 
