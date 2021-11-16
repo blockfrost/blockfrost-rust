@@ -1,3 +1,5 @@
+#![allow(clippy::write_with_newline)]
+
 //! Custom errors from this crate.
 use std::{error, fmt, io, path::PathBuf};
 
@@ -25,18 +27,20 @@ impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Error::Reqwest { url, reason } => {
-                writeln!(f, "reqwest error:")?;
-                writeln!(f, "  url: {}", url)?;
+                write!(f, "reqwest error:\n")?;
+                write!(f, "  url: {}\n", url)?;
                 write!(f, "  reason: {}", reason)
             }
             Error::Json(source) => write!(f, "json err: {}.", source),
             Error::Io(source) => write!(f, "io err: {}.", source),
             Error::Toml { path, reason } => {
-                write!(f, "toml err, url: '{}', reason: {}.", path.display(), reason)
+                write!(f, "toml err:\n")?;
+                write!(f, "url: {}\n", path.display())?;
+                write!(f, "reason: {}.", reason)
             }
             Error::Response { reason, request_url } => {
-                writeln!(f, "response error:")?;
-                writeln!(f, "  url: {}", request_url)?;
+                write!(f, "response error:\n")?;
+                write!(f, "  url: {}\n", request_url)?;
                 reason.fmt(f)
             }
         }
@@ -64,10 +68,9 @@ pub struct ResponseError {
 
 impl fmt::Display for ResponseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        // todo: lower this one level, and reindent in the Display previously called
-        writeln!(f, "  status code: {}", self.status_code)?;
-        writeln!(f, "  error: {}", self.error)?;
-        writeln!(f, "  message: {}", self.message)
+        write!(f, "  status code: {}\n", self.status_code)?;
+        write!(f, "  error: {}\n", self.error)?;
+        write!(f, "  message: {}", self.message)
     }
 }
 
