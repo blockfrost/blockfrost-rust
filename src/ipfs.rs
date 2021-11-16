@@ -2,10 +2,10 @@ use reqwest::multipart::{Form, Part};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    error::process_error_response,
+    error::{process_error_response, reqwest_error},
     request::{send_request, send_request_unprocessed},
     utils::create_client_with_project_id,
-    Error, Integer, IpfsSettings, RetrySettings,
+    Integer, IpfsSettings, RetrySettings,
 };
 
 /// Provides methods for making requests to the
@@ -48,8 +48,9 @@ impl IpfsApi {
 
         let request = self.client.post(&url).multipart(form);
 
-        let (status, text) =
-            send_request(request, self.settings.retry_settings).await.map_err(Error::Reqwest)?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| reqwest_error(&url, reason))?;
 
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
@@ -70,16 +71,17 @@ impl IpfsApi {
             + &format!("/ipfs/gateway/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.get(&url);
+
         let response = send_request_unprocessed(request, self.retry_settings())
             .await
-            .map_err(Error::Reqwest)?;
+            .map_err(|reason| reqwest_error(&url, reason))?;
         let status = response.status();
 
         if !status.is_success() {
-            let text = response.text().await.map_err(Error::Reqwest)?;
+            let text = response.text().await.map_err(|reason| reqwest_error(&url, reason))?;
             Err(process_error_response(&text, status, &url))
         } else {
-            let bytes = response.bytes().await.map_err(Error::Reqwest)?;
+            let bytes = response.bytes().await.map_err(|reason| reqwest_error(&url, reason))?;
             Ok(bytes.to_vec())
         }
     }
@@ -94,8 +96,9 @@ impl IpfsApi {
             + &format!("/ipfs/pin/add/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.post(&url);
-        let (status, text) =
-            send_request(request, self.settings.retry_settings).await.map_err(Error::Reqwest)?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| reqwest_error(&url, reason))?;
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
         }
@@ -112,8 +115,9 @@ impl IpfsApi {
         let url = self.settings.network_address.clone() + "/ipfs/pin/list";
 
         let request = self.client.get(&url);
-        let (status, text) =
-            send_request(request, self.settings.retry_settings).await.map_err(Error::Reqwest)?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| reqwest_error(&url, reason))?;
 
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
@@ -132,8 +136,9 @@ impl IpfsApi {
             + &format!("/ipfs/pin/list/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.get(&url);
-        let (status, text) =
-            send_request(request, self.settings.retry_settings).await.map_err(Error::Reqwest)?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| reqwest_error(&url, reason))?;
 
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
@@ -152,8 +157,9 @@ impl IpfsApi {
             + &format!("/ipfs/pin/remove/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.post(&url);
-        let (status, text) =
-            send_request(request, self.settings.retry_settings).await.map_err(Error::Reqwest)?;
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| reqwest_error(&url, reason))?;
 
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));

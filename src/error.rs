@@ -14,7 +14,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug)]
 pub enum Error {
-    Reqwest(ReqwestError),
+    Reqwest { url: String, reason: ReqwestError },
     Json(SerdeJsonError),
     Io(IoError),
     Toml { path: PathBuf, reason: SerdeTomlError },
@@ -24,7 +24,11 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Error::Reqwest(source) => write!(f, "http err: {}.", source),
+            Error::Reqwest { url, reason } => {
+                writeln!(f, "reqwest error:")?;
+                writeln!(f, "  url: {}", url)?;
+                write!(f, "  reason: {}", reason)
+            }
             Error::Json(source) => write!(f, "json err: {}.", source),
             Error::Io(source) => write!(f, "io err: {}.", source),
             Error::Toml { path, reason } => {
@@ -42,7 +46,7 @@ impl fmt::Display for Error {
 impl error::Error for Error {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match self {
-            Error::Reqwest(source) => Some(source),
+            Error::Reqwest { reason, .. } => Some(reason),
             Error::Json(source) => Some(source),
             Error::Io(source) => Some(source),
             Error::Toml { reason, .. } => Some(reason),
@@ -60,6 +64,7 @@ pub struct ResponseError {
 
 impl fmt::Display for ResponseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        // todo: lower this one level, and reindent in the Display previously called
         writeln!(f, "  status code: {}", self.status_code)?;
         writeln!(f, "  error: {}", self.error)?;
         writeln!(f, "  message: {}", self.message)
@@ -108,4 +113,9 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode, url: &
             Error::Response { reason: http_error, request_url }
         }
     }
+}
+
+// Helper to create a Error::Reqwest
+pub(crate) fn reqwest_error(url: impl ToString, error: reqwest::Error) -> Error {
+    Error::Reqwest { url: url.to_string(), reason: error }
 }

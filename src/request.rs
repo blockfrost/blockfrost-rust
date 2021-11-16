@@ -4,7 +4,7 @@ use std::{future::Future, thread};
 
 use reqwest::{Client, RequestBuilder, Response, StatusCode};
 
-use crate::{process_error_response, Error, RetrySettings};
+use crate::{process_error_response, reqwest_error, RetrySettings};
 
 // Used only for simple and common GET requests.
 // Functions that require extra logic may not call this.
@@ -19,7 +19,9 @@ where
     let request = client.get(&url);
 
     async move {
-        let (status, text) = send_request(request, retry_settings).await.map_err(Error::Reqwest)?;
+        let (status, text) = send_request(request, retry_settings)
+            .await
+            .map_err(|reason| reqwest_error(&url, reason))?;
 
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
