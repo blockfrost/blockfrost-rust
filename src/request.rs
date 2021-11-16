@@ -3,8 +3,9 @@
 use std::{future::Future, thread};
 
 use reqwest::{Client, RequestBuilder, Response, StatusCode};
+use serde_json::from_str as json_from;
 
-use crate::{process_error_response, reqwest_error, RetrySettings};
+use crate::{json_error, process_error_response, reqwest_error, RetrySettings};
 
 // Used only for simple and common GET requests.
 // Functions that require extra logic may not call this.
@@ -26,8 +27,7 @@ where
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
         }
-        // This gon have to be removed
-        Ok(serde_json::from_str::<T>(&text)?)
+        json_from::<T>(&text).map_err(|reason| json_error(url, text, reason))
     }
 }
 

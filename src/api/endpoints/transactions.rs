@@ -1,5 +1,6 @@
 use reqwest::{header::HeaderValue, Body, Method};
 use serde::{Deserialize, Serialize};
+use serde_json::from_str as json_from;
 
 use crate::{request::send_request, url::Url, *};
 
@@ -29,7 +30,7 @@ impl BlockFrostApi {
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
         }
-        Ok(serde_json::from_str(&text)?)
+        Ok(json_from(&text).map_err(|reason| json_error(url, text, reason))?)
     }
 
     endpoints! {

@@ -3,6 +3,8 @@
 //! Custom errors from this crate.
 use std::{error, fmt, io, path::PathBuf};
 
+use serde_json::from_str as json_from;
+
 // Imports with bindings improve how Error is shown in docs
 use io::Error as IoError;
 use reqwest::{Error as ReqwestError, StatusCode};
@@ -17,7 +19,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 #[derive(Debug)]
 pub enum Error {
     Reqwest { url: String, reason: ReqwestError },
-    Json(SerdeJsonError),
+    Json { url: String, text: String, reason: SerdeJsonError },
     Io(IoError),
     Toml { path: PathBuf, reason: SerdeTomlError },
     Response { request_url: String, reason: ResponseError },
@@ -31,7 +33,12 @@ impl fmt::Display for Error {
                 write!(f, "  url: {}\n", url)?;
                 write!(f, "  reason: {}", reason)
             }
-            Error::Json(source) => write!(f, "json err: {}.", source),
+            Error::Json { url, text, reason } => {
+                write!(f, "json error:\n")?;
+                write!(f, "  url: {}\n", url)?;
+                write!(f, "  reason: {}\n", reason)?;
+                write!(f, "  text: '{}'", text)
+            }
             Error::Io(source) => write!(f, "io err: {}.", source),
             Error::Toml { path, reason } => {
                 write!(f, "toml err:\n")?;
@@ -51,7 +58,7 @@ impl error::Error for Error {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match self {
             Error::Reqwest { reason, .. } => Some(reason),
-            Error::Json(source) => Some(source),
+            Error::Json { reason, .. } => Some(reason),
             Error::Io(source) => Some(source),
             Error::Toml { reason, .. } => Some(reason),
             Error::Response { reason, .. } => Some(reason),
@@ -76,12 +83,6 @@ impl fmt::Display for ResponseError {
 
 impl error::Error for ResponseError {}
 
-impl From<SerdeJsonError> for Error {
-    fn from(source: SerdeJsonError) -> Self {
-        Error::Json(source)
-    }
-}
-
 impl From<IoError> for Error {
     fn from(source: IoError) -> Self {
         Error::Io(source)
@@ -103,7 +104,7 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode, url: &
     }
     let request_url = url.into();
 
-    match serde_json::from_str::<ResponseError>(text) {
+    match json_from::<ResponseError>(text) {
         Ok(http_error) => Error::Response { reason: http_error, request_url },
         Err(_) => {
             // Try to format JSON body, or use unformatted body instead
@@ -119,6 +120,11 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode, url: &
 }
 
 // Helper to create a Error::Reqwest
-pub(crate) fn reqwest_error(url: impl ToString, error: reqwest::Error) -> Error {
+pub(crate) fn reqwest_error(url: impl ToString, error: ReqwestError) -> Error {
     Error::Reqwest { url: url.to_string(), reason: error }
+}
+
+// Helper to create a Error::Json
+pub(crate) fn json_error(url: impl ToString, text: impl ToString, error: SerdeJsonError) -> Error {
+    Error::Json { url: url.to_string(), text: text.to_string(), reason: error }
 }
