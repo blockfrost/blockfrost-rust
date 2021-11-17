@@ -8,12 +8,9 @@ use std::{
     task::{Context, Poll},
 };
 
-use crate::{
-    request::send_get_request,
-    stream::{FuturesOrdered, Stream},
-    url::Url,
-    *,
-};
+use futures::stream::{FuturesOrdered, Stream};
+
+use crate::{request::send_get_request, url::Url, *};
 
 type ListerFutureInner<'api, T> = dyn Future<Output = crate::Result<T>> + Send + 'api;
 type ListerFuture<'api, T> = Pin<Box<ListerFutureInner<'api, T>>>;

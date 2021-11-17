@@ -5,7 +5,10 @@ use serde::{Deserialize, Serialize};
 // Use this module as an interface to export all types declared inside of endpoints/
 //
 // These are not used in here, just exporting
-pub use crate::api::endpoints::*;
+pub use crate::{
+    api::endpoints::*,
+    ipfs::{IpfsAdd, IpfsPinList, IpfsPinState, IpfsPinUpdate},
+};
 
 /// Inner member of [`Address`], [`AddressTotal`], [`AddressUtxo`] and [`Transaction`].
 ///

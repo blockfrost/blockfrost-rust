@@ -39,11 +39,11 @@ blockfrost = "0.1.1"
 
 ## Examples
 
-All the examples are located at the [`examples/`](./examples) folder.
+All the examples are located at the [`examples/`] folder.
 
-You might want to check [all_requests.rs] and [ipfs.rs].
+You might want to check [`all_requests.rs`] and [`ipfs.rs`].
 
-Here is [simple_request.rs] with the basic setup necessary and no settings
+Here is [`simple_request.rs`] with the basic setup necessary and no settings
 customization:
 
 ```rust
@@ -66,6 +66,7 @@ async fn main() -> blockfrost::Result<()> {
 }
 ```
 
-[all_requests.rs]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/all_requests.rs
-[ipfs.rs]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/ipfs.rs
-[simple_request.rs]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/simple_request.rs
+[`examples/`]: https://github.com/blockfrost/blockfrost-rust/tree/master/examples
+[`all_requests.rs`]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/all_requests.rs
+[`ipfs.rs`]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/ipfs.rs
+[`simple_request.rs`]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/simple_request.rs

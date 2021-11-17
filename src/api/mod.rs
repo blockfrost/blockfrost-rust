@@ -1,6 +1,6 @@
 // Will be reexported by the parent module.
 pub(super) mod endpoints;
-pub mod lister;
+pub(super) mod lister;
 
 use std::future::Future;
 
@@ -8,7 +8,7 @@ use crate::{
     request::send_get_request, url::Url, utils::create_client_with_project_id, BlockFrostSettings,
 };
 
-/// Provides methods for making requests to the [`BlockFrost API`](https://docs.blockfrost.io).
+/// Provides methods for making requests to the [BlockFrost API](https://docs.blockfrost.io).
 #[derive(Debug, Clone)]
 pub struct BlockFrostApi {
     pub settings: BlockFrostSettings,

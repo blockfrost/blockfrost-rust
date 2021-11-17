@@ -10,7 +10,7 @@ use crate::{
 };
 
 /// Provides methods for making requests to the
-/// [`IPFS API`](https://docs.blockfrost.io/#tag/IPFS-Add).
+/// [IPFS API](https://docs.blockfrost.io/#tag/IPFS-Add).
 #[derive(Debug, Clone)]
 pub struct IpfsApi {
     client: reqwest::Client,

@@ -64,9 +64,9 @@ macro_rules! def_endpoint_paginated {
       pub fn [<$name _all>]<'api>(
         &'api self
         $(, $param: $ptype)*
-      ) -> Lister<'api, $ret> {
+      ) -> $crate::stream::Lister<'api, $ret> {
         let endpoint = format!($route $(, $param = $param)*);
-        Lister::list_from_endpoint(self, endpoint)
+        $crate::stream::Lister::list_from_endpoint(self, endpoint)
       }
     }
   };

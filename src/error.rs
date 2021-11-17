@@ -66,6 +66,7 @@ impl error::Error for Error {
     }
 }
 
+///
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ResponseError {
     status_code: u16,
