@@ -1,11 +1,14 @@
-use reqwest::multipart::{Form, Part};
+use reqwest::{
+    multipart::{Form, Part},
+    ClientBuilder,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::from_str as json_from;
 
 use crate::{
     error::{json_error, process_error_response, reqwest_error},
     request::{send_request, send_request_unprocessed},
-    utils::create_client_with_project_id,
+    utils::{build_header_map, create_client_with_project_id},
     Integer, IpfsSettings, RetrySettings,
 };
 
@@ -30,6 +33,34 @@ impl IpfsApi {
     pub fn new(project_id: impl AsRef<str>, settings: IpfsSettings) -> Self {
         let client = create_client_with_project_id(project_id.as_ref());
         Self { client, settings }
+    }
+
+    /// Create a [`IpfsApi`] with [custom settings](IpfsSettings) and [custom client](ClientBuilder).
+    ///
+    /// This function is a more flexible version of [`IpfsApi::new`], you can customize every
+    /// field of the [`ClientBuilder`] argument, however, note that the [`HeaderMap`] will be
+    /// [overwritten](ClientBuilder::default_headers) by a map with the given `project_id`.
+    ///
+    /// If `client_builder` argument is equivalent to `Client::builder()` or `ClientBuilder::new()`,
+    /// this function returns the same as [`IpfsApi::new`] without the extra argument.
+    ///
+    /// # Panics
+    ///
+    /// This function might panic if `project_id` could not be converted into a [`HeaderValue`] with
+    /// the function [`HeaderValue::from_str`].
+    ///
+    /// [`HeaderMap`]: reqwest::header::HeaderMap
+    /// [`HeaderValue`]: reqwest::header::HeaderValue
+    /// [`HeaderValue::from_str`]: reqwest::header::HeaderValue::from_str
+    pub fn new_with_client(
+        project_id: impl AsRef<str>,
+        settings: IpfsSettings,
+        client_builder: ClientBuilder,
+    ) -> reqwest::Result<Self> {
+        client_builder
+            .default_headers(build_header_map(project_id.as_ref()))
+            .build()
+            .map(|client| Self { settings, client })
     }
 
     /// Adding a file to `IPFS`.
