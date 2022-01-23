@@ -104,7 +104,7 @@ pub struct Transaction {
     /// Left (included) endpoint of the timelock validity intervals.
     pub invalid_before: Option<String>,
     /// Right (excluded) endpoint of the timelock validity intervals.
-    pub invalid_hereafter: String,
+    pub invalid_hereafter: Option<String>,
     /// Count of UTXOs within the transaction.
     pub utxo_count: Integer,
     /// Count of the withdrawals within the transaction.
@@ -370,6 +370,40 @@ mod tests {
       "redeemer_count": 0
     }
     "# }
+
+    test_example! { test_transaction_null_invalid_hereafter, Transaction, r#"{
+      "hash": "78e5821367cd4e2fbfce4d32c3ecededd388f13118f06b959015c2aad19b5cd8",
+      "block": "bb4003096f11eaaca11d3705db62637f311f93671fcb4d4b3cf8749a90ea4b74",
+      "block_height": 6352717,
+      "block_time": 1633861069,
+      "slot": 42294778,
+      "index": 9,
+      "output_amount": [
+        {
+          "unit": "lovelace",
+          "quantity": "4828735"
+        },
+        {
+          "unit": "29d222ce763455e3d7a09a665ce554f00ac89d2e99a1a83d267170c64d494e",
+          "quantity": "25000000000000"
+        }
+      ],
+      "fees": "171265",
+      "deposit": "0",
+      "size": 357,
+      "invalid_before": null,
+      "invalid_hereafter": null,
+      "utxo_count": 3,
+      "withdrawal_count": 0,
+      "mir_cert_count": 0,
+      "delegation_count": 0,
+      "stake_cert_count": 0,
+      "pool_update_count": 0,
+      "pool_retire_count": 0,
+      "asset_mint_or_burn_count": 1,
+      "redeemer_count": 0,
+      "valid_contract": true
+    }"# }
 
     test_example! { test_transaction_utxos, TransactionUtxos, r#"
     {
