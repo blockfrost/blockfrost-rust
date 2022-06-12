@@ -1,7 +1,7 @@
 max_width = 100
 use_field_init_shorthand = true
 newline_style = "Unix"
-edition = "2018"
+edition = "2021"
 reorder_imports = true
 reorder_modules = true
 use_try_shorthand = true
