@@ -69,9 +69,9 @@ impl error::Error for Error {
 ///
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ResponseError {
-    status_code: u16,
-    error: String,
-    message: String,
+    pub status_code: u16,
+    pub error: String,
+    pub message: String,
 }
 
 impl fmt::Display for ResponseError {
