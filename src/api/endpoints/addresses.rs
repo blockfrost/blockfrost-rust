@@ -56,7 +56,7 @@ pub struct AddressUtxo {
     /// Transaction hash of the UTXO.
     pub tx_hash: String,
     /// UTXO index in the transaction.
-    pub output_index: Integer,
+    pub output_index: u32,
     /// Sum of assets for this UTXO.
     pub amount: Vec<Amount>,
     /// Block number of the UTXO.
