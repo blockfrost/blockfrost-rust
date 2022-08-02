@@ -91,6 +91,7 @@ async fn main() -> blockfrost::Result<()> {
     let blocks_next = api.blocks_next(block).await;
     let blocks_previous = api.blocks_previous(block).await;
     let blocks_txs = api.blocks_txs(block).await;
+    let blocks_affected_addresses = api.blocks_affected_addresses("3746845").await;
 
     // Ledger
     let genesis = api.genesis().await;
@@ -185,6 +186,7 @@ async fn main() -> blockfrost::Result<()> {
     println!("blocks_next: {:#?}", blocks_next);
     println!("blocks_previous: {:#?}", blocks_previous);
     println!("blocks_txs: {:#?}", blocks_txs);
+    println!("blocks_affected_addresses: {:#?}", blocks_affected_addresses);
     println!("genesis: {:#?}", genesis);
     println!("metadata_txs_labels: {:#?}", metadata_txs_labels);
     println!("metadata_txs_by_label: {:#?}", metadata_txs_by_label);

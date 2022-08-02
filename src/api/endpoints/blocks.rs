@@ -36,6 +36,10 @@ impl BlockFrostApi {
         /// Return the transactions within the block.
         blocks_txs(hash_or_number: &str) -> Vec<String> => "/blocks/{hash_or_number}/txs";
             ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1{hash_or_number}~1txs/get"),
+
+        /// Return list of addresses affected in the specified block with additional information, sorted by the bech32 address, ascending.
+        blocks_affected_addresses(hash_or_number: &str) -> Vec<AffectedAddress> => "/blocks/{hash_or_number}/addresses";
+        ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1{hash_or_number}~1txs/get"),
     }
 }
 
@@ -80,6 +84,19 @@ pub struct Block {
     pub next_block: Option<String>,
     /// Number of block confirmations.
     pub confirmations: Integer,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct AffectedAddress {
+    /// Bech32 encoded addresses.
+    pub address: String,
+    /// Sum of all transaction.
+    pub transactions: Vec<TxHash>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct TxHash {
+    /// Transaction hash of the UTXO.
+    pub tx_hash: String,
 }
 
 #[cfg(test)]
