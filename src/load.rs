@@ -25,14 +25,20 @@ const NETWORKS: [&str; 2] = ["cardano", "ipfs"];
 /// Note: if no config file is found, this function only loads configurations from ENV vars, and
 /// it's guaranteed to not panic or return errors.
 ///
-/// | `TOML` key        | Environment variable         |
-/// |-------------------|------------------------------|
-/// | `project_id`      | `BLOCKFROST_PROJECT_ID`      |
-/// | `cardano_network` | `BLOCKFROST_CARDANO_NETWORK` |
-/// | `ipfs_network`    | `BLOCKFROST_IPFS_NETWORK`    |
+/// If you want to use both IPFS and Cardano, you can specify a table in the TOML file or use
+/// environment variables to configure both project ids.
+///
+/// | `TOML` key           | Environment variable            |
+/// |----------------------|---------------------------------|
+/// | `project_id`         | `BLOCKFROST_PROJECT_ID`         |
+/// | `cardano_network`    | `BLOCKFROST_CARDANO_NETWORK`    |
+/// | `ipfs_network`       | `BLOCKFROST_IPFS_NETWORK`       |
+/// | `cardano.project_id` | `BLOCKFROST_CARDANO_PROJECT_ID` |
+/// | `ipfs.project_id`    | `BLOCKFROST_IPFS_PROJECT_ID`    |
 ///
 /// This means that if `BLOCKFROST_PROJECT_ID` is detected, you will be able to access it with
-/// `toml_value["project_id"]`.
+/// `toml_value["project_id"]`. If `BLOCKFROST_IPFS_PROJECT_ID` is configured, you could access
+/// it with `toml_value["ipfs"]["project_id"].
 ///
 /// # TOML file:
 ///
@@ -42,6 +48,17 @@ const NETWORKS: [&str; 2] = ["cardano", "ipfs"];
 /// project_id = "RXVW6SzwSojl2IXpKucPQBB7QgQoMTTe"
 /// cardano_network = "https://cardano-mainnet.blockfrost.io/api/v0"
 /// ipfs_network = "https://ipfs.blockfrost.io/api/v0"
+/// ```
+///
+/// If you want to use both IPFS and Cardano, your TOML file could look like this:
+/// ```toml
+/// [cardano]
+/// project_id = "mainnetXXXX"
+/// network = "https://cardano-mainnet.blockfrost.io/api/v0"
+///
+/// [ipfs]
+/// project_id = "ipfsXXXX"
+/// network = "https://ipfs.blockfrost.io/api/v0"
 /// ```
 ///
 /// # Loading configs example:
@@ -57,6 +74,45 @@ const NETWORKS: [&str; 2] = ["cardano", "ipfs"];
 ///     let api = BlockFrostApi::new(project_id, Default::default());
 ///     Ok(api)
 /// }
+/// ```
+///
+/// Or to build specific IPFS and Cardano clients:
+///
+/// ```
+/// use blockfrost::{load, BlockFrostApi, BlockFrostSettings, IpfsApi, IpfsSettings};
+///
+/// fn build_cardano_api() -> Option<BlockFrostApi> {
+///     let config = load::configurations_from_env().ok()?;
+///     let cardano_config = &config["cardano"];
+///     match (cardano_config["project_id"].as_str(), cardano_config["network"].as_str()) {
+///         (Ok(project_id), Ok(network)) => {
+///             let api = BlockFrostApi::new(project_id, BlockFrostSettings {
+///                 network_address: network.to_string(),
+///                 ..Default::default(),
+///             });
+///
+///             Some(api)
+///         }
+///         _ => None
+///     }
+/// }
+///
+/// fn build_blockfrost_ipfs() -> Option<IpfsApi> {
+///    let config = blockfrost::load::configurations_from_env().ok()?;
+///    let ipfs_config = &config["ipfs"];
+///    match (ipfs_config["project_id"].as_str(), ipfs_config["network"].as_str()) {
+///        (Some(project_id), Some(network)) => {
+///            let api = IpfsApi::new(project_id, IpfsSettings {
+///                network_address: network.to_string(),
+///                ..Default::default()
+///            });
+///
+///            Some(api)
+///        }
+///        _ => None,
+///    }
+///}
+///
 /// ```
 pub fn configurations_from_env() -> crate::Result<TomlValue> {
     let config_file = scan_directories_for_config_file()?;
@@ -122,6 +178,7 @@ fn scan_directories_for_config_file() -> crate::Result<Option<PathBuf>> {
     }
 }
 
+// Builds network specific configuration from environment
 fn build_network_config(name: &str) -> Option<TomlValue> {
     match env::var(format!("BLOCKFROST_{}_PROJECT_ID", name.to_uppercase())) {
         Ok(var) => {
