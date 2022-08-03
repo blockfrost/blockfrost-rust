@@ -7,9 +7,11 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use toml::Value as TomlValue;
+use toml::{value::Map, Value as TomlValue};
 
 use crate::Error;
+
+const NETWORKS: [&str; 2] = ["cardano", "ipfs"];
 
 /// Loads configuration from env vars and config file.
 ///
@@ -79,6 +81,12 @@ pub fn configurations_from_env() -> crate::Result<TomlValue> {
             toml_table.insert("ipfs_network".to_string(), TomlValue::String(var));
         }
 
+        for network in NETWORKS {
+            build_network_config(network).map(|x| {
+                toml_table.insert(network.to_string(), x);
+            });
+        }
+
         TomlValue::Table(toml_table)
     }))
 }
@@ -111,5 +119,20 @@ fn scan_directories_for_config_file() -> crate::Result<Option<PathBuf>> {
         } else {
             return Ok(None);
         }
+    }
+}
+
+fn build_network_config(name: &str) -> Option<TomlValue> {
+    match env::var(format!("BLOCKFROST_{}_PROJECT_ID", name.to_uppercase())) {
+        Ok(var) => {
+            let mut map = Map::from_iter([("project_id".to_string(), TomlValue::String(var))]);
+
+            if let Ok(var) = env::var(format!("BLOCKFROST_{}_NETWORK", name.to_uppercase())) {
+                map.insert("network".to_string(), TomlValue::String(var));
+            }
+
+            Some(TomlValue::Table(map))
+        }
+        _ => None,
     }
 }
