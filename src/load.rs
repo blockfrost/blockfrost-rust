@@ -112,7 +112,6 @@ const NETWORKS: [&str; 2] = ["cardano", "ipfs"];
 ///        _ => None,
 ///    }
 ///}
-///
 /// ```
 pub fn configurations_from_env() -> crate::Result<TomlValue> {
     let config_file = scan_directories_for_config_file()?;
