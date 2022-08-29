@@ -89,6 +89,8 @@ pub struct Transaction {
     pub block: String,
     /// Block number.
     pub block_height: Integer,
+    /// Block creation time in UNIX time.
+    pub block_time: Integer,
     /// Slot number.
     pub slot: Integer,
     /// Transaction index within the block.
@@ -262,7 +264,7 @@ pub struct TransactionUtxosInput {
     /// Hash of the UTXO transaction.
     pub tx_hash: String,
     /// UTXO index in the transaction.
-    pub output_index: Float,
+    pub output_index: Integer,
     /// The hash of the transaction output datum.
     pub data_hash: Option<String>,
     // Whether the input is a collateral consumed on script validation failure.
@@ -277,6 +279,8 @@ pub struct TransactionUtxosOutput {
     pub amount: Vec<Amount>,
     /// The hash of the transaction output datum.
     pub data_hash: Option<String>,
+    /// UTXO index in the transaction.
+    pub output_index: Integer,
 }
 
 /// Inner enum for [`TransactionMir`].
