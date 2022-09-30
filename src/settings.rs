@@ -1,6 +1,8 @@
 use std::{fmt, time::Duration};
 
-use crate::{CARDANO_MAINNET_NETWORK, CARDANO_TESTNET_NETWORK, IPFS_NETWORK};
+use crate::{
+    CARDANO_MAINNET_NETWORK, CARDANO_PREVIEWNET_NETWORK, CARDANO_TESTNET_NETWORK, IPFS_NETWORK,
+};
 
 /// Customizable settings for requests made with [`BlockFrostApi`](crate::BlockFrostApi).
 #[derive(Debug, Clone)]
@@ -35,6 +37,12 @@ impl BlockFrostSettings {
     /// Change network to [`CARDANO_TESTNET_NETWORK`].
     pub fn use_testnet(mut self) -> Self {
         self.network_address = CARDANO_TESTNET_NETWORK.to_owned();
+        self
+    }
+
+    /// Change network to [`CARDANO_PREVIEWNET_NETWORK`].
+    pub fn use_previewnet(mut self) -> Self {
+        self.network_address = CARDANO_PREVIEWNET_NETWORK.to_owned();
         self
     }
 }
