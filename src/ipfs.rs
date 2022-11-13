@@ -88,7 +88,7 @@ impl IpfsApi {
             return Err(process_error_response(&text, status, &url));
         }
 
-        Ok(json_from(&text).map_err(|reason| json_error(url, text, reason))?)
+        json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
     /// Retrieve an object from the IFPS gateway.
@@ -135,7 +135,7 @@ impl IpfsApi {
             return Err(process_error_response(&text, status, &url));
         }
 
-        Ok(json_from(&text).map_err(|reason| json_error(url, text, reason))?)
+        json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
     /// List objects pinned to local storage.
@@ -155,7 +155,7 @@ impl IpfsApi {
             return Err(process_error_response(&text, status, &url));
         }
 
-        Ok(json_from(&text).map_err(|reason| json_error(url, text, reason))?)
+        json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
     /// Get information about locally pinned IPFS object.
@@ -176,7 +176,7 @@ impl IpfsApi {
             return Err(process_error_response(&text, status, &url));
         }
 
-        Ok(json_from(&text).map_err(|reason| json_error(url, text, reason))?)
+        json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
     /// Remove pinned objects from local storage.
@@ -197,7 +197,7 @@ impl IpfsApi {
             return Err(process_error_response(&text, status, &url));
         }
 
-        Ok(json_from(&text).map_err(|reason| json_error(url, text, reason))?)
+        json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
     pub(crate) fn retry_settings(&self) -> RetrySettings {
