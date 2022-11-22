@@ -65,6 +65,10 @@ pub mod stream {
 pub const CARDANO_MAINNET_NETWORK: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
 /// The URL of the [BlockFrost API](https://docs.blockfrost.io) for the Cardano testnet.
 pub const CARDANO_TESTNET_NETWORK: &str = "https://cardano-testnet.blockfrost.io/api/v0";
+/// The URL of the [BlockFrost API](https://docs.blockfrost.io) for the Cardano preview net.
+pub const CARDANO_PREVIEWNET_NETWORK: &str = "https://cardano-preview.blockfrost.io/api/v0";
+/// The URL of the [BlockFrost API](https://docs.blockfrost.io) for the Cardano preview net.
+pub const CARDANO_PREPRODNET_NETWORK: &str = "https://cardano-preprod.blockfrost.io/api/v0";
 /// The URL of the BlockFrost IPFS network.
 pub const IPFS_NETWORK: &str = "https://ipfs.blockfrost.io/api/v0";
 

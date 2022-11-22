@@ -59,20 +59,28 @@ use crate::Error;
 pub fn configurations_from_env() -> crate::Result<TomlValue> {
     let config_file = scan_directories_for_config_file()?;
 
-    let mut toml_value = match &config_file {
+    let toml_value = match &config_file {
         Some(file_path) => load_toml_from_path(file_path)?,
         None => TomlValue::Table(Default::default()),
     };
 
-    if let Ok(var) = env::var("BLOCKFROST_NETWORK_ADDRESS") {
-        toml_value["blockfrost-network-address"] = TomlValue::String(var);
-    }
+    Ok(toml_value.as_table().map_or(toml_value.clone(), |x| {
+        let mut toml_table = x.to_owned();
 
-    if let Ok(var) = env::var("BLOCKFROST_NETWORK_ADDRESS") {
-        toml_value["blockfrost-project-id"] = TomlValue::String(var);
-    }
+        if let Ok(var) = env::var("BLOCKFROST_PROJECT_ID") {
+            toml_table.insert("project_id".to_string(), TomlValue::String(var));
+        }
 
-    Ok(toml_value)
+        if let Ok(var) = env::var("BLOCKFROST_CARDANO_NETWORK") {
+            toml_table.insert("cardano_network".to_string(), TomlValue::String(var));
+        }
+
+        if let Ok(var) = env::var("BLOCKFROST_IPFS_NETWORK") {
+            toml_table.insert("ipfs_network".to_string(), TomlValue::String(var));
+        }
+
+        TomlValue::Table(toml_table)
+    }))
 }
 
 fn load_toml_from_path(path: &Path) -> crate::Result<TomlValue> {
