@@ -49,7 +49,7 @@ pub(crate) async fn send_request_unprocessed(
 
         return response;
     }
-    Ok(request.send().await?)
+    request.send().await
 }
 
 // Calls send_request_unprocessed but break is down

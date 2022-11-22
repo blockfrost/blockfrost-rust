@@ -30,7 +30,7 @@ impl BlockFrostApi {
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));
         }
-        Ok(json_from(&text).map_err(|reason| json_error(url, text, reason))?)
+        json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
     endpoints! {
