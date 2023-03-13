@@ -1,7 +1,7 @@
 use std::{fmt, time::Duration};
 
 use crate::{
-    CARDANO_MAINNET_NETWORK, CARDANO_PREPRODNET_NETWORK, CARDANO_PREVIEWNET_NETWORK,
+    CARDANO_MAINNET_NETWORK, CARDANO_PREPROD_NETWORK, CARDANO_PREVIEW_NETWORK,
     CARDANO_TESTNET_NETWORK, IPFS_NETWORK,
 };
 
@@ -41,15 +41,15 @@ impl BlockFrostSettings {
         self
     }
 
-    /// Change network to [`CARDANO_PREPRODNET_NETWORK`].
-    pub fn use_preprodnet(mut self) -> Self {
-        self.network_address = CARDANO_PREPRODNET_NETWORK.to_owned();
+    /// Change network to [`CARDANO_PREPROD_NETWORK`].
+    pub fn use_preprod(mut self) -> Self {
+        self.network_address = CARDANO_PREPROD_NETWORK.to_owned();
         self
     }
 
-    /// Change network to [`CARDANO_PREVIEWNET_NETWORK`].
-    pub fn use_previewnet(mut self) -> Self {
-        self.network_address = CARDANO_PREVIEWNET_NETWORK.to_owned();
+    /// Change network to [`CARDANO_PREVIEW_NETWORK`].
+    pub fn use_preview(mut self) -> Self {
+        self.network_address = CARDANO_PREVIEW_NETWORK.to_owned();
         self
     }
 }

@@ -10,7 +10,7 @@ fn build_api() -> blockfrost::Result<BlockFrostApi> {
 #[tokio::main]
 async fn main() -> blockfrost::Result<()> {
     let mut api = build_api()?;
-    api.settings = api.settings.use_previewnet();
+    api.settings = api.settings.use_preview();
     let genesis = api.genesis().await?;
     println!("{:#?}", genesis);
     Ok(())
