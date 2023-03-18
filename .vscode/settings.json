@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
+        "Adress",
+        "Bech",
         "blockfrost",
         "CARDANO",
         "cbor",
@@ -7,6 +9,7 @@
         "ipfs",
         "Nutlink",
         "reqwest",
+        "UTXO",
         "utxos"
     ]
 }

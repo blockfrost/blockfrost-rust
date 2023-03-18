@@ -52,6 +52,7 @@ fn create_query_parameters_suffix(parameters: &QueryParameters, page: Option<u32
 
     let QueryParameters { count, order, from, to, .. } = &parameters;
     let mut string = String::new();
+
     if let Some(count) = count {
         append_parameter(&mut string, "count", count.to_string());
     }
