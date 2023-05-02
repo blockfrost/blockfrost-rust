@@ -13,7 +13,7 @@ impl BlockFrostApi {
             ("https://docs.blockfrost.io/#tag/Cardano-Scripts/paths/~1scripts~1{script_hash}/get"),
 
         /// List of redeemers of a specific script.
-        scripts_redeemers(script_hash: &str) -> Vec<ScriptRedeemer> => "/scripts/{script_hash}/redemeers";
+        scripts_redeemers(script_hash: &str) -> Vec<ScriptRedeemer> => "/scripts/{script_hash}/redeemers";
             ("https://docs.blockfrost.io/#tag/Cardano-Scripts/paths/~1scripts~1{script_hash}~1redeemers/get"),
     }
 }

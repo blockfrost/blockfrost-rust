@@ -19,7 +19,6 @@ pub(crate) fn create_client_with_project_id(project_id: impl AsRef<str>) -> Clie
 
 pub(crate) fn build_header_map(project_id: &str) -> HeaderMap {
     let mut header_map = HeaderMap::new();
-
     let mut project_id = HeaderValue::from_str(project_id).unwrap_or_else(|_| {
         panic!(
             "Cannot create reqwest::Client because given project_id '{}'cannot be parsed as HeaderValue",
