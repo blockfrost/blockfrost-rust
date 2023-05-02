@@ -2,6 +2,8 @@
 name = "blockfrost"
 version = "0.2.1"
 edition = "2021"
+keywords = ["blockfrost", "blockchain", "cardano", "ipfs", "nft", "rust"]
+categories = ["cardano", "ipfs", "nft", "blockchain"]
 description = "A Rust SDK for Blockfrost.io API"
 license = "Apache-2.0"
 repository = "https://github.com/blockfrost/blockfrost-rust"

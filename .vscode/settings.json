@@ -1,15 +1,18 @@
 {
-    "cSpell.words": [
-        "Adress",
-        "Bech",
-        "blockfrost",
-        "CARDANO",
-        "cbor",
-        "delegators",
-        "ipfs",
-        "Nutlink",
-        "reqwest",
-        "UTXO",
-        "utxos"
-    ]
+  "cSpell.words": [
+    "Adress",
+    "Bech",
+    "blockfrost",
+    "CARDANO",
+    "cbor",
+    "delegators",
+    "deregistration",
+    "ipfs",
+    "Lovelaces",
+    "Nutlink",
+    "redemeers",
+    "reqwest",
+    "UTXO",
+    "utxos"
+  ]
 }
