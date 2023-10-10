@@ -2,15 +2,13 @@
 //!
 //! See [`Lister`].
 
+use crate::{request::send_get_request, url::Url, *};
+use futures::stream::{FuturesOrdered, Stream};
 use std::{
     future::Future,
     pin::Pin,
     task::{Context, Poll},
 };
-
-use futures::stream::{FuturesOrdered, Stream};
-
-use crate::{request::send_get_request, url::Url, *};
 
 type ListerFutureInner<'api, T> = dyn Future<Output = crate::Result<T>> + Send + 'api;
 type ListerFuture<'api, T> = Pin<Box<ListerFutureInner<'api, T>>>;
@@ -30,7 +28,12 @@ impl<T> Lister<'_, T> {
     pub(crate) fn list_from_endpoint(api: &BlockFrostApi, endpoint: String) -> Lister<'_, T> {
         let inner = FuturesOrdered::<ListerFuture<T>>::new();
         let current_page = api.settings.query_parameters.page.unwrap_or(1);
-        Lister { inner, endpoint, api, current_page }
+        Lister {
+            inner,
+            endpoint,
+            api,
+            current_page,
+        }
     }
 }
 

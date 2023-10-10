@@ -18,11 +18,24 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug)]
 pub enum Error {
-    Reqwest { url: String, reason: ReqwestError },
-    Json { url: String, text: String, reason: SerdeJsonError },
+    Reqwest {
+        url: String,
+        reason: ReqwestError,
+    },
+    Json {
+        url: String,
+        text: String,
+        reason: SerdeJsonError,
+    },
     Io(IoError),
-    Toml { path: PathBuf, reason: SerdeTomlError },
-    Response { url: String, reason: ResponseError },
+    Toml {
+        path: PathBuf,
+        reason: SerdeTomlError,
+    },
+    Response {
+        url: String,
+        reason: ResponseError,
+    },
 }
 
 impl fmt::Display for Error {
@@ -32,24 +45,24 @@ impl fmt::Display for Error {
                 write!(f, "reqwest error:\n")?;
                 write!(f, "  url: {}\n", url)?;
                 write!(f, "  reason: {}", reason)
-            }
+            },
             Error::Json { url, text, reason } => {
                 write!(f, "json error:\n")?;
                 write!(f, "  url: {}\n", url)?;
                 write!(f, "  reason: {}\n", reason)?;
                 write!(f, "  text: '{}'", text)
-            }
+            },
             Error::Io(source) => write!(f, "io err: {}.", source),
             Error::Toml { path, reason } => {
                 write!(f, "toml err:\n")?;
                 write!(f, "url: {}\n", path.display())?;
                 write!(f, "reason: {}.", reason)
-            }
+            },
             Error::Response { reason, url } => {
                 write!(f, "response error:\n")?;
                 write!(f, "  url: {}\n", url)?;
                 reason.fmt(f)
-            }
+            },
         }
     }
 }
@@ -106,26 +119,42 @@ pub(crate) fn process_error_response(text: &str, status_code: StatusCode, url: &
     let url = url.into();
 
     match json_from::<ResponseError>(text) {
-        Ok(http_error) => Error::Response { reason: http_error, url },
+        Ok(http_error) => Error::Response {
+            reason: http_error,
+            url,
+        },
         Err(_) => {
             // Try to format JSON body, or use unformatted body instead
             let formatted_body_text =
                 utils::try_formatting_json(text).unwrap_or_else(|_| text.to_owned());
             let reason = "Could not parse error body to interpret the reason of the error".into();
 
-            let http_error =
-                ResponseError { status_code, error: reason, message: formatted_body_text };
-            Error::Response { reason: http_error, url }
-        }
+            let http_error = ResponseError {
+                status_code,
+                error: reason,
+                message: formatted_body_text,
+            };
+            Error::Response {
+                reason: http_error,
+                url,
+            }
+        },
     }
 }
 
 // Helper to create a Error::Reqwest
 pub(crate) fn reqwest_error(url: impl ToString, error: ReqwestError) -> Error {
-    Error::Reqwest { url: url.to_string(), reason: error }
+    Error::Reqwest {
+        url: url.to_string(),
+        reason: error,
+    }
 }
 
 // Helper to create a Error::Json
 pub(crate) fn json_error(url: impl ToString, text: impl ToString, error: SerdeJsonError) -> Error {
-    Error::Json { url: url.to_string(), text: text.to_string(), reason: error }
+    Error::Json {
+        url: url.to_string(),
+        text: text.to_string(),
+        reason: error,
+    }
 }

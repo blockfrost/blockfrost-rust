@@ -97,7 +97,11 @@ impl QueryParameters {
     ///
     /// The accepted range is 1..=100, if not in range, will be set to the default.
     pub fn set_count(&mut self, count: u8) -> &mut Self {
-        let count = if (1..=100).contains(&count) { count } else { 100 };
+        let count = if (1..=100).contains(&count) {
+            count
+        } else {
+            100
+        };
         self.count = Some(count);
         self
     }

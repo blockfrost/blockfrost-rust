@@ -147,7 +147,10 @@ async fn main() -> blockfrost::Result<()> {
     println!("accounts_withdrawals: {:#?}", accounts_withdrawals);
     println!("accounts_mirs: {:#?}", accounts_mirs);
     println!("accounts_addresses: {:#?}", accounts_addresses);
-    println!("accounts_addresses_assets: {:#?}", accounts_addresses_assets);
+    println!(
+        "accounts_addresses_assets: {:#?}",
+        accounts_addresses_assets
+    );
     println!("addresses: {:#?}", addresses);
     println!("addresses_total: {:#?}", addresses_total);
     println!("addresses_utxos: {:#?}", addresses_utxos);
@@ -186,11 +189,17 @@ async fn main() -> blockfrost::Result<()> {
     println!("blocks_next: {:#?}", blocks_next);
     println!("blocks_previous: {:#?}", blocks_previous);
     println!("blocks_txs: {:#?}", blocks_txs);
-    println!("blocks_affected_addresses: {:#?}", blocks_affected_addresses);
+    println!(
+        "blocks_affected_addresses: {:#?}",
+        blocks_affected_addresses
+    );
     println!("genesis: {:#?}", genesis);
     println!("metadata_txs_labels: {:#?}", metadata_txs_labels);
     println!("metadata_txs_by_label: {:#?}", metadata_txs_by_label);
-    println!("metadata_txs_by_label_cbor: {:#?}", metadata_txs_by_label_cbor);
+    println!(
+        "metadata_txs_by_label_cbor: {:#?}",
+        metadata_txs_by_label_cbor
+    );
     println!("network: {:#?}", network);
     println!("scripts: {:#?}", scripts);
     println!("scripts_by_id: {:#?}", scripts_by_id);
@@ -201,14 +210,26 @@ async fn main() -> blockfrost::Result<()> {
     println!("transactions_delegations: {:#?}", transactions_delegations);
     println!("transactions_withdrawals: {:#?}", transactions_withdrawals);
     println!("transactions_mirs: {:#?}", transactions_mirs);
-    println!("transactions_pool_updates: {:#?}", transactions_pool_updates);
-    println!("transactions_pool_retires: {:#?}", transactions_pool_retires);
+    println!(
+        "transactions_pool_updates: {:#?}",
+        transactions_pool_updates
+    );
+    println!(
+        "transactions_pool_retires: {:#?}",
+        transactions_pool_retires
+    );
     println!("transactions_metadata: {:#?}", transactions_metadata);
-    println!("transactions_metadata_cbor: {:#?}", transactions_metadata_cbor);
+    println!(
+        "transactions_metadata_cbor: {:#?}",
+        transactions_metadata_cbor
+    );
     println!("transactions_redeemers: {:#?}", transactions_redeemers);
     println!("nutlink_address: {:#?}", nutlink_address);
     println!("nutlink_address_tickers: {:#?}", nutlink_address_tickers);
-    println!("nutlink_address_ticker_by_id: {:#?}", nutlink_address_ticker_by_id);
+    println!(
+        "nutlink_address_ticker_by_id: {:#?}",
+        nutlink_address_ticker_by_id
+    );
     println!("nutlink_ticker_by_id: {:#?}", nutlink_ticker_by_id);
 
     Ok(())

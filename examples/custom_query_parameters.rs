@@ -5,7 +5,11 @@ fn build_api() -> blockfrost::Result<BlockFrostApi> {
     let project_id = configurations["project_id"].as_str().unwrap();
     let settings = {
         let mut settings = BlockFrostSettings::new();
-        settings.query_parameters.set_count(5).set_page(10).set_order(QueryOrder::Descending);
+        settings
+            .query_parameters
+            .set_count(5)
+            .set_page(10)
+            .set_order(QueryOrder::Descending);
         settings
     };
     let api = BlockFrostApi::new(project_id, settings);

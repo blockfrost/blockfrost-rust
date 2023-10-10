@@ -25,7 +25,10 @@ impl BlockFrostApi {
 
         let (status, text) = send_request(request, self.settings.retry_settings)
             .await
-            .map_err(|reason| Error::Reqwest { url: url.clone(), reason })?;
+            .map_err(|reason| Error::Reqwest {
+                url: url.clone(),
+                reason,
+            })?;
 
         if !status.is_success() {
             return Err(process_error_response(&text, status, &url));

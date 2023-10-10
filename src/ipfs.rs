@@ -110,10 +110,16 @@ impl IpfsApi {
         let status = response.status();
 
         if !status.is_success() {
-            let text = response.text().await.map_err(|reason| reqwest_error(&url, reason))?;
+            let text = response
+                .text()
+                .await
+                .map_err(|reason| reqwest_error(&url, reason))?;
             Err(process_error_response(&text, status, &url))
         } else {
-            let bytes = response.bytes().await.map_err(|reason| reqwest_error(&url, reason))?;
+            let bytes = response
+                .bytes()
+                .await
+                .map_err(|reason| reqwest_error(&url, reason))?;
             Ok(bytes.to_vec())
         }
     }
