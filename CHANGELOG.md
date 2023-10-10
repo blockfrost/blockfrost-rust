@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.0.0 - 2023-xx-xx
+
+### Added
+
+- Github Continuous integration
+- Cargo Clippy + rustfmt
+
 ## 0.2.1 - 2023-05-02
 
 ### Changed
