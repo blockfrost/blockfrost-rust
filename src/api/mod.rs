@@ -2,14 +2,12 @@
 pub(super) mod endpoints;
 pub(super) mod lister;
 
-use std::future::Future;
-
-use reqwest::ClientBuilder;
-
 use crate::{
     request::send_get_request, url::Url, utils::build_header_map,
     utils::create_client_with_project_id, BlockFrostSettings,
 };
+use reqwest::ClientBuilder;
+use std::future::Future;
 
 /// Provides methods for making requests to the [BlockFrost API](https://docs.blockfrost.io).
 #[derive(Debug, Clone)]

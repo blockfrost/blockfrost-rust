@@ -6,7 +6,6 @@
 // Internal macros for testing and implementing endpoints
 #[macro_use]
 mod macros;
-
 mod api;
 mod ipfs;
 mod request;

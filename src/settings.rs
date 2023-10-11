@@ -1,9 +1,8 @@
-use std::{fmt, time::Duration};
-
 use crate::{
     CARDANO_MAINNET_NETWORK, CARDANO_PREPROD_NETWORK, CARDANO_PREVIEW_NETWORK,
     CARDANO_TESTNET_NETWORK, IPFS_NETWORK,
 };
+use std::{fmt, time::Duration};
 
 /// Customizable settings for requests made with [`BlockFrostApi`](crate::BlockFrostApi).
 #[derive(Debug, Clone)]
