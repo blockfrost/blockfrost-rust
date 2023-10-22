@@ -1,16 +1,15 @@
-use reqwest::{
-    multipart::{Form, Part},
-    ClientBuilder,
-};
-use serde::{Deserialize, Serialize};
-use serde_json::from_str as json_from;
-
 use crate::{
     error::{json_error, process_error_response, reqwest_error},
     request::{send_request, send_request_unprocessed},
     utils::{build_header_map, create_client_with_project_id},
     Integer, IpfsSettings, RetrySettings,
 };
+use reqwest::{
+    multipart::{Form, Part},
+    ClientBuilder,
+};
+use serde::{Deserialize, Serialize};
+use serde_json::from_str as json_from;
 
 /// Provides methods for making requests to the
 /// [IPFS API](https://docs.blockfrost.io/#tag/IPFS-Add).

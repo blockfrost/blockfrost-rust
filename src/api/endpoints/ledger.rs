@@ -3,10 +3,8 @@ use serde::{Deserialize, Serialize};
 use crate::*;
 
 impl BlockFrostApi {
-    endpoints! {
-        /// Return the information about blockchain genesis.
-        genesis() -> Genesis => "/genesis";
-            ("https://docs.blockfrost.io/#tag/Cardano-Ledger/paths/~1genesis/get"),
+    pub async fn genesis(&self) -> Result<Genesis> {
+        self.call_endpoint("/genesis").await
     }
 }
 

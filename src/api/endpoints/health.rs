@@ -4,14 +4,14 @@ use serde::{Deserialize, Serialize};
 impl BlockFrostApi {
     /// Root endpoint, points end users to documentation.
     pub async fn root(&self) -> Result<Root> {
-        self.get_from_endpoint("/").await
+        self.call_endpoint("/").await
     }
 
     /// Backend health status as a boolean.
     ///
     /// Your application should handle when backend is unavailable for the given chain.
     pub async fn health(&self) -> Result<Health> {
-        self.get_from_endpoint("/health").await
+        self.call_endpoint("/health").await
     }
 
     /// Current backend time.
@@ -19,7 +19,7 @@ impl BlockFrostApi {
     /// This endpoint provides the current UNIX time. Your application might use this to verify
     /// if the client clock is not out of sync.
     pub async fn health_clock(&self) -> Result<HealthClock> {
-        self.get_from_endpoint("/health/clock").await
+        self.call_endpoint("/health/clock").await
     }
 }
 

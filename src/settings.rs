@@ -1,7 +1,4 @@
-use crate::{
-    CARDANO_MAINNET_NETWORK, CARDANO_PREPROD_NETWORK, CARDANO_PREVIEW_NETWORK,
-    CARDANO_TESTNET_NETWORK, IPFS_NETWORK,
-};
+use crate::{CARDANO_MAINNET, CARDANO_PREPROD, CARDANO_PREVIEW, CARDANO_TESTNET, IPFS};
 use std::{fmt, time::Duration};
 
 /// Customizable settings for requests made with [`BlockFrostApi`](crate::BlockFrostApi).
@@ -22,7 +19,7 @@ impl BlockFrostSettings {
     /// - Retry settings: disabled.
     pub fn new() -> Self {
         Self {
-            network_address: CARDANO_MAINNET_NETWORK.to_owned(),
+            network_address: CARDANO_MAINNET.to_owned(),
             query_parameters: QueryParameters::default(),
             retry_settings: RetrySettings::default(),
         }
@@ -30,25 +27,25 @@ impl BlockFrostSettings {
 
     /// Change network to [`CARDANO_MAINNET_NETWORK`].
     pub fn use_mainnet(mut self) -> Self {
-        self.network_address = CARDANO_MAINNET_NETWORK.to_owned();
+        self.network_address = CARDANO_MAINNET.to_owned();
         self
     }
 
     /// Change network to [`CARDANO_TESTNET_NETWORK`].
     pub fn use_testnet(mut self) -> Self {
-        self.network_address = CARDANO_TESTNET_NETWORK.to_owned();
+        self.network_address = CARDANO_TESTNET.to_owned();
         self
     }
 
     /// Change network to [`CARDANO_PREPROD_NETWORK`].
     pub fn use_preprod(mut self) -> Self {
-        self.network_address = CARDANO_PREPROD_NETWORK.to_owned();
+        self.network_address = CARDANO_PREPROD.to_owned();
         self
     }
 
     /// Change network to [`CARDANO_PREVIEW_NETWORK`].
     pub fn use_preview(mut self) -> Self {
-        self.network_address = CARDANO_PREVIEW_NETWORK.to_owned();
+        self.network_address = CARDANO_PREVIEW.to_owned();
         self
     }
 }
@@ -71,7 +68,7 @@ impl IpfsSettings {
     /// - Retry settings: disabled.
     pub fn new() -> Self {
         Self {
-            network_address: IPFS_NETWORK.to_owned(),
+            network_address: IPFS.to_owned(),
             query_parameters: QueryParameters::default(),
             retry_settings: RetrySettings::default(),
         }

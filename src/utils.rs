@@ -1,10 +1,9 @@
+use crate::USER_AGENT;
 use reqwest::{
     header::{HeaderMap, HeaderValue},
     Client,
 };
 use serde_json::{from_str as json_from, Value as JsonValue};
-
-use crate::USER_AGENT;
 
 pub(crate) fn try_formatting_json(text: &str) -> serde_json::Result<String> {
     let json = json_from::<JsonValue>(text)?;

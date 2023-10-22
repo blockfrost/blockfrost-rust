@@ -60,16 +60,11 @@ pub mod stream {
     pub use futures::stream::{Stream, StreamExt};
 }
 
-/// The URL of the [BlockFrost API](https://docs.blockfrost.io) for the Cardano mainnet.
-pub const CARDANO_MAINNET_NETWORK: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
-/// The URL of the [BlockFrost API](https://docs.blockfrost.io) for the Cardano preprod net.
-pub const CARDANO_PREPROD_NETWORK: &str = "https://cardano-preprod.blockfrost.io/api/v0";
-/// The URL of the [BlockFrost API](https://docs.blockfrost.io) for the Cardano preview net.
-pub const CARDANO_PREVIEW_NETWORK: &str = "https://cardano-preview.blockfrost.io/api/v0";
-/// The URL of the [BlockFrost API](https://docs.blockfrost.io) for the Cardano testnet.
-pub const CARDANO_TESTNET_NETWORK: &str = "https://cardano-testnet.blockfrost.io/api/v0";
-/// The URL of the BlockFrost IPFS network.
-pub const IPFS_NETWORK: &str = "https://ipfs.blockfrost.io/api/v0";
+pub const CARDANO_MAINNET: &str = "https://cardano-mainnet.blockfrost.io/api/v0";
+pub const CARDANO_PREPROD: &str = "https://cardano-preprod.blockfrost.io/api/v0";
+pub const CARDANO_PREVIEW: &str = "https://cardano-preview.blockfrost.io/api/v0";
+pub const CARDANO_TESTNET: &str = "https://cardano-testnet.blockfrost.io/api/v0";
+pub const IPFS: &str = "https://ipfs.blockfrost.io/api/v0";
 
 /// SDK version being used.
 ///

@@ -1,8 +1,7 @@
+use crate::{request::send_request, url::Url, *};
 use reqwest::{header::HeaderValue, Body, Method};
 use serde::{Deserialize, Serialize};
 use serde_json::from_str as json_from;
-
-use crate::{request::send_request, url::Url, *};
 
 impl BlockFrostApi {
     /// Obtain information about Move Instantaneous Rewards (MIRs) of a specific transaction.

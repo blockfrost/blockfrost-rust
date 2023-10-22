@@ -1,9 +1,8 @@
 #![allow(clippy::write_with_newline)]
 
 //! Custom errors from this crate.
-use std::{error, fmt, io, path::PathBuf};
-
 use serde_json::from_str as json_from;
+use std::{error, fmt, io, path::PathBuf};
 
 // Imports with bindings improve how Error is shown in docs
 use io::Error as IoError;

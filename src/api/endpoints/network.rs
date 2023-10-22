@@ -1,6 +1,5 @@
-use serde::{Deserialize, Serialize};
-
 use crate::*;
+use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
     endpoints! {
@@ -26,7 +25,7 @@ pub struct Supply {
     pub total: String,
     /// Current circulating (UTXOs + withdrawables) supply in Lovelaces.
     pub circulating: String,
-    /// Curent locked supply by scripts in Lovelaces.
+    /// Current locked supply by scripts in Lovelaces.
     pub locked: String,
 }
 

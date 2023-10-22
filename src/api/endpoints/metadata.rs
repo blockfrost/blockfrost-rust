@@ -1,6 +1,5 @@
-use serde::{Deserialize, Serialize};
-
 use crate::*;
+use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
     paged_endpoints! {

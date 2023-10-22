@@ -60,10 +60,7 @@ impl BlockFrostApi {
     }
 
     // Url endpoint example: "/blocks"
-    fn get_from_endpoint<T>(
-        &self,
-        url_endpoint: &str,
-    ) -> impl Future<Output = crate::Result<T>> + Send
+    fn call_endpoint<T>(&self, url_endpoint: &str) -> impl Future<Output = crate::Result<T>> + Send
     where
         T: serde::de::DeserializeOwned,
     {
