@@ -29,23 +29,34 @@ impl BlockFrostApi {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
 
-    test_example! { test_root, Root, r#"
-    {
-      "url": "https://blockfrost.io/",
-      "version": "0.1.0"
-    }
-    "# }
+    #[test]
+    fn test_root() {
+        let json_value = json!({
+            "url": "https://blockfrost.io/",
+            "version": "0.1.0"
+        });
 
-    test_example! { test_health, Health, r#"
-    {
-      "is_healthy": true
+        serde_json::from_value::<Get200Response>(json_value).unwrap();
     }
-    "# }
 
-    test_example! { test_health_clock, HealthClock, r#"
-    {
-      "server_time": 1603400958947
+    #[test]
+    fn test_health() {
+        let json_value = json!({
+            "is_healthy": true,
+        });
+
+        serde_json::from_value::<HealthGet200Response>(json_value).unwrap();
     }
-    "# }
+
+    #[test]
+    fn test_health_clock() {
+        let json_value = json!({
+            "is_healthy": true,
+            "server_time": "1603400958947",
+        });
+
+        serde_json::from_value::<HealthGet200Response>(json_value).unwrap();
+    }
 }

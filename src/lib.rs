@@ -51,7 +51,6 @@ pub use types::*;
 /// [`lister.rs`]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/lister.rs
 /// [`Lister`]: crate::stream::Lister
 pub mod stream {
-    pub use crate::api::lister::Lister;
     pub use futures::stream::{Stream, StreamExt};
 }
 

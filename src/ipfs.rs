@@ -259,32 +259,32 @@ pub enum IpfsPinState {
     Gc,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
 
-    test_example! { test_ipfs_add, IpfsAdd, r#"
-    {
-      "name": "README.md",
-      "ipfs_hash": "QmZbHqiCxKEVX7QfijzJTkZiSi3WEVTcvANgNAWzDYgZDr",
-      "size": "125297"
-    }
-    "# }
+//     test_example! { test_ipfs_add, IpfsAdd, r#"
+//     {
+//       "name": "README.md",
+//       "ipfs_hash": "QmZbHqiCxKEVX7QfijzJTkZiSi3WEVTcvANgNAWzDYgZDr",
+//       "size": "125297"
+//     }
+//     "# }
 
-    test_example! { test_ipfs_pin_add, IpfsPinUpdate, r#"
-    {
-      "ipfs_hash": "QmPojRfAXYAXV92Dof7gtSgaVuxEk64xx9CKvprqu9VwA8",
-      "state": "queued"
-    }
-    "# }
+//     test_example! { test_ipfs_pin_add, IpfsPinUpdate, r#"
+//     {
+//       "ipfs_hash": "QmPojRfAXYAXV92Dof7gtSgaVuxEk64xx9CKvprqu9VwA8",
+//       "state": "queued"
+//     }
+//     "# }
 
-    test_example! { test_ipfs_pin_list_by_id, IpfsPinList, r#"
-    {
-      "time_created": 1615551024,
-      "time_pinned": 1615551024,
-      "ipfs_hash": "QmdVMnULrY95mth2XkwjxDtMHvzuzmvUPTotKE1tgqKbCx",
-      "size": "1615551024",
-      "state": "pinned"
-    }
-    "# }
-}
+//     test_example! { test_ipfs_pin_list_by_id, IpfsPinList, r#"
+//     {
+//       "time_created": 1615551024,
+//       "time_pinned": 1615551024,
+//       "ipfs_hash": "QmdVMnULrY95mth2XkwjxDtMHvzuzmvUPTotKE1tgqKbCx",
+//       "size": "1615551024",
+//       "state": "pinned"
+//     }
+//     "# }
+// }

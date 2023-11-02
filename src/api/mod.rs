@@ -1,6 +1,5 @@
 // Will be reexported by the parent module.
 pub(super) mod endpoints;
-pub(super) mod lister;
 
 use crate::{
     request::send_get_request, url::Url, utils::build_header_map,
