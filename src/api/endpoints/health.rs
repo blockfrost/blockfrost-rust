@@ -1,16 +1,19 @@
 use crate::*;
-use serde::{Deserialize, Serialize};
+use blockfrost_openapi::models::{
+    __get_200_response::Get200Response, _health_clock_get_200_response::HealthClockGet200Response,
+    _health_get_200_response::HealthGet200Response,
+};
 
 impl BlockFrostApi {
     /// Root endpoint, points end users to documentation.
-    pub async fn root(&self) -> Result<Root> {
+    pub async fn root(&self) -> Result<Get200Response> {
         self.call_endpoint("/").await
     }
 
     /// Backend health status as a boolean.
     ///
     /// Your application should handle when backend is unavailable for the given chain.
-    pub async fn health(&self) -> Result<Health> {
+    pub async fn health(&self) -> Result<HealthGet200Response> {
         self.call_endpoint("/health").await
     }
 
@@ -18,25 +21,9 @@ impl BlockFrostApi {
     ///
     /// This endpoint provides the current UNIX time. Your application might use this to verify
     /// if the client clock is not out of sync.
-    pub async fn health_clock(&self) -> Result<HealthClock> {
+    pub async fn health_clock(&self) -> Result<HealthClockGet200Response> {
         self.call_endpoint("/health/clock").await
     }
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Root {
-    pub url: String,
-    pub version: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Health {
-    pub is_healthy: bool,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct HealthClock {
-    pub server_time: Integer,
 }
 
 #[cfg(test)]

@@ -1,11 +1,41 @@
-use crate::*;
+use crate::{BlockFrostApi, Pagination, Result};
 use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
-    endpoints! {
-        /// Information about a specific stake account.
-        accounts(stake_address: &str) -> Account => "/accounts/{stake_address}";
-           ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}/get"),
+    pub async fn accounts(&self) -> Result<Account> {
+        self.call_endpoint("/accounts/{stake_address}").await
+    }
+
+    /// Reward history of a specific account.
+    pub async fn accounts_rewards(
+        &self,
+        stake_address: &str,
+        pagination: Pagination,
+    ) -> Vec<AccountReward> {
+        self.call_endpoint_paged("/accounts/{stake_address}/rewards")
+            .await
+    }
+
+    /// Reward history of a specific account. (all)
+    pub async fn accounts_rewards_all(&self, stake_address: &str) -> Vec<AccountReward> {
+        self.call_endpoint_all("/accounts/{stake_address}/rewards")
+            .await
+    }
+
+    /// History of a specific account.
+    pub async fn accounts_history(
+        &self,
+        stake_address: &str,
+        pagination: Pagination,
+    ) -> Vec<AccountHistory> {
+        self.call_endpoint_paged("/accounts/{stake_address}/history")
+            .await
+    }
+
+    /// History of a specific account. (all)
+    pub async fn accounts_history_all(&self, stake_address: &str) -> Vec<AccountHistory> {
+        self.call_endpoint_all("/accounts/{stake_address}/history")
+            .await
     }
 
     paged_endpoints! {

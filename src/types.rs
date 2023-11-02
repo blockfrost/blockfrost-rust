@@ -81,3 +81,14 @@ pub enum ActionType {
     Registered,
     Deregistered,
 }
+
+pub enum Order {
+    Asc,
+    Desc,
+}
+
+pub struct Pagination {
+    pub count: usize,
+    pub page: usize,
+    pub order: Order,
+}

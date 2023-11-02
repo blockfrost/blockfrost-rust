@@ -2,10 +2,6 @@
     html_logo_url = "https://raw.githubusercontent.com/blockfrost/blockfrost-rust/master/docs-logo.svg"
 )]
 #![doc = include_str!("../README.md")]
-
-// Internal macros for testing and implementing endpoints
-#[macro_use]
-mod macros;
 mod api;
 mod ipfs;
 mod request;
@@ -16,7 +12,6 @@ mod utils;
 pub mod error;
 pub mod load;
 pub mod types;
-
 pub use api::*;
 pub use error::*;
 pub use ipfs::IpfsApi;

@@ -1,5 +1,3 @@
-//! Module for common requests logic.
-
 use crate::{json_error, process_error_response, reqwest_error, RetrySettings};
 use reqwest::{Client, RequestBuilder, Response, StatusCode};
 use serde_json::from_str as json_from;

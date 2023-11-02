@@ -67,4 +67,12 @@ impl BlockFrostApi {
         let Url(url) = Url::from_endpoint(&self.settings, url_endpoint);
         send_get_request(&self.client, url, self.settings.retry_settings)
     }
+
+    fn call_endpoint_paged(&self, url_endpoint: &str) {
+        todo!("Implement this method");
+    }
+
+    fn call_endpoint_all(&self, url_endpoint: &str) {
+        todo!("Implement this method");
+    }
 }
