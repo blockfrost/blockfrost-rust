@@ -3,7 +3,7 @@ pub(super) mod endpoints;
 
 use crate::{
     request::send_get_request, url::Url, utils::build_header_map,
-    utils::create_client_with_project_id, BlockFrostSettings,
+    utils::create_client_with_project_id, BlockFrostSettings, Pagination,
 };
 use reqwest::ClientBuilder;
 use std::future::Future;
@@ -67,11 +67,19 @@ impl BlockFrostApi {
         send_get_request(&self.client, url, self.settings.retry_settings)
     }
 
-    fn call_endpoint_paged(&self, url_endpoint: &str) {
-        todo!("Implement this method");
+    fn call_paged_endpoint<T>(
+        &self,
+        url_endpoint: &str,
+        pagination: Option<Pagination>,
+    ) -> impl Future<Output = crate::Result<T>> + Send
+    where
+        T: serde::de::DeserializeOwned,
+    {
+        let Url(url) = Url::from_endpoint(&self.settings, url_endpoint);
+        send_get_request(&self.client, url, self.settings.retry_settings)
     }
 
-    fn call_endpoint_all(&self, url_endpoint: &str) {
+    fn call_all_endpoint(&self, url_endpoint: &str) {
         todo!("Implement this method");
     }
 }
