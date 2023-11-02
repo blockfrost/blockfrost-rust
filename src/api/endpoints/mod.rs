@@ -7,7 +7,7 @@ mod health;
 mod ledger;
 // mod metadata;
 mod metrics;
-// mod network;
+mod network;
 // mod nutlink;
 // mod pools;
 // mod scripts;
