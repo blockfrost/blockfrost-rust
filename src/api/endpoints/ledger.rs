@@ -1,36 +1,10 @@
-use serde::{Deserialize, Serialize};
-
 use crate::*;
+use blockfrost_openapi::models::genesis_content::GenesisContent;
 
 impl BlockFrostApi {
-    pub async fn genesis(&self) -> Result<Genesis> {
+    pub async fn genesis(&self) -> Result<GenesisContent> {
         self.call_endpoint("/genesis").await
     }
-}
-
-/// Created by [`genesis`](BlockFrostApi::genesis) method.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Genesis {
-    /// The proportion of slots in which blocks should be issued.
-    pub active_slots_coefficient: Float,
-    /// Determines the quorum needed for votes on the protocol parameter updates.
-    pub update_quorum: Integer,
-    /// The total number of lovelace in the system.
-    pub max_lovelace_supply: String,
-    /// Network identifier.
-    pub network_magic: Integer,
-    /// Number of slots in an epoch.
-    pub epoch_length: Integer,
-    /// Time of slot 0 in UNIX time.
-    pub system_start: Integer,
-    /// Number of slots in an KES period.
-    pub slots_per_kes_period: Integer,
-    /// Duration of one slot in seconds.
-    pub slot_length: Integer,
-    /// The maximum number of time a KES key can be evolved before a pool operator must create a new operational certificate.
-    pub max_kes_evolutions: Integer,
-    /// Security parameter k.
-    pub security_param: Integer,
 }
 
 #[cfg(test)]

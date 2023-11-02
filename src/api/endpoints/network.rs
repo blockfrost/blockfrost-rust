@@ -1,41 +1,10 @@
 use crate::*;
-use serde::{Deserialize, Serialize};
+use blockfrost_openapi::models::network::Network;
 
 impl BlockFrostApi {
-    endpoints! {
-        /// Return detailed network information.
-        network() -> Network => "/network";
-            ("https://docs.blockfrost.io/#tag/Cardano-Network/paths/~1network/get"),
+    pub async fn network(&self) -> Result<Network> {
+        self.call_endpoint("/network").await
     }
-}
-
-/// Created by [`network`](BlockFrostApi::network) method.
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Network {
-    pub supply: Supply,
-    pub stake: NetworkStake,
-}
-
-/// Inner member of [`Network`].
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Supply {
-    /// Maximum supply in Lovelaces.
-    pub max: String,
-    /// Current total (max supply - reserves) supply in Lovelaces.
-    pub total: String,
-    /// Current circulating (UTXOs + withdrawables) supply in Lovelaces.
-    pub circulating: String,
-    /// Current locked supply by scripts in Lovelaces.
-    pub locked: String,
-}
-
-/// Inner member of [`Network`].
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct NetworkStake {
-    /// Current live stake in Lovelaces.
-    pub live: String,
-    /// Current active stake in Lovelaces.
-    pub active: String,
 }
 
 #[cfg(test)]
