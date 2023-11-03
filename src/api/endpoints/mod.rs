@@ -5,7 +5,7 @@
 // mod epochs;
 mod health;
 mod ledger;
-// mod metadata;
+mod metadata;
 mod metrics;
 mod network;
 // mod nutlink;

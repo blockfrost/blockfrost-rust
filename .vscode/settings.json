@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "ADAUSD",
     "Adress",
     "Bech",
     "blockfrost",
@@ -22,6 +23,7 @@
     "retriving",
     "rustfmt",
     "serialised",
+    "stakenuts",
     "UTXO",
     "utxos"
   ]
