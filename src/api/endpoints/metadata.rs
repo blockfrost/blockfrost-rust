@@ -21,8 +21,11 @@ impl BlockFrostApi {
         label: &str,
         pagination: Option<Pagination>,
     ) -> Result<TxMetadataLabelJsonInner> {
-        self.call_paged_endpoint("/metadata/txs/labels/{label}", pagination)
-            .await
+        self.call_paged_endpoint(
+            format!("/metadata/txs/labels/{}", label).as_str(),
+            pagination,
+        )
+        .await
     }
 
     /// Transaction metadata per label (cbor).
@@ -31,8 +34,11 @@ impl BlockFrostApi {
         label: &str,
         pagination: Option<Pagination>,
     ) -> Result<TxMetadataLabelCborInner> {
-        self.call_paged_endpoint("/metadata/txs/labels/{label}/cbor", pagination)
-            .await
+        self.call_paged_endpoint(
+            format!("/metadata/txs/labels/{}/cbor", label).as_str(),
+            pagination,
+        )
+        .await
     }
 }
 

@@ -1,24 +1,42 @@
 use crate::*;
+use crate::*;
 use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
-    endpoints! {
-        /// List metadata about specific address.
-        nutlink_address(address: &str) -> NutlinkAddress => "/nutlink/{address}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}/get"),
+    pub async fn nutlink_address(&self, address: &str) -> Result<NutlinkAddress> {
+        self.call_endpoint(format!("/nutlink/{}", address).as_str())
+            .await
     }
-    paged_endpoints! {
-        /// List tickers for a specific metadata oracle.
-        nutlink_address_tickers(address: &str) -> Vec<NutlinkAddressTicker> => "/nutlink/{address}/tickers";
-            ("https://docs.blockfrost.io/#tag/Nut.link/paths/~1nutlink~1{address}~1tickers/get"),
 
-        /// List tickers for a specific metadata oracle.
-        nutlink_address_ticker_by_id(address: &str, ticker: &str) -> Vec<NutlinkAddressTicker> => "/nutlink/{address}/tickers/{ticker}";
-            ("https://docs.blockfrost.io/#tag/Nut.link/paths/~1nutlink~1{address}~1tickers~1{ticker}/get"),
+    pub async fn nutlink_address_tickers(
+        &self,
+        address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<NutlinkAddressTicker>> {
+        self.call_paged_endpoint(format!("/nutlink/{}/tickers", address).as_str(), pagination)
+            .await
+    }
 
-        /// List of records of a specific ticker.
-        nutlink_ticker_by_id(ticker: &str) -> Vec<NutlinkTicker> => "/nutlink/tickers/{ticker}";
-            ("https://docs.blockfrost.io/#tag/Nut.link/paths/~1nutlink~1tickers~1{ticker}/get"),
+    pub async fn nutlink_address_ticker_by_id(
+        &self,
+        address: &str,
+        ticker: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<NutlinkAddressTicker>> {
+        self.call_paged_endpoint(
+            format!("/nutlink/{}/tickers/{}", address, ticker).as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn nutlink_ticker_by_id(
+        &self,
+        ticker: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<NutlinkTicker>> {
+        self.call_paged_endpoint(format!("/nutlink/tickers/{}", ticker).as_str(), pagination)
+            .await
     }
 }
 

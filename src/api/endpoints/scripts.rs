@@ -2,18 +2,25 @@ use crate::*;
 use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
-    endpoints! {
-        /// List of scripts.
-        scripts() -> Vec<ScriptHash> => "/scripts";
-            ("https://docs.blockfrost.io/#tag/Cardano-Scripts/paths/~1scripts/get"),
+    pub async fn scripts(&self, pagination: Option<Pagination>) -> Result<Vec<ScriptHash>> {
+        self.call_paged_endpoint("/scripts", pagination).await
+    }
 
-        /// Information about a specific script.
-        scripts_by_id(script_hash: &str) -> Script => "/scripts/{script_hash}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Scripts/paths/~1scripts~1{script_hash}/get"),
+    pub async fn scripts_by_id(&self, script_hash: &str) -> Result<Script> {
+        self.call_endpoint(format!("/scripts/{}", script_hash).as_str())
+            .await
+    }
 
-        /// List of redeemers of a specific script.
-        scripts_redeemers(script_hash: &str) -> Vec<ScriptRedeemer> => "/scripts/{script_hash}/redeemers";
-            ("https://docs.blockfrost.io/#tag/Cardano-Scripts/paths/~1scripts~1{script_hash}~1redeemers/get"),
+    pub async fn scripts_redeemers(
+        &self,
+        script_hash: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<ScriptRedeemer>> {
+        self.call_paged_endpoint(
+            format!("/scripts/{}/redeemers", script_hash).as_str(),
+            pagination,
+        )
+        .await
     }
 }
 

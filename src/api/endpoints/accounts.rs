@@ -12,7 +12,7 @@ impl BlockFrostApi {
         stake_address: &str,
         pagination: Pagination,
     ) -> Vec<AccountReward> {
-        self.call_endpoint_paged("/accounts/{stake_address}/rewards")
+        self.call_paged_endpoint("/accounts/{stake_address}/rewards", pagination)
             .await
     }
 
@@ -22,57 +22,86 @@ impl BlockFrostApi {
             .await
     }
 
-    /// History of a specific account.
-    pub async fn accounts_history(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
-    ) -> Vec<AccountHistory> {
-        self.call_endpoint_paged("/accounts/{stake_address}/history")
-            .await
-    }
-
     /// History of a specific account. (all)
     pub async fn accounts_history_all(&self, stake_address: &str) -> Vec<AccountHistory> {
         self.call_endpoint_all("/accounts/{stake_address}/history")
             .await
     }
 
-    paged_endpoints! {
-        /// Reward history of a specific account.
-        accounts_rewards(stake_address: &str) -> Vec<AccountReward> => "/accounts/{stake_address}/rewards";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1rewards/get"),
+    /// History of a specific account.
+    pub async fn accounts_history(
+        &self,
+        stake_address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AccountHistory>> {
+        self.call_paged_endpoint(format!("/accounts/{}/history", stake_address), pagination)
+            .await
+    }
 
-        /// History of a specific account.
-        accounts_history(stake_address: &str) -> Vec<AccountHistory> => "/accounts/{stake_address}/history";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1history/get"),
+    pub async fn accounts_delegations(
+        &self,
+        stake_address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AccountDelegation>> {
+        self.call_paged_endpoint(
+            format!("/accounts/{}/delegations", stake_address),
+            pagination,
+        )
+        .await
+    }
 
-        /// Delegation information of a specific account.
-        accounts_delegations(stake_address: &str) -> Vec<AccountDelegation> => "/accounts/{stake_address}/delegations";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1delegationsget"),
+    pub async fn accounts_registrations(
+        &self,
+        stake_address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AccountRegistration>> {
+        self.call_paged_endpoint(
+            format!("/accounts/{}/registrations", stake_address),
+            pagination,
+        )
+        .await
+    }
 
-        /// History of registrations and deregistrations of a specific account.
-        accounts_registrations(stake_address: &str) -> Vec<AccountRegistration> => "/accounts/{stake_address}/registrations";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1registrationsget"),
+    pub async fn accounts_withdrawals(
+        &self,
+        stake_address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AccountWithdrawal>> {
+        self.call_paged_endpoint(
+            format!("/accounts/{}/withdrawals", stake_address),
+            pagination,
+        )
+        .await
+    }
 
-        /// Withdrawal history of a specific account.
-        accounts_withdrawals(stake_address: &str) -> Vec<AccountWithdrawal> => "/accounts/{stake_address}/withdrawals";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1withdrawals/get"),
+    pub async fn accounts_mirs(
+        &self,
+        stake_address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AccountMir>> {
+        self.call_paged_endpoint(format!("/accounts/{}/mirs", stake_address), pagination)
+            .await
+    }
 
-        /// Obtain information about the MIRs of a specific account.
-        accounts_mirs(stake_address: &str) -> Vec<AccountMir> => "/accounts/{stake_address}/mirs";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1mirs/get"),
+    pub async fn accounts_addresses(
+        &self,
+        stake_address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AccountAddress>> {
+        self.call_paged_endpoint(format!("/accounts/{}/addresses", stake_address), pagination)
+            .await
+    }
 
-        /// Addresses associated with specific account.
-        accounts_addresses(stake_address: &str) -> Vec<AccountAddress> => "/accounts/{stake_address}/addresses";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1addresses/get"),
-
-        /// Assets associated with specific account.
-        ///
-        /// **Be careful**, as an account could be part of a mangled address and does
-        /// not necessarily mean the addresses are owned by user as the account.
-        accounts_addresses_assets(stake_address: &str) -> Vec<AccountAddressAsset> => "/accounts/{stake_address}/addresses/assets";
-            ("https://docs.blockfrost.io/#tag/Cardano-Accounts/paths/~1accounts~1{stake_address}~1addresses~1assets/get"),
+    pub async fn accounts_addresses_assets(
+        &self,
+        stake_address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AccountAddressAsset>> {
+        self.call_paged_endpoint(
+            format!("/accounts/{}/addresses/assets", stake_address),
+            pagination,
+        )
+        .await
     }
 }
 

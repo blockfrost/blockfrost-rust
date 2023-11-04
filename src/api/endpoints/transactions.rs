@@ -35,50 +35,64 @@ impl BlockFrostApi {
         json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
-    endpoints! {
-        /// Return content of the requested transaction.
-        transaction_by_hash(hash: &str) -> Transaction => "/txs/{hash}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}/get"),
+    pub async fn transaction_by_hash(&self, hash: &str) -> Result<Transaction> {
+        self.call_endpoint(format!("/txs/{}", hash).as_str()).await
+    }
 
-        /// Return the inputs and UTXOs of the specific transaction.
-        transactions_utxos(hash: &str) -> TransactionUtxos => "/txs/{hash}/utxos";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1utxos/get"),
+    pub async fn transactions_utxos(&self, hash: &str) -> Result<TransactionUtxos> {
+        self.call_endpoint(format!("/txs/{}/utxos", hash).as_str())
+            .await
+    }
 
-        /// Obtain information about (de)registration of stake addresses within a transaction.
-        transactions_stakes(hash: &str) -> Vec<TransactionStake> => "/txs/{hash}/stakes";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1stakes/get"),
+    pub async fn transactions_stakes(&self, hash: &str) -> Result<Vec<TransactionStake>> {
+        self.call_endpoint(format!("/txs/{}/stakes", hash).as_str())
+            .await
+    }
 
-        /// Obtain information about delegation certificates of a specific transaction.
-        transactions_delegations(hash: &str) -> Vec<TransactionDelegation> => "/txs/{hash}/delegations";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1delegations/get"),
+    pub async fn transactions_delegations(&self, hash: &str) -> Result<Vec<TransactionDelegation>> {
+        self.call_endpoint(format!("/txs/{}/delegations", hash).as_str())
+            .await
+    }
 
-        /// Obtain information about withdrawals of a specific transaction.
-        transactions_withdrawals(hash: &str) -> Vec<TransactionWithdrawal> => "/txs/{hash}/withdrawals";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1withdrawals/get"),
+    pub async fn transactions_withdrawals(&self, hash: &str) -> Result<Vec<TransactionWithdrawal>> {
+        self.call_endpoint(format!("/txs/{}/withdrawals", hash).as_str())
+            .await
+    }
 
-        /// Obtain information about Move Instantaneous Rewards (MIRs) of a specific transaction.
-        transactions_mirs(hash: &str) -> Vec<TransactionMir> => "/txs/{hash}/mirs";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1mirs/get"),
+    pub async fn transactions_mirs(&self, hash: &str) -> Result<Vec<TransactionMir>> {
+        self.call_endpoint(format!("/txs/{}/mirs", hash)).await
+    }
 
-        /// Obtain information about stake pool registration and update certificates of a specific transaction.
-        transactions_pool_updates(hash: &str) -> Vec<TransactionPoolUpdate> => "/txs/{hash}/pool_updates";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1pool_updates/get"),
+    pub async fn transactions_pool_updates(
+        &self,
+        hash: &str,
+    ) -> Result<Vec<TransactionPoolUpdate>> {
+        self.call_endpoint(format!("/txs/{}/pool_updates", hash))
+            .await
+    }
 
-        /// Obtain information about stake pool retirements within a specific transaction.
-        transactions_pool_retires(hash: &str) -> Vec<TransactionPoolRetire> => "/txs/{hash}/pool_retires";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1pool_retires/get"),
+    pub async fn transactions_pool_retires(
+        &self,
+        hash: &str,
+    ) -> Result<Vec<TransactionPoolRetire>> {
+        self.call_endpoint(format!("/txs/{}/pool_retires", hash))
+            .await
+    }
 
-        /// Obtain the transaction metadata.
-        transactions_metadata(hash: &str) -> Vec<TransactionMetadata> => "/txs/{hash}/metadata";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1metadata/get"),
+    pub async fn transactions_metadata(&self, hash: &str) -> Result<Vec<TransactionMetadata>> {
+        self.call_endpoint(format!("/txs/{}/metadata", hash)).await
+    }
 
-        /// Obtain the transaction metadata in CBOR.
-        transactions_metadata_cbor(hash: &str) -> Vec<TransactionMetadataCbor> => "/txs/{hash}/metadata/cbor";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1metadata~1cbor/get"),
+    pub async fn transactions_metadata_cbor(
+        &self,
+        hash: &str,
+    ) -> Result<Vec<TransactionMetadataCbor>> {
+        self.call_endpoint(format!("/txs/{}/metadata/cbor", hash))
+            .await
+    }
 
-        /// Obtain the transaction redeemers.
-        transactions_redeemers(hash: &str) -> Vec<TransactionRedeemer> => "/txs/{hash}/redeemers";
-            ("https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1txs~1{hash}~1redeemers/get"),
+    pub async fn transactions_redeemers(&self, hash: &str) -> Result<Vec<TransactionRedeemer>> {
+        self.call_endpoint(format!("/txs/{}/redeemers", hash)).await
     }
 }
 

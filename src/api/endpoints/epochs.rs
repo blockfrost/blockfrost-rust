@@ -2,47 +2,73 @@ use crate::*;
 use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
-    endpoints! {
-        /// Return the information about the latest, therefore current, epoch.
-        epochs_latest() -> Epoch => "/epochs/latest";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1latest/get"),
-
-        /// Return the protocol parameters for the latest epoch.
-        epochs_latest_parameters() -> EpochParameters => "/epochs/latest/parameters";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1latest~1parameters/get"),
-
-        /// Return the content of the requested epoch.
-        epochs_by_number(number: Integer) -> Epoch => "/epochs/{number}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}/get"),
-
-        /// Return the protocol parameters for the epoch specified
-        epochs_parameters(number: Integer) -> EpochParameters => "/epochs/{number}/parameters";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1parameters/get"),
+    pub async fn epochs_latest(&self) -> Result<Epoch> {
+        self.call_endpoint("/epochs/latest".to_string().as_str())
+            .await
     }
-    paged_endpoints! {
-        /// Return the list of epochs following a specific epoch.
-        epochs_next(number: Integer) -> Vec<Epoch> => "/epochs/{number}/next";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1next/get"),
 
-        /// Return the list of epochs preceding a specific epoch.
-        epochs_previous(number: Integer) -> Vec<Epoch> => "/epochs/{number}/previous";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1previous/get"),
+    pub async fn epochs_latest_parameters(&self) -> Result<EpochParameters> {
+        self.call_endpoint("/epochs/latest/parameters").await
+    }
 
-        /// Return the active stake distribution for the specified epoch.
-        epochs_stakes(number: Integer) -> Vec<AddressStakePool> => "/epochs/{number}/stakes";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1stakes/get"),
+    pub async fn epochs_by_number(&self, number: i32) -> Result<Epoch> {
+        self.call_endpoint(format!("/epochs/{}", number).as_str())
+            .await
+    }
 
-        /// Return the active stake distribution for the epoch specified by stake pool.
-        epochs_stakes_by_pool(number: Integer, pool_id: &str) -> Vec<AddressStake> => "/epochs/{number}/stakes/{pool_id}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1stakes~1{pool_id}/get"),
+    pub async fn epochs_parameters(&self, number: i32) -> Result<EpochParameters> {
+        self.call_endpoint(format!("/epochs/{}/parameters", number).as_str())
+            .await
+    }
 
-        /// Return the blocks minted for the epoch specified.
-        epochs_blocks(number: Integer) -> Vec<String> => "/epochs/{number}/blocks";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1blocks/get"),
+    pub async fn epochs_next(
+        &self,
+        number: i32,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<Epoch>> {
+        self.call_paged_endpoint(format!("/epochs/{}/next", number).as_str(), pagination)
+            .await
+    }
 
-        /// Return the block minted for the epoch specified by stake pool.
-        epochs_blocks_by_pool(number: Integer, pool_id: &str) -> Vec<String> => "/epochs/{number}/blocks/{pool_id}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Epochs/paths/~1epochs~1{number}~1blocks~1{pool_id}/get"),
+    pub async fn epochs_previous(
+        &self,
+        number: i32,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<Epoch>> {
+        self.call_paged_endpoint(format!("/epochs/{}/previous", number).as_str(), pagination)
+            .await
+    }
+
+    pub async fn epochs_stakes(
+        &self,
+        number: i32,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AddressStakePool>> {
+        self.call_paged_endpoint(format!("/epochs/{}/stakes", number).as_str(), pagination)
+            .await
+    }
+
+    pub async fn epochs_stakes_by_pool(
+        &self,
+        number: i32,
+        pool_id: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AddressStake>> {
+        self.call_paged_endpoint(
+            format!("/epochs/{}/stakes/{}", number, pool_id).as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn epochs_blocks(&self, number: i32) -> Result<Vec<String>> {
+        self.call_endpoint(format!("/epochs/{}/blocks", number).as_str())
+            .await
+    }
+
+    pub async fn epochs_blocks_by_pool(&self, number: i32, pool_id: &str) -> Result<Vec<String>> {
+        self.call_endpoint(format!("/epochs/{}/blocks/{}", number, pool_id).as_str())
+            .await
     }
 }
 

@@ -20,8 +20,8 @@ async fn main() -> blockfrost::Result<()> {
     let health_clock = api.health_clock().await;
 
     // // Metrics
-    let metrics = api.metrics().await;
-    let metrics_endpoints = api.metrics_endpoints().await;
+    let metrics = api.metrics(None).await;
+    let metrics_endpoints = api.metrics_endpoints(None).await;
 
     // // Accounts
     // let address = "stake1u9ylzsgxaa6xctf4juup682ar3juj85n8tx3hthnljg47zctvm3rc";

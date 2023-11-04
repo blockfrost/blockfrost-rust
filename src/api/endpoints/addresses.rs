@@ -2,23 +2,35 @@ use crate::*;
 use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
-    endpoints! {
-        /// Obtain information about a specific address.
-        addresses(address: &str) -> Address => "/addresses/{address}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}/get"),
-
-        /// Obtain details about an address.
-        addresses_total(address: &str) -> AddressTotal => "/addresses/{address}/total";
-            ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1total/get"),
+    pub async fn addresses(&self, address: &str) -> Result<Address> {
+        self.call_endpoint(format!("/addresses/{}", address).as_str())
+            .await
     }
-    paged_endpoints! {
-        /// UTXOs of the address.
-        addresses_utxos(address: &str) -> Vec<AddressUtxo> => "/addresses/{address}/utxos";
-            ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1utxos/get"),
 
-        /// Transactions on the address.
-        addresses_transactions(address: &str) -> Vec<AddressTransaction> => "/addresses/{address}/transactions";
-            ("https://docs.blockfrost.io/#tag/Cardano-Addresses/paths/~1addresses~1{address}~1transactions/get"),
+    pub async fn addresses_total(&self, address: &str) -> Result<AddressTotal> {
+        self.call_endpoint(format!("/addresses/{}/total", address).as_str())
+            .await
+    }
+
+    pub async fn addresses_utxos(
+        &self,
+        address: String,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AddressUtxo>> {
+        self.call_paged_endpoint(format!("/addresses/{}/utxos", address).as_str(), pagination)
+            .await
+    }
+
+    pub async fn addresses_transactions(
+        &self,
+        address: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AddressTransaction>> {
+        self.call_paged_endpoint(
+            format!("/addresses/{}/transactions", address).as_str(),
+            pagination,
+        )
+        .await
     }
 }
 

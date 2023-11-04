@@ -2,43 +2,80 @@ use crate::*;
 use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
-    endpoints! {
-        /// Return the latest block available to the backends, also known as the tip of the blockchain.
-        blocks_latest() -> Block => "/blocks/latest";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1latest/get"),
-
-        /// Return the content of a requested block.
-        blocks_by_id(hash_or_number: &str) -> Block => "/blocks/{hash_or_number}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1{hash_or_number}/get"),
-
-        /// Return the content of a requested block for a specific slot.
-        blocks_slot(slot_number: Integer) -> Block => "/blocks/slot/{slot_number}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1slot~1{slot_number}/get"),
-
-        /// Return the content of a requested block for a specific slot in an epoch.
-        blocks_by_epoch_and_slot(epoch_number: Integer, slot_number: Integer) -> Block => "/blocks/epoch/{epoch_number}/slot/{slot_number}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1epoch~1{epoch_number}~1slot~1{slot_number}/get"),
+    pub async fn blocks_latest(&self) -> Result<Block> {
+        self.call_endpoint("/blocks/latest").await
     }
-    paged_endpoints! {
-        /// Return the transactions within the latest block.
-        blocks_latest_txs() -> Vec<String> => "/blocks/latest/txs";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1latest~1txs/get"),
 
-        /// Return the list of blocks following a specific block.
-        blocks_next(hash_or_number: &str) -> Vec<Block> => "/blocks/{hash_or_number}/next";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1{hash_or_number}~1next/get"),
+    pub async fn blocks_by_id(&self, hash_or_number: &str) -> Result<Block> {
+        self.call_endpoint(format!("/blocks/{}", hash_or_number).as_str())
+            .await
+    }
 
-        /// Return the list of blocks preceding a specific block.
-        blocks_previous(hash_or_number: &str) -> Vec<Block> => "/blocks/{hash_or_number}/previous";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1{hash_or_number}~1previous/get"),
+    pub async fn blocks_slot(&self, slot_number: i64) -> Result<Block> {
+        self.call_endpoint(format!("/blocks/slot/{}", slot_number).as_str())
+            .await
+    }
 
-        /// Return the transactions within the block.
-        blocks_txs(hash_or_number: &str) -> Vec<String> => "/blocks/{hash_or_number}/txs";
-            ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1{hash_or_number}~1txs/get"),
+    pub async fn blocks_by_epoch_and_slot(
+        &self,
+        epoch_number: i64,
+        slot_number: i64,
+    ) -> Result<Block> {
+        self.call_endpoint(format!("/blocks/epoch/{}/slot/{}", epoch_number, slot_number).as_str())
+            .await
+    }
 
-        /// Return list of addresses affected in the specified block with additional information, sorted by the bech32 address, ascending.
-        blocks_affected_addresses(hash_or_number: &str) -> Vec<AffectedAddress> => "/blocks/{hash_or_number}/addresses";
-        ("https://docs.blockfrost.io/#tag/Cardano-Blocks/paths/~1blocks~1{hash_or_number}~1txs/get"),
+    pub async fn blocks_latest_txs(&self, pagination: Option<Pagination>) -> Result<Vec<String>> {
+        self.call_paged_endpoint("/blocks/latest/txs", pagination)
+            .await
+    }
+
+    pub async fn blocks_next(
+        &self,
+        hash_or_number: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<Block>> {
+        self.call_paged_endpoint(
+            format!("/blocks/{}/next", hash_or_number).as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn blocks_previous(
+        &self,
+        hash_or_number: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<Block>> {
+        self.call_paged_endpoint(
+            format!("/blocks/{}/previous", hash_or_number).as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn blocks_txs(
+        &self,
+        hash_or_number: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<String>> {
+        self.call_paged_endpoint(
+            format!("/blocks/{}/txs", hash_or_number).as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn blocks_affected_addresses(
+        &self,
+        hash_or_number: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<AffectedAddress>> {
+        self.call_paged_endpoint(
+            format!("/blocks/{}/addresses", hash_or_number).as_str(),
+            pagination,
+        )
+        .await
     }
 }
 

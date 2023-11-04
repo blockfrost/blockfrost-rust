@@ -2,47 +2,74 @@ use crate::*;
 use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
-    endpoints! {
-        /// Pool information.
-        pools_by_id(pool_id: &str) -> Pool => "/pools/{pool_id}";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}/get"),
-
-        /// Stake pool registration metadata.
-        pools_metadata(pool_id: &str) -> PoolMetadata => "/pools/{pool_id}/metadata";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1metadata/get"),
+    pub async fn pools_by_id(&self, pool_id: &str) -> Result<Pool> {
+        self.call_endpoint(format!("/pools/{}", pool_id).as_str())
+            .await
     }
-    paged_endpoints! {
-        /// List of registered stake pools.
-        pools() -> Vec<String> => "/pools";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools/get"),
 
-        /// List of already retired pools.
-        pools_retired() -> Vec<RetiredPool> => "/pools/retired";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retired/get"),
+    pub async fn pools_metadata(&self, pool_id: &str) -> Result<PoolMetadata> {
+        self.call_endpoint(format!("/pools/{}/metadata", pool_id).as_str())
+            .await
+    }
 
-        /// List of retiring stake pools.
-        pools_retiring() -> Vec<RetiringPool> => "/pools/retired";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1retiring/get"),
+    pub async fn pools(&self, pagination: Option<Pagination>) -> Result<Vec<String>> {
+        self.call_paged_endpoint("/pools", pagination).await
+    }
 
-        /// History of stake pool parameters over epochs.
-        pools_history(pool_id: &str) -> Vec<PoolHistory> => "/pools/{pool_id}/history";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1history/get"),
+    pub async fn pools_retired(&self, pagination: Option<Pagination>) -> Result<Vec<RetiredPool>> {
+        self.call_paged_endpoint("/pools/retired", pagination).await
+    }
 
-        /// Relays of a stake pool.
-        pools_relays(pool_id: &str) -> Vec<PoolRelay> => "/pools/{pool_id}/relays";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1relays/get"),
+    pub async fn pools_retiring(
+        &self,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<RetiringPool>> {
+        self.call_paged_endpoint("/pools/retiring", pagination)
+            .await
+    }
 
-        /// List of current stake pools delegators.
-        pools_delegators(pool_id: &str) -> Vec<PoolDelegator> => "/pools/{pool_id}/delegators";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1delegators/get"),
+    pub async fn pools_history(
+        &self,
+        pool_id: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<PoolHistory>> {
+        self.call_paged_endpoint(format!("/pools/{}/history", pool_id).as_str(), pagination)
+            .await
+    }
 
-        /// List of stake pool blocks.
-        pools_blocks(pool_id: &str) -> Vec<String> => "/pools/{pool_id}/blocks";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1blocks/get"),
+    pub async fn pools_relays(&self, pool_id: &str) -> Result<Vec<PoolRelay>> {
+        self.call_endpoint(format!("/pools/{}/relays", pool_id).as_str())
+            .await
+    }
 
-        /// List of certificate updates to the stake pool.
-        pools_updates(pool_id: &str) -> Vec<PoolUpdate> => "/pools/{pool_id}/updates";
-            ("https://docs.blockfrost.io/#tag/Cardano-Pools/paths/~1pools~1{pool_id}~1updates/get"),
+    pub async fn pools_delegators(
+        &self,
+        pool_id: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<PoolDelegator>> {
+        self.call_paged_endpoint(
+            format!("/pools/{}/delegators", pool_id).as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn pools_blocks(
+        &self,
+        pool_id: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<String>> {
+        self.call_paged_endpoint(format!("/pools/{}/blocks", pool_id).as_str(), pagination)
+            .await
+    }
+
+    pub async fn pools_updates(
+        &self,
+        pool_id: &str,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<PoolUpdate>> {
+        self.call_paged_endpoint(format!("/pools/{}/updates", pool_id).as_str(), pagination)
+            .await
     }
 }
 
