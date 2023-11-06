@@ -64,12 +64,16 @@ pub fn configurations_from_env() -> crate::Result<TomlValue> {
         None => TomlValue::Table(Default::default()),
     };
 
-    if let Ok(var) = env::var("BLOCKFROST_NETWORK_ADDRESS") {
-        toml_value["blockfrost-network-address"] = TomlValue::String(var);
+    if let Ok(var) = env::var("BLOCKFROST_PROJECT_ID") {
+        toml_value["project-id"] = TomlValue::String(var);
     }
 
-    if let Ok(var) = env::var("BLOCKFROST_NETWORK_ADDRESS") {
-        toml_value["blockfrost-project-id"] = TomlValue::String(var);
+    if let Ok(var) = env::var("BLOCKFROST_CARDANO_NETWORK") {
+        toml_value["cardano_network"] = TomlValue::String(var);
+    }
+
+    if let Ok(var) = env::var("BLOCKFROST_IPFS_NETWORK") {
+        toml_value["ipfs_network"] = TomlValue::String(var);
     }
 
     Ok(toml_value)
