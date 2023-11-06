@@ -1,12 +1,8 @@
-use blockfrost::{load, BlockFrostApi, BlockFrostSettings, Order, Pagination};
+use blockfrost::{BlockFrostApi, BlockFrostSettings, Order, Pagination};
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
-    let configurations = load::configurations_from_env()?;
-    let project_id = configurations["project_id"].as_str().unwrap();
-    let mut settings = BlockFrostSettings::new();
-    // Limit quantity of items per page listed
-    settings.query_parameters.set_count(2);
-    let api = BlockFrostApi::new(project_id, settings);
+    let settings = BlockFrostSettings::new();
+    let api = BlockFrostApi::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", settings);
     Ok(api)
 }
 

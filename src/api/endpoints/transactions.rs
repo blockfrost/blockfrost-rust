@@ -23,7 +23,7 @@ impl BlockFrostApi {
         let content_type_header = ("Content-Type", HeaderValue::from_static("application/cbor"));
 
         let endpoint_suffix = "/tx/submit";
-        let Url(url) = Url::from_endpoint_without_parameters(&self.settings, endpoint_suffix);
+        let url = Url::from_endpoint(self.base_url.clone(), endpoint_suffix);
 
         let request = self
             .client

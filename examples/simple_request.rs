@@ -1,9 +1,10 @@
-use blockfrost::{load, BlockFrostApi};
+use blockfrost::BlockFrostApi;
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
-    let configurations = load::configurations_from_env()?;
-    let project_id = configurations["project_id"].as_str().unwrap();
-    let api = BlockFrostApi::new(project_id, Default::default());
+    let api = BlockFrostApi::new(
+        "mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be",
+        Default::default(),
+    );
     Ok(api)
 }
 

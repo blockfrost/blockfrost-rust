@@ -1,11 +1,12 @@
 use std::fs;
 
-use blockfrost::{load, IpfsApi, IpfsSettings};
+use blockfrost::{IpfsApi, IpfsSettings};
 
 fn build_ipfs() -> blockfrost::Result<IpfsApi> {
-    let configurations = load::configurations_from_env()?;
-    let project_id = configurations["project_id"].as_str().unwrap();
-    let api = IpfsApi::new(project_id, IpfsSettings::new());
+    let api = IpfsApi::new(
+        "mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be",
+        IpfsSettings::new(),
+    );
     Ok(api)
 }
 
