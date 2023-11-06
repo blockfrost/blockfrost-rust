@@ -81,14 +81,27 @@ pub enum ActionType {
     Registered,
     Deregistered,
 }
-
+#[derive(Clone, Copy)]
 pub enum Order {
     Asc,
     Desc,
 }
 
+#[derive(Clone, Copy)]
 pub struct Pagination {
+    pub fetch_all: bool,
     pub count: usize,
     pub page: usize,
     pub order: Order,
+}
+
+impl Default for Pagination {
+    fn default() -> Self {
+        Pagination {
+            fetch_all: false,
+            count: 100,
+            page: 1,
+            order: Order::Asc,
+        }
+    }
 }

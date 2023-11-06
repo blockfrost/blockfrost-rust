@@ -18,7 +18,7 @@ impl BlockFrostApi {
 
     pub async fn addresses_utxos(
         &self,
-        address: String,
+        address: &str,
         pagination: Option<Pagination>,
     ) -> Result<Vec<AddressUtxoContentInner>> {
         self.call_paged_endpoint(format!("/addresses/{}/utxos", address).as_str(), pagination)

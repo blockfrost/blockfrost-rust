@@ -20,7 +20,7 @@ impl BlockFrostApi {
 
     pub async fn blocks_by_epoch_and_slot(
         &self,
-        epoch_number: i64,
+        epoch_number: i32,
         slot_number: i64,
     ) -> Result<BlockContent> {
         self.call_endpoint(format!("/blocks/epoch/{}/slot/{}", epoch_number, slot_number).as_str())

@@ -63,23 +63,19 @@ impl BlockFrostApi {
     where
         T: serde::de::DeserializeOwned,
     {
-        let Url(url) = Url::from_endpoint(&self.settings, url_endpoint.as_str());
+        let Url(url) = Url::from_endpoint(&self.settings, url_endpoint);
         send_get_request(&self.client, url, self.settings.retry_settings)
     }
 
     fn call_paged_endpoint<T>(
         &self,
         url_endpoint: &str,
-        pagination: Option<Pagination>,
+        _pagination: Option<Pagination>,
     ) -> impl Future<Output = crate::Result<T>> + Send
     where
         T: serde::de::DeserializeOwned,
     {
         let Url(url) = Url::from_endpoint(&self.settings, url_endpoint);
         send_get_request(&self.client, url, self.settings.retry_settings)
-    }
-
-    fn call_all_endpoint(&self, url_endpoint: &str) {
-        todo!("Implement this method");
     }
 }

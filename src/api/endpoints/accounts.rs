@@ -11,8 +11,9 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn accounts(&self) -> Result<AccountContent> {
-        self.call_endpoint("/accounts/{stake_address}").await
+    pub async fn accounts(&self, stake_address: &str) -> Result<AccountContent> {
+        self.call_endpoint(format!("/accounts/{}", stake_address).as_str())
+            .await
     }
 
     /// Reward history of a specific account.
