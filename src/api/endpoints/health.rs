@@ -11,16 +11,11 @@ impl BlockFrostApi {
     }
 
     /// Backend health status as a boolean.
-    ///
-    /// Your application should handle when backend is unavailable for the given chain.
     pub async fn health(&self) -> Result<HealthGet200Response> {
         self.call_endpoint("/health").await
     }
 
     /// Current backend time.
-    ///
-    /// This endpoint provides the current UNIX time. Your application might use this to verify
-    /// if the client clock is not out of sync.
     pub async fn health_clock(&self) -> Result<HealthClockGet200Response> {
         self.call_endpoint("/health/clock").await
     }
