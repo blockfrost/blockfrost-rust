@@ -1,4 +1,5 @@
 use crate::{BlockFrostApi, Pagination, Result};
+use blockfrost_openapi::models::account_addresses_assets_inner::AccountAddressesAssetsInner;
 use serde::{Deserialize, Serialize};
 
 impl BlockFrostApi {
@@ -96,7 +97,7 @@ impl BlockFrostApi {
         &self,
         stake_address: &str,
         pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountAddressAsset>> {
+    ) -> Result<Vec<AccountAddressesAssetsInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/addresses/assets", stake_address),
             pagination,
