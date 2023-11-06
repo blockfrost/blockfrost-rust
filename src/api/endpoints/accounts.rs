@@ -132,6 +132,7 @@ mod tests {
             "withdrawable_amount": "319154618165",
             "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy"
         });
+
         serde_json::from_value::<AccountContent>(json_value).unwrap();
     }
 
@@ -159,6 +160,7 @@ mod tests {
                 "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy"
             }
         ]);
+
         serde_json::from_value::<Vec<AccountRewardContentInner>>(json_value).unwrap();
     }
 
@@ -176,6 +178,7 @@ mod tests {
                 "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy"
             }
         ]);
+
         serde_json::from_value::<Vec<AccountHistoryContentInner>>(json_value).unwrap();
     }
 
@@ -195,6 +198,7 @@ mod tests {
                 "pool_id": "pool1kchver88u3kygsak8wgll7htr8uxn5v35lfrsyy842nkscrzyvj"
             }
         ]);
+
         serde_json::from_value::<Vec<AccountDelegationContentInner>>(json_value).unwrap();
     }
 
@@ -210,6 +214,7 @@ mod tests {
                 "action": "deregistered"
             }
         ]);
+
         serde_json::from_value::<Vec<AccountRegistrationContentInner>>(json_value).unwrap();
     }
 
@@ -225,6 +230,7 @@ mod tests {
                 "amount": "97846969"
             }
         ]);
+
         serde_json::from_value::<Vec<AccountWithdrawalContentInner>>(json_value).unwrap();
     }
 
@@ -240,6 +246,7 @@ mod tests {
                 "amount": "97846969"
             }
         ]);
+
         serde_json::from_value::<Vec<AccountMirContentInner>>(json_value).unwrap();
     }
 
@@ -259,6 +266,7 @@ mod tests {
                 "address": "addr1q8f7gxrprank3drhx8k5grlux7ene0nlwun8y9thu8mc3yjf79qsdmm5dsknt9ecr5w468r9ey0fxwkdrwh08ly3tu9sls6vnt"
             }
         ]);
+
         serde_json::from_value::<Vec<AccountAddressesContentInner>>(json_value).unwrap();
     }
 
@@ -274,6 +282,7 @@ mod tests {
                 "quantity": "125"
             }
         ]);
+
         serde_json::from_value::<Vec<AccountAddressesAssetsInner>>(json_value).unwrap();
     }
 }
