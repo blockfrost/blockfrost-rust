@@ -84,26 +84,26 @@ mod tests {
         serde_json::from_value::<Vec<NutlinkAddressTickersInner>>(json_value).unwrap();
     }
 
-    // #[tokio::test]
-    // async fn test_nutlink_address_ticker_detailed() {
-    //     let json_value = json!([
-    //         {
-    //             "tx_hash": "e8073fd5318ff43eca18a852527166aa8008bee9ee9e891f585612b7e4ba700b",
-    //             "block_height": 2657092,
-    //             "tx_index": 8,
-    //             "payload": [
-    //                 {
-    //                     "source": "coinGecko",
-    //                     "value": "1.29"
-    //                 },
-    //                 {
-    //                     "source": "cryptoCompare",
-    //                     "value": "1.283"
-    //                 }
-    //             ]
-    //         }
-    //     ]);
+    #[tokio::test]
+    async fn test_nutlink_address_ticker_detailed() {
+        let json_value = json!([
+            {
+                "tx_hash": "e8073fd5318ff43eca18a852527166aa8008bee9ee9e891f585612b7e4ba700b",
+                "block_height": 2657092,
+                "tx_index": 8,
+                "payload": [
+                    {
+                        "source": "coinGecko",
+                        "value": "1.29"
+                    },
+                    {
+                        "source": "cryptoCompare",
+                        "value": "1.283"
+                    }
+                ]
+            }
+        ]);
 
-    //     serde_json::from_value::<Vec<NutlinkAddressTickerInner>>(json_value).unwrap();
-    // }
+        serde_json::from_value::<Vec<NutlinkAddressTickerInner>>(json_value).unwrap();
+    }
 }

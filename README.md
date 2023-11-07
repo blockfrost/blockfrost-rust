@@ -19,18 +19,9 @@
 <p align="center">
   <a href="#getting-started">Getting started</a> •
   <a href="#installation">Installation</a> •
-  <a href="#examples">Examples</a>
+  <a href="#examples">Examples</a> •
+  <a hred="./ENDPOINTS.md">Endpoints</a>
 </p>
-
-## Endpoints
-
-blocks_latest
-blocks_by_id
-blocks_next
-blocks_slot
-blocks_epoch
-blocks_latest_txs
-blocks_by_epoch_and_slot
 
 ## Getting started
 
