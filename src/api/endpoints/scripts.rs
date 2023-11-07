@@ -51,7 +51,7 @@ mod tests {
     async fn test_scripts_by_id() {
         let json_value = json!({
             "script_hash": "13a3efd825703a352a8f71f4e2758d08c28c564e8dfcce9f77776ad1",
-            "type": "plutus",
+            "type": "plutusV1",
             "serialised_size": 3119
         });
         serde_json::from_value::<Script>(json_value).unwrap();

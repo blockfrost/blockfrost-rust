@@ -150,6 +150,7 @@ mod tests {
           "live_saturation": 0.93,
           "live_delegators": 127,
           "active_stake": "4200000000",
+          "blocks_epoch": 21,
           "active_size": 0.43,
           "declared_pledge": "5000000000",
           "live_pledge": "5000000001",

@@ -79,6 +79,7 @@ mod tests {
                 "quantity": "18605647"
             }
         ]);
+
         serde_json::from_value::<Vec<AssetsInner>>(json_value).unwrap();
     }
 

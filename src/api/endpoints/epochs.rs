@@ -134,7 +134,9 @@ mod tests {
             "max_val_size": "5000",
             "collateral_percent": 15,
             "max_collateral_inputs": 6,
-            "coins_per_utxo_word": "34482"
+            "coins_per_utxo_word": "34482",
+            "cost_models": null,
+            "coins_per_utxo_size": "34482"
         });
 
         serde_json::from_value::<EpochParamContent>(json_value).unwrap();
@@ -157,7 +159,7 @@ mod tests {
             }
         ]);
 
-        serde_json::from_value::<EpochContent>(json_value).unwrap();
+        serde_json::from_value::<Vec<EpochContent>>(json_value).unwrap();
     }
 
     #[tokio::test]
@@ -170,7 +172,7 @@ mod tests {
             }
         ]);
 
-        serde_json::from_value::<EpochStakeContentInner>(json_value).unwrap();
+        serde_json::from_value::<Vec<EpochStakeContentInner>>(json_value).unwrap();
     }
 
     #[tokio::test]

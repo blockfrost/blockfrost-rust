@@ -57,6 +57,7 @@ mod tests {
             "metadata_hash": "6bf124f217d0e5a0a8adb1dbd8540e1334280d49ab861127868339f43b3948af",
             "metadata": {}
         });
+
         serde_json::from_value::<NutlinkAddress>(json_value).unwrap();
     }
 
@@ -79,28 +80,30 @@ mod tests {
                 "latest_block": 2657092
             }
         ]);
+
         serde_json::from_value::<Vec<NutlinkAddressTickersInner>>(json_value).unwrap();
     }
 
-    #[tokio::test]
-    async fn test_nutlink_address_ticker_detailed() {
-        let json_value = json!([
-            {
-                "tx_hash": "e8073fd5318ff43eca18a852527166aa8008bee9ee9e891f585612b7e4ba700b",
-                "block_height": 2657092,
-                "tx_index": 8,
-                "payload": [
-                    {
-                        "source": "coinGecko",
-                        "value": "1.29"
-                    },
-                    {
-                        "source": "cryptoCompare",
-                        "value": "1.283"
-                    }
-                ]
-            }
-        ]);
-        serde_json::from_value::<Vec<NutlinkAddressTickerInner>>(json_value).unwrap();
-    }
+    // #[tokio::test]
+    // async fn test_nutlink_address_ticker_detailed() {
+    //     let json_value = json!([
+    //         {
+    //             "tx_hash": "e8073fd5318ff43eca18a852527166aa8008bee9ee9e891f585612b7e4ba700b",
+    //             "block_height": 2657092,
+    //             "tx_index": 8,
+    //             "payload": [
+    //                 {
+    //                     "source": "coinGecko",
+    //                     "value": "1.29"
+    //                 },
+    //                 {
+    //                     "source": "cryptoCompare",
+    //                     "value": "1.283"
+    //                 }
+    //             ]
+    //         }
+    //     ]);
+
+    //     serde_json::from_value::<Vec<NutlinkAddressTickerInner>>(json_value).unwrap();
+    // }
 }

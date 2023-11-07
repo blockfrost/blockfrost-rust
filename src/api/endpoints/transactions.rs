@@ -125,6 +125,7 @@ mod tests {
             "hash": "1e043f100dce12d107f679685acd2fc0610e10f72a92d412794c9773d11d8477",
             "block": "356b7d7dbb696ccd12775c016941057a9dc70898d87a63fc752271bb46856940",
             "block_height": 123456,
+            "block_time": 2,
             "slot": 42000000,
             "index": 1,
             "output_amount": [
@@ -150,7 +151,8 @@ mod tests {
             "pool_update_count": 0,
             "pool_retire_count": 0,
             "asset_mint_or_burn_count": 0,
-            "redeemer_count": 0
+            "redeemer_count": 0,
+            "valid_contract": false
         });
         serde_json::from_value::<TxContent>(json_value).unwrap();
     }
@@ -221,6 +223,11 @@ mod tests {
             "outputs": [
                 {
                     "address": "addr1q9ld26v2lv8wvrxxmvg90pn8n8n5k6tdst06q2s856rwmvnueldzuuqmnsye359fqrk8hwvenjnqultn7djtrlft7jnq7dy7wv",
+                    "output_index": 0,
+                    "data_hash": null,
+                    "reference_script_hash": "1a0570af966fb355a7160e4f82d5a80b8681b7955f5d44bec0dce628516157f0",
+                    "inline_datum": null,
+                    "collateral": false,
                     "amount": [
                         {
                             "unit": "lovelace",
