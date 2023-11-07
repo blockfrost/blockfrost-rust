@@ -22,6 +22,16 @@
   <a href="#examples">Examples</a>
 </p>
 
+## Endpoints
+
+blocks_latest
+blocks_by_id
+blocks_next
+blocks_slot
+blocks_epoch
+blocks_latest_txs
+blocks_by_epoch_and_slot
+
 ## Getting started
 
 To use this SDK you need to login at [blockfrost.io](https://blockfrost.io)

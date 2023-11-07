@@ -3,6 +3,7 @@ use blockfrost::{BlockFrostApi, BlockFrostSettings, Order, Pagination};
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
     let settings = BlockFrostSettings::new();
     let api = BlockFrostApi::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", settings);
+
     Ok(api)
 }
 
@@ -15,6 +16,8 @@ async fn main() -> blockfrost::Result<()> {
         order: Order::Asc,
         fetch_all: false,
     });
+
+    println!("Fetching ...");
 
     // Health
     let root = api.root().await;

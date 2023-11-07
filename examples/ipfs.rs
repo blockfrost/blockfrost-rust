@@ -7,6 +7,7 @@ fn build_ipfs() -> blockfrost::Result<IpfsApi> {
         "mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be",
         IpfsSettings::new(),
     );
+
     Ok(api)
 }
 

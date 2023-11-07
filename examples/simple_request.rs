@@ -5,6 +5,7 @@ fn build_api() -> blockfrost::Result<BlockFrostApi> {
         "mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be",
         Default::default(),
     );
+
     Ok(api)
 }
 
