@@ -63,7 +63,9 @@ mod tests {
             {
                 "tx_hash": "1a0570af966fb355a7160e4f82d5a80b8681b7955f5d44bec0dce628516157f0",
                 "tx_index": 0,
+                "redeemer_data_hash": "2a0570af966fb355a7160e4f82d5a80b8681b7955f5d44bec0dce628516157f0",
                 "purpose": "spend",
+                "datum_hash": "3a0570af966fb355a7160e4f82d5a80b8681b7955f5d44bec0dce628516157f0",
                 "unit_mem": "1700",
                 "unit_steps": "476468",
                 "fee": "172033"

@@ -79,7 +79,7 @@ mod tests {
                 "quantity": "18605647"
             }
         ]);
-        serde_json::from_value::<Vec<Asset>>(json_value).unwrap();
+        serde_json::from_value::<Vec<AssetsInner>>(json_value).unwrap();
     }
 
     #[tokio::test]
@@ -139,17 +139,20 @@ mod tests {
             {
                 "tx_hash": "8788591983aa73981fc92d6cddbbe643959f5a784e84b8bee0db15823f575a5b",
                 "tx_index": 6,
-                "block_height": 69
+                "block_height": 69,
+                "block_time": 13
             },
             {
                 "tx_hash": "52e748c4dec58b687b90b0b40d383b9fe1f24c1a833b7395cdf07dd67859f46f",
                 "tx_index": 9,
-                "block_height": 4547
+                "block_height": 4547,
+                "block_time": 11
             },
             {
                 "tx_hash": "e8073fd5318ff43eca18a852527166aa8008bee9ee9e891f585612b7e4ba700b",
                 "tx_index": 0,
-                "block_height": 564654
+                "block_height": 564654,
+                "block_time": 12
             }
         ]);
 

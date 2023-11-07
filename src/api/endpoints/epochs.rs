@@ -132,7 +132,7 @@ mod tests {
             "max_block_ex_mem": "110000000000",
             "max_block_ex_steps": "110000000000",
             "max_val_size": "5000",
-            "collateral_percent": 1.5,
+            "collateral_percent": 15,
             "max_collateral_inputs": 6,
             "coins_per_utxo_word": "34482"
         });

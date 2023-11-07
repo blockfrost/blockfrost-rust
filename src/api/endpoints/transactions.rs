@@ -210,6 +210,8 @@ mod tests {
                             "quantity": "12"
                         }
                     ],
+                    "inline_datum": "12",
+                    "reference_script_hash": "1a0570af966fb355a7160e4f82d5a80b8681b7955f5d44bec0dce628516157f0",
                     "tx_hash": "1a0570af966fb355a7160e4f82d5a80b8681b7955f5d44bec0dce628516157f0",
                     "output_index": 0,
                     "data_hash": null,
@@ -232,6 +234,7 @@ mod tests {
                 }
             ]
         });
+
         serde_json::from_value::<TxContentUtxo>(json_value).unwrap();
     }
 
@@ -244,6 +247,7 @@ mod tests {
                 "registration": true
             }
         ]);
+
         serde_json::from_value::<Vec<TxContentStakeAddrInner>>(json_value).unwrap();
     }
 
@@ -269,6 +273,7 @@ mod tests {
                 "amount": "431833601"
             }
         ]);
+
         serde_json::from_value::<Vec<TxContentWithdrawalsInner>>(json_value).unwrap();
     }
 
@@ -282,6 +287,7 @@ mod tests {
                 "amount": "431833601"
             }
         ]);
+
         serde_json::from_value::<Vec<TxContentMirsInner>>(json_value).unwrap();
     }
 
@@ -319,6 +325,7 @@ mod tests {
                 "active_epoch": 210
             }
         ]);
+
         serde_json::from_value::<Vec<TxContentMetadataInnerJsonMetadata>>(json_value).unwrap();
     }
 
@@ -331,6 +338,7 @@ mod tests {
                 "retiring_epoch": 216
             }
         ]);
+
         serde_json::from_value::<Vec<TxContentMetadataInnerJsonMetadata>>(json_value).unwrap();
     }
 
@@ -356,6 +364,7 @@ mod tests {
                 }
             }
         ]);
+
         serde_json::from_value::<Vec<TxContentMetadataInnerJsonMetadata>>(json_value).unwrap();
     }
 
@@ -364,9 +373,11 @@ mod tests {
         let json_value = json!([
             {
                 "label": "1968",
-                "cbor_metadata": "\\xa100a16b436f6d62696e6174696f6e8601010101010c"
+                "cbor_metadata": "\\xa100a16b436f6d62696e6174696f6e8601010101010c",
+                "metadata": null
             }
         ]);
+
         serde_json::from_value::<Vec<TxContentMetadataCborInner>>(json_value).unwrap();
     }
 }

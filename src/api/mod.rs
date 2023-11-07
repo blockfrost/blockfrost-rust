@@ -24,7 +24,7 @@ impl BlockFrostApi {
             id if id.starts_with("mainnet") => CARDANO_MAINNET_URL,
             id if id.starts_with("preview") => CARDANO_PREVIEW_URL,
             id if id.starts_with("preprod") => CARDANO_PREPROD_URL,
-            id => CARDANO_MAINNET_URL,
+            _ => CARDANO_MAINNET_URL,
         }
         .to_string();
 
@@ -44,7 +44,7 @@ impl BlockFrostApi {
             id if id.starts_with("mainnet") => CARDANO_MAINNET_URL,
             id if id.starts_with("preview") => CARDANO_PREVIEW_URL,
             id if id.starts_with("preprod") => CARDANO_PREPROD_URL,
-            id => CARDANO_MAINNET_URL,
+            _ => CARDANO_MAINNET_URL,
         }
         .to_string();
 

@@ -103,7 +103,9 @@ mod tests {
             "block_vrf": "vrf_vk1wf2k6lhujezqcfe00l6zetxpnmh9n6mwhpmhm0dvfh3fxgmdnrfqkms8ty",
             "previous_block": "43ebccb3ac72c7cebd0d9b755a4b08412c9f5dcb81b8a0ad1e3c197d29d47b05",
             "next_block": "8367f026cf4b03e116ff8ee5daf149b55ba5a6ec6dec04803b8dc317721d15fa",
-            "confirmations": 4698
+            "confirmations": 4698,
+            "op_cert": null,
+            "op_cert_counter": "1"
         });
 
         serde_json::from_value::<BlockContent>(json_value).unwrap();
@@ -138,10 +140,12 @@ mod tests {
             "block_vrf": "vrf_vk1wf2k6lhujezqcfe00l6zetxpnmh9n6mwhpmhm0dvfh3fxgmdnrfqkms8ty",
             "previous_block": "43ebccb3ac72c7cebd0d9b755a4b08412c9f5dcb81b8a0ad1e3c197d29d47b05",
             "next_block": "8367f026cf4b03e116ff8ee5daf149b55ba5a6ec6dec04803b8dc317721d15fa",
-            "confirmations": 4698
+            "confirmations": 46982,
+            "op_cert_counter": "1",
+            "op_cert": null
         }]);
 
-        serde_json::from_value::<BlockContent>(json_value).unwrap();
+        serde_json::from_value::<Vec<BlockContent>>(json_value).unwrap();
     }
 
     #[tokio::test]

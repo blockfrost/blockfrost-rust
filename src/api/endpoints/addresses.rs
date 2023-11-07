@@ -58,7 +58,8 @@ mod tests {
                 }
             ],
             "stake_address": "stake1ux3g2c9dx2nhhehyrezyxpkstartcqmu9hk63qgfkccw5rqttygt7",
-            "type": "shelley"
+            "type": "shelley",
+            "script": false
         });
         serde_json::from_value::<AddressContent>(json_value).unwrap();
     }
@@ -143,17 +144,20 @@ mod tests {
           {
             "tx_hash": "8788591983aa73981fc92d6cddbbe643959f5a784e84b8bee0db15823f575a5b",
             "tx_index": 6,
-            "block_height": 69
+            "block_height": 69,
+            "block_time": 4547
           },
           {
             "tx_hash": "52e748c4dec58b687b90b0b40d383b9fe1f24c1a833b7395cdf07dd67859f46f",
             "tx_index": 9,
-            "block_height": 4547
+            "block_height": 4547,
+             "block_time": 42
           },
           {
             "tx_hash": "e8073fd5318ff43eca18a852527166aa8008bee9ee9e891f585612b7e4ba700b",
             "tx_index": 0,
-            "block_height": 564654
+            "block_height": 564654,
+             "block_time": 666
           }
         ]);
         serde_json::from_value::<Vec<AddressTransactionsContentInner>>(json_value).unwrap();
