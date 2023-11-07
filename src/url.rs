@@ -5,7 +5,7 @@ pub(crate) struct Url(pub String);
 
 impl Url {
     pub(crate) fn from_endpoint(base_url: String, endpoint_url: &str) -> String {
-        base_url.clone() + endpoint_url
+        base_url + endpoint_url
     }
 }
 
