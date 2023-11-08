@@ -5,7 +5,7 @@ use blockfrost_openapi::models::{
     nutlink_address_tickers_inner::NutlinkAddressTickersInner,
 };
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     pub async fn nutlink_address(&self, address: &str) -> BlockfrostResult<NutlinkAddress> {
         self.call_endpoint(format!("/nutlink/{}", address).as_str())
             .await

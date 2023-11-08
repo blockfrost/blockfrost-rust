@@ -1,8 +1,8 @@
-use blockfrost::{BlockFrostSettings, BlockfrostApi, BlockfrostResult, Pagination};
+use blockfrost::{BlockFrostSettings, BlockfrostAPI, BlockfrostResult, Pagination};
 
-fn build_api() -> BlockfrostResult<BlockfrostApi> {
+fn build_api() -> BlockfrostResult<BlockfrostAPI> {
     let settings = BlockFrostSettings::new();
-    let api = BlockfrostApi::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", settings);
+    let api = BlockfrostAPI::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", settings);
 
     Ok(api)
 }

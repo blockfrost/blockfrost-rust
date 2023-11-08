@@ -5,7 +5,7 @@ use blockfrost_openapi::models::{
     tx_metadata_labels_inner::TxMetadataLabelsInner,
 };
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     /// List of all used transaction metadata labels.
     pub async fn metadata_txs_labels(
         &self,

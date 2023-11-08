@@ -6,7 +6,7 @@ use blockfrost_openapi::models::{
     tx_content_pool_certs_inner_relays_inner::TxContentPoolCertsInnerRelaysInner,
 };
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     pub async fn pools_by_id(&self, pool_id: &str) -> BlockfrostResult<Pool> {
         self.call_endpoint(format!("/pools/{}", pool_id).as_str())
             .await

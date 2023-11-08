@@ -5,7 +5,7 @@ use blockfrost_openapi::models::{
     assets_inner::AssetsInner,
 };
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     pub async fn assets_by_id(&self, asset: &str) -> BlockfrostResult<AssetsInner> {
         self.call_endpoint(format!("/assets/{}", asset).as_str())
             .await

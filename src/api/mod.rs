@@ -7,13 +7,13 @@ use crate::{
 use reqwest::ClientBuilder;
 
 #[derive(Debug, Clone)]
-pub struct BlockfrostApi {
+pub struct BlockfrostAPI {
     base_url: String,
     settings: BlockFrostSettings,
     client: reqwest::Client,
 }
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     pub fn new(project_id: &str, settings: BlockFrostSettings) -> Self {
         let client = create_client_with_project_id(project_id);
         let base_url = Url::get_base_url_from_project_id(project_id);

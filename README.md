@@ -48,10 +48,10 @@ Here is [`simple_request.rs`] with the basic setup necessary and no settings
 customization:
 
 ```rust
-use blockfrost::{BlockFrostApi};
+use blockfrost::{BlockfrostAPI, BlockfrostResult};
 
-fn build_api() -> blockfrost::BlockfrostResult<BlockFrostApi> {
-    let api = BlockFrostApi::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", Default::default());
+fn build_api() -> BlockfrostResult<BlockfrostAPI> {
+    let api = BlockfrostAPI::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", Default::default());
     Ok(api)
 }
 

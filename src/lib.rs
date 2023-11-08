@@ -13,7 +13,7 @@ pub mod error;
 pub mod types;
 pub use api::*;
 pub use error::*;
-pub use ipfs::IpfsApi;
+pub use ipfs::BlockfrostIPFS;
 pub use settings::*;
 pub use types::*;
 

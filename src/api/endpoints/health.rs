@@ -4,7 +4,7 @@ use blockfrost_openapi::models::{
     _health_get_200_response::HealthGet200Response,
 };
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     /// Root endpoint, points end users to documentation.
     pub async fn root(&self) -> BlockfrostResult<Get200Response> {
         self.call_endpoint("/").await

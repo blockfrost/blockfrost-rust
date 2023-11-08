@@ -6,7 +6,7 @@ use blockfrost_openapi::models::{
 
 use crate::*;
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     pub async fn addresses(&self, address: &str) -> BlockfrostResult<AddressContent> {
         self.call_endpoint(format!("/addresses/{}", address).as_str())
             .await

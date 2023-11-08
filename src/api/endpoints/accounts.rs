@@ -1,4 +1,4 @@
-use crate::{BlockfrostApi, BlockfrostError, BlockfrostResult, Pagination};
+use crate::{BlockfrostAPI, BlockfrostResult, Pagination};
 use blockfrost_openapi::models::{
     account_addresses_assets_inner::AccountAddressesAssetsInner,
     account_addresses_content_inner::AccountAddressesContentInner, account_content::AccountContent,
@@ -10,7 +10,7 @@ use blockfrost_openapi::models::{
     account_withdrawal_content_inner::AccountWithdrawalContentInner,
 };
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     pub async fn accounts(&self, stake_address: &str) -> BlockfrostResult<AccountContent> {
         self.call_endpoint(format!("/accounts/{}", stake_address).as_str())
             .await
@@ -70,7 +70,7 @@ impl BlockfrostApi {
         &self,
         stake_address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AccountWithdrawalContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AccountWithdrawalContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/withdrawals", stake_address).as_str(),
             pagination,
@@ -82,7 +82,7 @@ impl BlockfrostApi {
         &self,
         stake_address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AccountMirContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AccountMirContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/mirs", stake_address).as_str(),
             pagination,
@@ -94,7 +94,7 @@ impl BlockfrostApi {
         &self,
         stake_address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AccountAddressesContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AccountAddressesContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/addresses", stake_address).as_str(),
             pagination,
@@ -106,7 +106,7 @@ impl BlockfrostApi {
         &self,
         stake_address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AccountAddressesAssetsInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AccountAddressesAssetsInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/addresses/assets", stake_address).as_str(),
             pagination,

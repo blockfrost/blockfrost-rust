@@ -14,13 +14,13 @@ use serde_json::from_str as json_from;
 /// Provides methods for making requests to the
 /// [IPFS API](https://docs.blockfrost.io/#tag/IPFS-Add).
 #[derive(Debug, Clone)]
-pub struct IpfsApi {
+pub struct BlockfrostIPFS {
     pub base_url: String,
     client: reqwest::Client,
     pub settings: IpfsSettings,
 }
 
-impl IpfsApi {
+impl BlockfrostIPFS {
     /// Create a [`IpfsApi`] with [`custom settings`](IpfsSettings).
     ///
     /// # Panics

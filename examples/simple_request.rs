@@ -1,7 +1,7 @@
-use blockfrost::BlockfrostApi;
+use blockfrost::{BlockfrostAPI, BlockfrostResult};
 
-fn build_api() -> blockfrost::BlockfrostResult<BlockfrostApi> {
-    let api = BlockfrostApi::new(
+fn build_api() -> BlockfrostResult<BlockfrostAPI> {
+    let api = BlockfrostAPI::new(
         "mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be",
         Default::default(),
     );
@@ -10,7 +10,7 @@ fn build_api() -> blockfrost::BlockfrostResult<BlockfrostApi> {
 }
 
 #[tokio::main]
-async fn main() -> blockfrost::BlockfrostResult<()> {
+async fn main() -> BlockfrostResult<()> {
     let api = build_api()?;
     let genesis = api.genesis().await?;
 

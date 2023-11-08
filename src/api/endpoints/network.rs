@@ -1,7 +1,7 @@
 use crate::*;
 use blockfrost_openapi::models::network::Network;
 
-impl BlockfrostApi {
+impl BlockfrostAPI {
     pub async fn network(&self) -> BlockfrostResult<Network> {
         self.call_endpoint("/network").await
     }
