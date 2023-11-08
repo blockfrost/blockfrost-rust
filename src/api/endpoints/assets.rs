@@ -6,20 +6,23 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn assets_by_id(&self, asset: &str) -> Result<AssetsInner> {
+    pub async fn assets_by_id(&self, asset: &str) -> Result<AssetsInner, BlockfrostError> {
         self.call_endpoint(format!("/assets/{}", asset).as_str())
             .await
     }
 
-    pub async fn assets(&self, pagination: Option<Pagination>) -> Result<Vec<AssetsInner>> {
+    pub async fn assets(
+        &self,
+        pagination: Pagination,
+    ) -> Result<Vec<AssetsInner>, BlockfrostError> {
         self.call_paged_endpoint("/assets", pagination).await
     }
 
     pub async fn assets_history(
         &self,
         asset: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AssetHistoryInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AssetHistoryInner>, BlockfrostError> {
         self.call_paged_endpoint(format!("/assets/{}/history", asset).as_str(), pagination)
             .await
     }
@@ -27,8 +30,8 @@ impl BlockFrostApi {
     pub async fn assets_transactions(
         &self,
         asset: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AssetTransactionsInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AssetTransactionsInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/assets/{}/transactions", asset).as_str(),
             pagination,
@@ -39,8 +42,8 @@ impl BlockFrostApi {
     pub async fn assets_addresses(
         &self,
         asset: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AssetAddressesInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AssetAddressesInner>, BlockfrostError> {
         self.call_paged_endpoint(format!("/assets/{}/addresses", asset).as_str(), pagination)
             .await
     }
@@ -48,8 +51,8 @@ impl BlockFrostApi {
     pub async fn assets_policy_by_id(
         &self,
         policy_id: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AssetPolicyInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AssetPolicyInner>, BlockfrostError> {
         self.call_paged_endpoint(format!("/assets/policy/{}", policy_id).as_str(), pagination)
             .await
     }

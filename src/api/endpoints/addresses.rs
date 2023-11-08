@@ -6,12 +6,15 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn addresses(&self, address: &str) -> Result<AddressContent> {
+    pub async fn addresses(&self, address: &str) -> Result<AddressContent, BlockfrostError> {
         self.call_endpoint(format!("/addresses/{}", address).as_str())
             .await
     }
 
-    pub async fn addresses_total(&self, address: &str) -> Result<AddressContentTotal> {
+    pub async fn addresses_total(
+        &self,
+        address: &str,
+    ) -> Result<AddressContentTotal, BlockfrostError> {
         self.call_endpoint(format!("/addresses/{}/total", address).as_str())
             .await
     }
@@ -19,8 +22,8 @@ impl BlockFrostApi {
     pub async fn addresses_utxos(
         &self,
         address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AddressUtxoContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AddressUtxoContentInner>, BlockfrostError> {
         self.call_paged_endpoint(format!("/addresses/{}/utxos", address).as_str(), pagination)
             .await
     }
@@ -28,8 +31,8 @@ impl BlockFrostApi {
     pub async fn addresses_transactions(
         &self,
         address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AddressTransactionsContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AddressTransactionsContentInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/addresses/{}/transactions", address).as_str(),
             pagination,

@@ -4,11 +4,14 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn scripts(&self, pagination: Option<Pagination>) -> Result<Vec<ScriptsInner>> {
+    pub async fn scripts(
+        &self,
+        pagination: Pagination,
+    ) -> Result<Vec<ScriptsInner>, BlockfrostError> {
         self.call_paged_endpoint("/scripts", pagination).await
     }
 
-    pub async fn scripts_by_id(&self, script_hash: &str) -> Result<Script> {
+    pub async fn scripts_by_id(&self, script_hash: &str) -> Result<Script, BlockfrostError> {
         self.call_endpoint(format!("/scripts/{}", script_hash).as_str())
             .await
     }
@@ -16,8 +19,8 @@ impl BlockFrostApi {
     pub async fn scripts_redeemers(
         &self,
         script_hash: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<ScriptRedeemersInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<ScriptRedeemersInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/scripts/{}/redeemers", script_hash).as_str(),
             pagination,

@@ -1,4 +1,4 @@
-use crate::{json_error, process_error_response, reqwest_error, RetrySettings};
+use crate::{json_error, process_error_response, reqwest_error, BlockfrostError, RetrySettings};
 use reqwest::{Client, RequestBuilder, Response, StatusCode};
 use serde_json::from_str as json_from;
 use std::{future::Future, thread};
@@ -9,7 +9,7 @@ pub(crate) fn send_get_request<T>(
     client: &Client,
     url: String,
     retry_settings: RetrySettings,
-) -> impl Future<Output = crate::Result<T>> + Send
+) -> impl Future<Output = Result<T, BlockfrostError>> + Send
 where
     T: serde::de::DeserializeOwned,
 {

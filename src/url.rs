@@ -1,11 +1,35 @@
-//! Internal type to help building the URLs for the requests.
+use crate::Pagination;
+use std::error::Error;
+use url::{form_urlencoded, Url as UrlI};
 
 #[derive(Clone, Debug)]
 pub(crate) struct Url(pub String);
 
 impl Url {
-    pub(crate) fn from_endpoint(base_url: String, endpoint_url: &str) -> String {
+    pub fn from_endpoint(base_url: String, endpoint_url: &str) -> String {
         base_url + endpoint_url
+    }
+
+    pub fn from_paginated_endpoint(
+        base_url: String,
+        endpoint_url: &str,
+        pagination: Pagination,
+    ) -> Result<String, Box<dyn Error>> {
+        let mut url = UrlI::parse(base_url.as_str())?;
+
+        url.join(endpoint_url)?;
+
+        let mut query_pairs = form_urlencoded::Serializer::new(String::new());
+
+        query_pairs.append_pair("page", pagination.page.to_string().as_str());
+        query_pairs.append_pair("count", pagination.count.to_string().as_str());
+        query_pairs.append_pair("count", pagination.count.to_string().as_str());
+
+        let query = query_pairs.finish();
+
+        url.set_query(Some(&query));
+
+        Ok(url.to_string())
     }
 }
 

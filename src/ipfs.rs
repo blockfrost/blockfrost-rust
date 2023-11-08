@@ -2,7 +2,7 @@ use crate::{
     error::{json_error, process_error_response, reqwest_error},
     request::{send_request, send_request_unprocessed},
     utils::{build_header_map, create_client_with_project_id},
-    Integer, IpfsSettings, RetrySettings, IPFS_URL,
+    BlockfrostError, Integer, IpfsSettings, RetrySettings, IPFS_URL,
 };
 use reqwest::{
     multipart::{Form, Part},
@@ -80,7 +80,7 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/add`].
     ///
     /// [`/ipfs/add`]: https://docs.blockfrost.io/#tag/IPFS-Add/paths/~1ipfs~1add/post
-    pub async fn add(&self, file_contents: Vec<u8>) -> crate::Result<IpfsAdd> {
+    pub async fn add(&self, file_contents: Vec<u8>) -> Result<IpfsAdd, BlockfrostError> {
         let url = self.base_url.clone() + "/ipfs/add";
 
         let part = Part::bytes(file_contents);
@@ -106,7 +106,7 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/gateway/{IPFS_path}`].
     ///
     /// [`/ipfs/gateway/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Gateway
-    pub async fn gateway(&self, ipfs_path: &str) -> crate::Result<Vec<u8>> {
+    pub async fn gateway(&self, ipfs_path: &str) -> Result<Vec<u8>, BlockfrostError> {
         let url =
             self.base_url.clone() + &format!("/ipfs/gateway/{IPFS_path}", IPFS_path = ipfs_path);
 
@@ -137,7 +137,7 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/pin/add/{IPFS_path}`].
     ///
     /// [`/ipfs/pin/add/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1add~1{IPFS_path}/post
-    pub async fn pin_add(&self, ipfs_path: &str) -> crate::Result<IpfsPinUpdate> {
+    pub async fn pin_add(&self, ipfs_path: &str) -> Result<IpfsPinUpdate, BlockfrostError> {
         let url =
             self.base_url.clone() + &format!("/ipfs/pin/add/{IPFS_path}", IPFS_path = ipfs_path);
 
@@ -157,7 +157,7 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/pin/list`].
     ///
     /// [`/ipfs/pin/list`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1list~1/get
-    pub async fn pin_list(&self) -> crate::Result<Vec<IpfsPinList>> {
+    pub async fn pin_list(&self) -> Result<Vec<IpfsPinList>, BlockfrostError> {
         let url = self.base_url.clone() + "/ipfs/pin/list";
 
         let request = self.client.get(&url);
@@ -177,7 +177,7 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/pin/list/{IPFS_path}`].
     ///
     /// [`/ipfs/pin/list/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1list~1{IPFS_path}/get
-    pub async fn pin_list_by_id(&self, ipfs_path: &str) -> crate::Result<IpfsPinList> {
+    pub async fn pin_list_by_id(&self, ipfs_path: &str) -> Result<IpfsPinList, BlockfrostError> {
         let url =
             self.base_url.clone() + &format!("/ipfs/pin/list/{IPFS_path}", IPFS_path = ipfs_path);
 
@@ -198,7 +198,7 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/pin/remove/{IPFS_path}`].
     ///
     /// [`/ipfs/pin/remove/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1remove~1{IPFS_path}/post
-    pub async fn pin_remove(&self, ipfs_path: &str) -> crate::Result<IpfsPinUpdate> {
+    pub async fn pin_remove(&self, ipfs_path: &str) -> Result<IpfsPinUpdate, BlockfrostError> {
         let url =
             self.base_url.clone() + &format!("/ipfs/pin/remove/{IPFS_path}", IPFS_path = ipfs_path);
 

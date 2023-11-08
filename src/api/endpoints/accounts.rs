@@ -1,4 +1,4 @@
-use crate::{BlockFrostApi, Pagination, Result};
+use crate::{BlockFrostApi, BlockfrostError, Pagination};
 use blockfrost_openapi::models::{
     account_addresses_assets_inner::AccountAddressesAssetsInner,
     account_addresses_content_inner::AccountAddressesContentInner, account_content::AccountContent,
@@ -11,7 +11,7 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn accounts(&self, stake_address: &str) -> Result<AccountContent> {
+    pub async fn accounts(&self, stake_address: &str) -> Result<AccountContent, BlockfrostError> {
         self.call_endpoint(format!("/accounts/{}", stake_address).as_str())
             .await
     }
@@ -20,8 +20,8 @@ impl BlockFrostApi {
     pub async fn accounts_rewards(
         &self,
         stake_address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountRewardContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AccountRewardContentInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/accounts/{}/rewards", stake_address).as_str(),
             pagination,
@@ -33,8 +33,8 @@ impl BlockFrostApi {
     pub async fn accounts_history(
         &self,
         stake_address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountHistoryContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AccountHistoryContentInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/accounts/{}/history", stake_address).as_str(),
             pagination,
@@ -45,8 +45,8 @@ impl BlockFrostApi {
     pub async fn accounts_delegations(
         &self,
         stake_address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountDelegationContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AccountDelegationContentInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/accounts/{}/delegations", stake_address).as_str(),
             pagination,
@@ -57,8 +57,8 @@ impl BlockFrostApi {
     pub async fn accounts_registrations(
         &self,
         stake_address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountRegistrationContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AccountRegistrationContentInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/accounts/{}/registrations", stake_address).as_str(),
             pagination,
@@ -69,8 +69,8 @@ impl BlockFrostApi {
     pub async fn accounts_withdrawals(
         &self,
         stake_address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountWithdrawalContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AccountWithdrawalContentInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/accounts/{}/withdrawals", stake_address).as_str(),
             pagination,
@@ -81,8 +81,8 @@ impl BlockFrostApi {
     pub async fn accounts_mirs(
         &self,
         stake_address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountMirContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AccountMirContentInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/accounts/{}/mirs", stake_address).as_str(),
             pagination,
@@ -93,8 +93,8 @@ impl BlockFrostApi {
     pub async fn accounts_addresses(
         &self,
         stake_address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountAddressesContentInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AccountAddressesContentInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/accounts/{}/addresses", stake_address).as_str(),
             pagination,
@@ -105,8 +105,8 @@ impl BlockFrostApi {
     pub async fn accounts_addresses_assets(
         &self,
         stake_address: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<AccountAddressesAssetsInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<AccountAddressesAssetsInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/accounts/{}/addresses/assets", stake_address).as_str(),
             pagination,

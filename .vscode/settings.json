@@ -27,6 +27,7 @@
     "rustfmt",
     "serialised",
     "stakenuts",
+    "thiserror",
     "timelock",
     "UTXO",
     "utxos"

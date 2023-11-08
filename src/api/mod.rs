@@ -3,8 +3,8 @@ pub(super) mod endpoints;
 
 use crate::{
     request::send_get_request, url::Url, utils::build_header_map,
-    utils::create_client_with_project_id, BlockFrostSettings, Pagination, CARDANO_MAINNET_URL,
-    CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
+    utils::create_client_with_project_id, BlockFrostSettings, BlockfrostError, Pagination,
+    CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
 };
 use reqwest::ClientBuilder;
 use std::future::Future;
@@ -58,7 +58,10 @@ impl BlockFrostApi {
             })
     }
 
-    fn call_endpoint<T>(&self, url_endpoint: &str) -> impl Future<Output = crate::Result<T>> + Send
+    fn call_endpoint<T>(
+        &self,
+        url_endpoint: &str,
+    ) -> impl Future<Output = Result<T, BlockfrostError>> + Send
     where
         T: serde::de::DeserializeOwned,
     {
@@ -66,15 +69,25 @@ impl BlockFrostApi {
         send_get_request(&self.client, url, self.settings.retry_settings)
     }
 
-    fn call_paged_endpoint<T>(
+    pub fn call_paged_endpoint<T>(
         &self,
         url_endpoint: &str,
-        _pagination: Option<Pagination>,
-    ) -> impl Future<Output = crate::Result<T>> + Send
+        pagination: Pagination,
+    ) -> impl Future<Output = Result<T, BlockfrostError>> + Send
     where
-        T: serde::de::DeserializeOwned,
+        T: serde::de::DeserializeOwned + 'static,
     {
-        let url = Url::from_endpoint(self.base_url.clone(), url_endpoint);
-        send_get_request(&self.client, url, self.settings.retry_settings)
+        async move {
+            let url_result =
+                Url::from_paginated_endpoint(self.base_url.clone(), url_endpoint, pagination);
+
+            match url_result {
+                Ok(url) => send_get_request(&self.client, url, self.settings.retry_settings).await,
+                Err(e) => {
+                    // Convert the error directly to your `error::Error` type.
+                    Err(e.into())
+                },
+            }
+        }
     }
 }

@@ -4,16 +4,19 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn blocks_latest(&self) -> Result<BlockContent> {
+    pub async fn blocks_latest(&self) -> Result<BlockContent, BlockfrostError> {
         self.call_endpoint("/blocks/latest").await
     }
 
-    pub async fn blocks_by_id(&self, hash_or_number: &str) -> Result<BlockContent> {
+    pub async fn blocks_by_id(
+        &self,
+        hash_or_number: &str,
+    ) -> Result<BlockContent, BlockfrostError> {
         self.call_endpoint(format!("/blocks/{}", hash_or_number).as_str())
             .await
     }
 
-    pub async fn blocks_slot(&self, slot_number: i64) -> Result<BlockContent> {
+    pub async fn blocks_slot(&self, slot_number: i64) -> Result<BlockContent, BlockfrostError> {
         self.call_endpoint(format!("/blocks/slot/{}", slot_number).as_str())
             .await
     }
@@ -22,12 +25,15 @@ impl BlockFrostApi {
         &self,
         epoch_number: i32,
         slot_number: i64,
-    ) -> Result<BlockContent> {
+    ) -> Result<BlockContent, BlockfrostError> {
         self.call_endpoint(format!("/blocks/epoch/{}/slot/{}", epoch_number, slot_number).as_str())
             .await
     }
 
-    pub async fn blocks_latest_txs(&self, pagination: Option<Pagination>) -> Result<Vec<String>> {
+    pub async fn blocks_latest_txs(
+        &self,
+        pagination: Pagination,
+    ) -> Result<Vec<String>, BlockfrostError> {
         self.call_paged_endpoint("/blocks/latest/txs", pagination)
             .await
     }
@@ -35,8 +41,8 @@ impl BlockFrostApi {
     pub async fn blocks_next(
         &self,
         hash_or_number: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<BlockContent>> {
+        pagination: Pagination,
+    ) -> Result<Vec<BlockContent>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/blocks/{}/next", hash_or_number).as_str(),
             pagination,
@@ -47,8 +53,8 @@ impl BlockFrostApi {
     pub async fn blocks_previous(
         &self,
         hash_or_number: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<BlockContent>> {
+        pagination: Pagination,
+    ) -> Result<Vec<BlockContent>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/blocks/{}/previous", hash_or_number).as_str(),
             pagination,
@@ -59,8 +65,8 @@ impl BlockFrostApi {
     pub async fn blocks_txs(
         &self,
         hash_or_number: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<String>> {
+        pagination: Pagination,
+    ) -> Result<Vec<String>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/blocks/{}/txs", hash_or_number).as_str(),
             pagination,
@@ -71,8 +77,8 @@ impl BlockFrostApi {
     pub async fn blocks_affected_addresses(
         &self,
         hash_or_number: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<BlockContentAddressesInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<BlockContentAddressesInner>, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/blocks/{}/addresses", hash_or_number).as_str(),
             pagination,

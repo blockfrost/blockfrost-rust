@@ -9,8 +9,8 @@ impl BlockFrostApi {
     /// List of all used transaction metadata labels.
     pub async fn metadata_txs_labels(
         &self,
-        pagination: Option<Pagination>,
-    ) -> Result<TxMetadataLabelsInner> {
+        pagination: Pagination,
+    ) -> Result<TxMetadataLabelsInner, BlockfrostError> {
         self.call_paged_endpoint("/metadata/txs/labels", pagination)
             .await
     }
@@ -19,8 +19,8 @@ impl BlockFrostApi {
     pub async fn metadata_txs_by_label(
         &self,
         label: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<TxMetadataLabelJsonInner> {
+        pagination: Pagination,
+    ) -> Result<TxMetadataLabelJsonInner, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/metadata/txs/labels/{}", label).as_str(),
             pagination,
@@ -32,8 +32,8 @@ impl BlockFrostApi {
     pub async fn metadata_txs_by_label_cbor(
         &self,
         label: &str,
-        pagination: Option<Pagination>,
-    ) -> Result<TxMetadataLabelCborInner> {
+        pagination: Pagination,
+    ) -> Result<TxMetadataLabelCborInner, BlockfrostError> {
         self.call_paged_endpoint(
             format!("/metadata/txs/labels/{}/cbor", label).as_str(),
             pagination,

@@ -6,17 +6,17 @@ use blockfrost_openapi::models::{
 
 impl BlockFrostApi {
     /// Root endpoint, points end users to documentation.
-    pub async fn root(&self) -> Result<Get200Response> {
+    pub async fn root(&self) -> Result<Get200Response, BlockfrostError> {
         self.call_endpoint("/").await
     }
 
     /// Backend health status as a boolean.
-    pub async fn health(&self) -> Result<HealthGet200Response> {
+    pub async fn health(&self) -> Result<HealthGet200Response, BlockfrostError> {
         self.call_endpoint("/health").await
     }
 
     /// Current backend time.
-    pub async fn health_clock(&self) -> Result<HealthClockGet200Response> {
+    pub async fn health_clock(&self) -> Result<HealthClockGet200Response, BlockfrostError> {
         self.call_endpoint("/health/clock").await
     }
 }

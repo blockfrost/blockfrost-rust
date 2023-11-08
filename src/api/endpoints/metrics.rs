@@ -4,14 +4,17 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn metrics(&self, pagination: Option<Pagination>) -> Result<Vec<MetricsInner>> {
+    pub async fn metrics(
+        &self,
+        pagination: Pagination,
+    ) -> Result<Vec<MetricsInner>, BlockfrostError> {
         self.call_paged_endpoint("/metrics", pagination).await
     }
 
     pub async fn metrics_endpoints(
         &self,
-        pagination: Option<Pagination>,
-    ) -> Result<Vec<MetricsEndpointsInner>> {
+        pagination: Pagination,
+    ) -> Result<Vec<MetricsEndpointsInner>, BlockfrostError> {
         self.call_paged_endpoint("/metrics/endpoints", pagination)
             .await
     }
