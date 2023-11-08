@@ -1,7 +1,7 @@
 use crate::utils;
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
-use std::{error, io::Error as IoError};
+use serde_json::from_str;
 use thiserror::Error;
 use {reqwest::Error as ReqwestError, serde_json::Error as SerdeJsonError};
 
@@ -17,8 +17,10 @@ pub enum BlockfrostError {
         text: String,
         reason: serde_json::Error,
     },
+    #[error("Parsing error: {message}")]
+    Parsing { message: String },
     #[error("IO error: {0}")]
-    Io(#[from] io::Error),
+    Io(#[from] std::io::Error),
     #[error("Response error for URL {url}: {reason}")]
     Response { url: String, reason: ResponseError },
 }
@@ -29,19 +31,12 @@ pub struct ResponseError {
     pub error: String,
     pub message: String,
 }
+
 impl std::fmt::Display for ResponseError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         writeln!(f, "Status code: {}", self.status_code)?;
         writeln!(f, "Error: {}", self.error)?;
         write!(f, "Message: {}", self.message)
-    }
-}
-
-impl error::Error for ResponseError {}
-
-impl From<IoError> for BlockfrostError {
-    fn from(source: IoError) -> Self {
-        BlockfrostError::Io(source)
     }
 }
 
@@ -64,7 +59,7 @@ pub(crate) fn process_error_response(
     }
     let url = url.into();
 
-    match json_from::<ResponseError>(text) {
+    match from_str::<ResponseError>(text) {
         Ok(http_error) => BlockfrostError::Response {
             reason: http_error,
             url,
@@ -85,6 +80,14 @@ pub(crate) fn process_error_response(
                 url,
             }
         },
+    }
+}
+
+impl From<Box<dyn std::error::Error>> for BlockfrostError {
+    fn from(e: Box<dyn std::error::Error>) -> Self {
+        BlockfrostError::Parsing {
+            message: e.to_string(),
+        }
     }
 }
 

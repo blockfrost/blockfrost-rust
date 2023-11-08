@@ -1,8 +1,7 @@
+use blockfrost::{IpfsApi, IpfsSettings};
 use std::fs;
 
-use blockfrost::{IpfsApi, IpfsSettings};
-
-fn build_ipfs() -> blockfrost::Result<IpfsApi> {
+fn build_ipfs() -> blockfrost::BlockfrostResult<IpfsApi> {
     let api = IpfsApi::new(
         "mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be",
         IpfsSettings::new(),
@@ -12,7 +11,7 @@ fn build_ipfs() -> blockfrost::Result<IpfsApi> {
 }
 
 #[tokio::main]
-async fn main() -> blockfrost::Result<()> {
+async fn main() -> blockfrost::BlockfrostResult<()> {
     let ipfs = build_ipfs()?;
     let file = fs::read_to_string("/etc/fstab")?.into_bytes();
 

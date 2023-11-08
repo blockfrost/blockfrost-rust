@@ -18,15 +18,12 @@ impl BlockFrostApi {
     /// OpenAPI endpoint reference: [`/accounts/{stake_address}/mirs`].
     ///
     /// [`/accounts/{stake_address}/mirs`]: https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1tx~1submit/post
-    pub async fn transactions_submit(
-        &self,
-        transaction_data: Vec<u8>,
-    ) -> Result<String, BlockfrostError> {
+    pub async fn transactions_submit(&self, transaction_data: Vec<u8>) -> BlockfrostResult<String> {
         let body = Body::from(transaction_data);
         let content_type_header = ("Content-Type", HeaderValue::from_static("application/cbor"));
 
         let endpoint_suffix = "/tx/submit";
-        let url = Url::from_endpoint(self.base_url.clone(), endpoint_suffix);
+        let url = Url::from_endpoint(self.base_url.clone(), endpoint_suffix)?;
 
         let request = self
             .client

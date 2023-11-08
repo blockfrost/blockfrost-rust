@@ -1,6 +1,6 @@
-use blockfrost::{BlockFrostApi, BlockFrostSettings, Order, Pagination};
+use blockfrost::{BlockFrostApi, BlockFrostSettings, Pagination};
 
-fn build_api() -> blockfrost::Result<BlockFrostApi> {
+fn build_api() -> blockfrost::BlockfrostResult<BlockFrostApi> {
     let settings = BlockFrostSettings::new();
     let api = BlockFrostApi::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", settings);
 
@@ -8,14 +8,9 @@ fn build_api() -> blockfrost::Result<BlockFrostApi> {
 }
 
 #[tokio::main]
-async fn main() -> blockfrost::Result<()> {
+async fn main() -> blockfrost::BlockfrostResult<()> {
     let api = build_api()?;
-    let pagination = Some(Pagination {
-        count: 1,
-        page: 1,
-        order: Order::Asc,
-        fetch_all: false,
-    });
+    let pagination = Pagination::default();
 
     println!("Fetching ...");
 
@@ -25,8 +20,8 @@ async fn main() -> blockfrost::Result<()> {
     let health_clock = api.health_clock().await;
 
     // // Metrics
-    let metrics = api.metrics(None).await;
-    let metrics_endpoints = api.metrics_endpoints(None).await;
+    let metrics = api.metrics(pagination).await;
+    let metrics_endpoints = api.metrics_endpoints(pagination).await;
 
     // Accounts
     let address = "stake1u9ylzsgxaa6xctf4juup682ar3juj85n8tx3hthnljg47zctvm3rc";
