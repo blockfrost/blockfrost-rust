@@ -10,7 +10,7 @@ impl BlockFrostApi {
     pub async fn metadata_txs_labels(
         &self,
         pagination: Pagination,
-    ) -> BlockfrostResult<TxMetadataLabelsInner> {
+    ) -> BlockfrostResult<Vec<TxMetadataLabelsInner>> {
         self.call_paged_endpoint("/metadata/txs/labels", pagination)
             .await
     }
@@ -20,7 +20,7 @@ impl BlockFrostApi {
         &self,
         label: &str,
         pagination: Pagination,
-    ) -> BlockfrostResult<TxMetadataLabelJsonInner> {
+    ) -> BlockfrostResult<Vec<TxMetadataLabelJsonInner>> {
         self.call_paged_endpoint(
             format!("/metadata/txs/labels/{}", label).as_str(),
             pagination,
@@ -33,7 +33,7 @@ impl BlockFrostApi {
         &self,
         label: &str,
         pagination: Pagination,
-    ) -> BlockfrostResult<TxMetadataLabelCborInner> {
+    ) -> BlockfrostResult<Vec<TxMetadataLabelCborInner>> {
         self.call_paged_endpoint(
             format!("/metadata/txs/labels/{}/cbor", label).as_str(),
             pagination,

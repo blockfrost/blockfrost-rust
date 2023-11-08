@@ -6,27 +6,32 @@ use url::{form_urlencoded, Url as UrlI};
 pub struct Url(pub String);
 
 impl Url {
-    pub fn from_endpoint(base_url: String, endpoint_url: &str) -> Result<String, Box<dyn Error>> {
-        let mut url = UrlI::parse(base_url.as_str())?;
+    pub fn create_base_url(
+        base_url: &str,
+        endpoint_url: &str,
+    ) -> Result<reqwest::Url, Box<dyn Error>> {
+        let mut url = UrlI::parse(base_url)?;
         let endpoint = endpoint_url.strip_prefix('/').unwrap_or(endpoint_url);
 
-        // Ensure the base URL ends with a slash if it doesn't already to indicate it's a directory.
         if !url.path().ends_with('/') {
             url.set_path(&format!("{}/", url.path()));
         }
 
-        // Join the endpoint URL to the base URL.
-        Ok(url.join(endpoint)?.to_string())
+        Ok(url.join(endpoint)?)
+    }
+
+    pub fn from_endpoint(base_url: &str, endpoint_url: &str) -> Result<String, Box<dyn Error>> {
+        let url = Self::create_base_url(base_url, endpoint_url)?;
+
+        Ok(url.to_string())
     }
 
     pub fn from_paginated_endpoint(
-        base_url: String,
+        base_url: &str,
         endpoint_url: &str,
         pagination: Pagination,
     ) -> Result<String, Box<dyn Error>> {
-        let mut url = UrlI::parse(base_url.as_str())?;
-
-        url.join(endpoint_url)?;
+        let mut url = Self::create_base_url(base_url, endpoint_url)?;
 
         let mut query_pairs = form_urlencoded::Serializer::new(String::new());
 

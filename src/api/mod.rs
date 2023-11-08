@@ -46,7 +46,7 @@ impl BlockFrostApi {
     where
         T: for<'de> serde::Deserialize<'de> + serde::de::DeserializeOwned,
     {
-        let url = Url::from_endpoint(self.base_url.clone(), url_endpoint)?;
+        let url = Url::from_endpoint(self.base_url.as_str(), url_endpoint)?;
 
         send_get_request(&self.client, url, self.settings.retry_settings).await
     }
@@ -55,11 +55,11 @@ impl BlockFrostApi {
         &self,
         url_endpoint: &str,
         pagination: Pagination,
-    ) -> Result<T, BlockfrostError>
+    ) -> Result<Vec<T>, BlockfrostError>
     where
         T: for<'de> serde::Deserialize<'de> + serde::de::DeserializeOwned,
     {
-        let url = Url::from_paginated_endpoint(self.base_url.clone(), url_endpoint, pagination)?;
+        let url = Url::from_paginated_endpoint(self.base_url.as_str(), url_endpoint, pagination)?;
 
         send_get_request(&self.client, url, self.settings.retry_settings).await
     }
