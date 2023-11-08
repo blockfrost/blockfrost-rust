@@ -3,7 +3,7 @@ use blockfrost_openapi::models::{
     block_content::BlockContent, block_content_addresses_inner::BlockContentAddressesInner,
 };
 
-impl BlockFrostApi {
+impl BlockfrostApi {
     pub async fn blocks_latest(&self) -> BlockfrostResult<BlockContent> {
         self.call_endpoint("/blocks/latest").await
     }

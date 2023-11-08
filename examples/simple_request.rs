@@ -1,7 +1,7 @@
-use blockfrost::BlockFrostApi;
+use blockfrost::BlockfrostApi;
 
-fn build_api() -> blockfrost::BlockfrostResult<BlockFrostApi> {
-    let api = BlockFrostApi::new(
+fn build_api() -> blockfrost::BlockfrostResult<BlockfrostApi> {
+    let api = BlockfrostApi::new(
         "mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be",
         Default::default(),
     );

@@ -1,11 +1,12 @@
-use crate::*;
 use blockfrost_openapi::models::{
     address_content::AddressContent, address_content_total::AddressContentTotal,
     address_transactions_content_inner::AddressTransactionsContentInner,
     address_utxo_content_inner::AddressUtxoContentInner,
 };
 
-impl BlockFrostApi {
+use crate::*;
+
+impl BlockfrostApi {
     pub async fn addresses(&self, address: &str) -> BlockfrostResult<AddressContent> {
         self.call_endpoint(format!("/addresses/{}", address).as_str())
             .await

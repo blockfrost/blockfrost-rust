@@ -3,7 +3,7 @@ use blockfrost_openapi::models::{
     script::Script, script_redeemers_inner::ScriptRedeemersInner, scripts_inner::ScriptsInner,
 };
 
-impl BlockFrostApi {
+impl BlockfrostApi {
     pub async fn scripts(&self, pagination: Pagination) -> BlockfrostResult<Vec<ScriptsInner>> {
         self.call_paged_endpoint("/scripts", pagination).await
     }

@@ -3,7 +3,7 @@ use blockfrost_openapi::models::{
     metrics_endpoints_inner::MetricsEndpointsInner, metrics_inner::MetricsInner,
 };
 
-impl BlockFrostApi {
+impl BlockfrostApi {
     pub async fn metrics(&self, pagination: Pagination) -> BlockfrostResult<Vec<MetricsInner>> {
         self.call_paged_endpoint("/metrics", pagination).await
     }

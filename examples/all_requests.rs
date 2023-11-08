@@ -1,14 +1,14 @@
-use blockfrost::{BlockFrostApi, BlockFrostSettings, Pagination};
+use blockfrost::{BlockFrostSettings, BlockfrostApi, BlockfrostResult, Pagination};
 
-fn build_api() -> blockfrost::BlockfrostResult<BlockFrostApi> {
+fn build_api() -> BlockfrostResult<BlockfrostApi> {
     let settings = BlockFrostSettings::new();
-    let api = BlockFrostApi::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", settings);
+    let api = BlockfrostApi::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", settings);
 
     Ok(api)
 }
 
 #[tokio::main]
-async fn main() -> blockfrost::BlockfrostResult<()> {
+async fn main() -> BlockfrostResult<()> {
     let api = build_api()?;
     let pagination = Pagination::default();
 

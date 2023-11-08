@@ -12,7 +12,7 @@ use blockfrost_openapi::models::{
 use reqwest::{header::HeaderValue, Body, Method};
 use serde_json::from_str as json_from;
 
-impl BlockFrostApi {
+impl BlockfrostApi {
     /// Obtain information about Move Instantaneous Rewards (MIRs) of a specific transaction.
     ///
     /// OpenAPI endpoint reference: [`/accounts/{stake_address}/mirs`].

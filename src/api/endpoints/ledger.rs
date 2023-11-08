@@ -1,7 +1,7 @@
 use crate::*;
 use blockfrost_openapi::models::genesis_content::GenesisContent;
 
-impl BlockFrostApi {
+impl BlockfrostApi {
     pub async fn genesis(&self) -> BlockfrostResult<GenesisContent> {
         self.call_endpoint("/genesis").await
     }

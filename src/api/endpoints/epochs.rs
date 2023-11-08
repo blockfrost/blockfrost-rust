@@ -5,7 +5,7 @@ use blockfrost_openapi::models::{
     epoch_stake_pool_content_inner::EpochStakePoolContentInner,
 };
 
-impl BlockFrostApi {
+impl BlockfrostApi {
     pub async fn epochs_latest(&self) -> BlockfrostResult<EpochContent> {
         self.call_endpoint("/epochs/latest".to_string().as_str())
             .await
