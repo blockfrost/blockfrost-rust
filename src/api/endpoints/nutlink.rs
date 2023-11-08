@@ -6,7 +6,7 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn nutlink_address(&self, address: &str) -> Result<NutlinkAddress, BlockfrostError> {
+    pub async fn nutlink_address(&self, address: &str) -> BlockfrostResult<NutlinkAddress> {
         self.call_endpoint(format!("/nutlink/{}", address).as_str())
             .await
     }
@@ -15,7 +15,7 @@ impl BlockFrostApi {
         &self,
         address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<NutlinkAddressTickersInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<NutlinkAddressTickersInner>> {
         self.call_paged_endpoint(format!("/nutlink/{}/tickers", address).as_str(), pagination)
             .await
     }
@@ -25,7 +25,7 @@ impl BlockFrostApi {
         address: &str,
         ticker: &str,
         pagination: Pagination,
-    ) -> Result<Vec<NutlinkAddressTickerInnerPayload>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<NutlinkAddressTickerInnerPayload>> {
         self.call_paged_endpoint(
             format!("/nutlink/{}/tickers/{}", address, ticker).as_str(),
             pagination,
@@ -37,7 +37,7 @@ impl BlockFrostApi {
         &self,
         ticker: &str,
         pagination: Pagination,
-    ) -> Result<Vec<NutlinkAddressTickerInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<NutlinkAddressTickerInner>> {
         self.call_paged_endpoint(format!("/nutlink/tickers/{}", ticker).as_str(), pagination)
             .await
     }

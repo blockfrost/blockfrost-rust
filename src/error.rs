@@ -1,7 +1,11 @@
+use crate::utils;
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
-use std::{error, io};
+use std::{error, io::Error as IoError};
 use thiserror::Error;
+use {reqwest::Error as ReqwestError, serde_json::Error as SerdeJsonError};
+
+pub type BlockfrostResult<T, E = BlockfrostError> = std::result::Result<T, E>;
 
 #[derive(Error, Debug)]
 pub enum BlockfrostError {

@@ -50,11 +50,11 @@ impl BlockFrostApi {
     pub async fn transaction_by_hash(
         &self,
         hash: &str,
-    ) -> Result<AddressTransactionsContentInner, BlockfrostError> {
+    ) -> BlockfrostResult<AddressTransactionsContentInner> {
         self.call_endpoint(format!("/txs/{}", hash).as_str()).await
     }
 
-    pub async fn transactions_utxos(&self, hash: &str) -> Result<TxContent, BlockfrostError> {
+    pub async fn transactions_utxos(&self, hash: &str) -> BlockfrostResult<TxContent> {
         self.call_endpoint(format!("/txs/{}/utxos", hash).as_str())
             .await
     }
@@ -62,7 +62,7 @@ impl BlockFrostApi {
     pub async fn transactions_stakes(
         &self,
         hash: &str,
-    ) -> Result<Vec<TxContentStakeAddrInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentStakeAddrInner>> {
         self.call_endpoint(format!("/txs/{}/stakes", hash).as_str())
             .await
     }
@@ -70,7 +70,7 @@ impl BlockFrostApi {
     pub async fn transactions_delegations(
         &self,
         hash: &str,
-    ) -> Result<Vec<TxContentDelegationsInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentDelegationsInner>> {
         self.call_endpoint(format!("/txs/{}/delegations", hash).as_str())
             .await
     }
@@ -78,15 +78,12 @@ impl BlockFrostApi {
     pub async fn transactions_withdrawals(
         &self,
         hash: &str,
-    ) -> Result<Vec<TxContentWithdrawalsInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentWithdrawalsInner>> {
         self.call_endpoint(format!("/txs/{}/withdrawals", hash).as_str())
             .await
     }
 
-    pub async fn transactions_mirs(
-        &self,
-        hash: &str,
-    ) -> Result<Vec<TxContentMirsInner>, BlockfrostError> {
+    pub async fn transactions_mirs(&self, hash: &str) -> BlockfrostResult<Vec<TxContentMirsInner>> {
         self.call_endpoint(format!("/txs/{}/mirs", hash).as_str())
             .await
     }
@@ -94,7 +91,7 @@ impl BlockFrostApi {
     pub async fn transactions_pool_updates(
         &self,
         hash: &str,
-    ) -> Result<Vec<TxContentMirsInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentMirsInner>> {
         self.call_endpoint(format!("/txs/{}/pool_updates", hash).as_str())
             .await
     }
@@ -102,7 +99,7 @@ impl BlockFrostApi {
     pub async fn transactions_pool_retires(
         &self,
         hash: &str,
-    ) -> Result<Vec<TxContentPoolRetiresInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentPoolRetiresInner>> {
         self.call_endpoint(format!("/txs/{}/pool_retires", hash).as_str())
             .await
     }
@@ -110,7 +107,7 @@ impl BlockFrostApi {
     pub async fn transactions_metadata(
         &self,
         hash: &str,
-    ) -> Result<Vec<TxContentMetadataInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentMetadataInner>> {
         self.call_endpoint(format!("/txs/{}/metadata", hash).as_str())
             .await
     }
@@ -118,7 +115,7 @@ impl BlockFrostApi {
     pub async fn transactions_metadata_cbor(
         &self,
         hash: &str,
-    ) -> Result<Vec<TxContentMetadataCborInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentMetadataCborInner>> {
         self.call_endpoint(format!("/txs/{}/metadata/cbor", hash).as_str())
             .await
     }
@@ -126,7 +123,7 @@ impl BlockFrostApi {
     pub async fn transactions_redeemers(
         &self,
         hash: &str,
-    ) -> Result<Vec<TxContentRedeemersInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentRedeemersInner>> {
         self.call_endpoint(format!("/txs/{}/redeemers", hash).as_str())
             .await
     }

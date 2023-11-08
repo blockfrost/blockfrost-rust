@@ -6,24 +6,21 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn epochs_latest(&self) -> Result<EpochContent, BlockfrostError> {
+    pub async fn epochs_latest(&self) -> BlockfrostResult<EpochContent> {
         self.call_endpoint("/epochs/latest".to_string().as_str())
             .await
     }
 
-    pub async fn epochs_latest_parameters(&self) -> Result<EpochParamContent, BlockfrostError> {
+    pub async fn epochs_latest_parameters(&self) -> BlockfrostResult<EpochParamContent> {
         self.call_endpoint("/epochs/latest/parameters").await
     }
 
-    pub async fn epochs_by_number(&self, number: i32) -> Result<EpochContent, BlockfrostError> {
+    pub async fn epochs_by_number(&self, number: i32) -> BlockfrostResult<EpochContent> {
         self.call_endpoint(format!("/epochs/{}", number).as_str())
             .await
     }
 
-    pub async fn epochs_parameters(
-        &self,
-        number: i32,
-    ) -> Result<EpochParamContent, BlockfrostError> {
+    pub async fn epochs_parameters(&self, number: i32) -> BlockfrostResult<EpochParamContent> {
         self.call_endpoint(format!("/epochs/{}/parameters", number).as_str())
             .await
     }
@@ -32,7 +29,7 @@ impl BlockFrostApi {
         &self,
         number: i32,
         pagination: Pagination,
-    ) -> Result<Vec<EpochContent>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<EpochContent>> {
         self.call_paged_endpoint(format!("/epochs/{}/next", number).as_str(), pagination)
             .await
     }
@@ -41,7 +38,7 @@ impl BlockFrostApi {
         &self,
         number: i32,
         pagination: Pagination,
-    ) -> Result<Vec<EpochContent>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<EpochContent>> {
         self.call_paged_endpoint(format!("/epochs/{}/previous", number).as_str(), pagination)
             .await
     }
@@ -50,7 +47,7 @@ impl BlockFrostApi {
         &self,
         number: i32,
         pagination: Pagination,
-    ) -> Result<Vec<EpochStakeContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<EpochStakeContentInner>> {
         self.call_paged_endpoint(format!("/epochs/{}/stakes", number).as_str(), pagination)
             .await
     }
@@ -60,7 +57,7 @@ impl BlockFrostApi {
         number: i32,
         pool_id: &str,
         pagination: Pagination,
-    ) -> Result<Vec<EpochStakePoolContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<EpochStakePoolContentInner>> {
         self.call_paged_endpoint(
             format!("/epochs/{}/stakes/{}", number, pool_id).as_str(),
             pagination,
@@ -68,7 +65,7 @@ impl BlockFrostApi {
         .await
     }
 
-    pub async fn epochs_blocks(&self, number: i32) -> Result<Vec<String>, BlockfrostError> {
+    pub async fn epochs_blocks(&self, number: i32) -> BlockfrostResult<Vec<String>> {
         self.call_endpoint(format!("/epochs/{}/blocks", number).as_str())
             .await
     }
@@ -77,7 +74,7 @@ impl BlockFrostApi {
         &self,
         number: i32,
         pool_id: &str,
-    ) -> Result<Vec<String>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<String>> {
         self.call_endpoint(format!("/epochs/{}/blocks/{}", number, pool_id).as_str())
             .await
     }

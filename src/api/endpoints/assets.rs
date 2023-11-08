@@ -6,15 +6,12 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn assets_by_id(&self, asset: &str) -> Result<AssetsInner, BlockfrostError> {
+    pub async fn assets_by_id(&self, asset: &str) -> BlockfrostResult<AssetsInner> {
         self.call_endpoint(format!("/assets/{}", asset).as_str())
             .await
     }
 
-    pub async fn assets(
-        &self,
-        pagination: Pagination,
-    ) -> Result<Vec<AssetsInner>, BlockfrostError> {
+    pub async fn assets(&self, pagination: Pagination) -> BlockfrostResult<Vec<AssetsInner>> {
         self.call_paged_endpoint("/assets", pagination).await
     }
 
@@ -22,7 +19,7 @@ impl BlockFrostApi {
         &self,
         asset: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AssetHistoryInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AssetHistoryInner>> {
         self.call_paged_endpoint(format!("/assets/{}/history", asset).as_str(), pagination)
             .await
     }
@@ -31,7 +28,7 @@ impl BlockFrostApi {
         &self,
         asset: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AssetTransactionsInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AssetTransactionsInner>> {
         self.call_paged_endpoint(
             format!("/assets/{}/transactions", asset).as_str(),
             pagination,
@@ -43,7 +40,7 @@ impl BlockFrostApi {
         &self,
         asset: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AssetAddressesInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AssetAddressesInner>> {
         self.call_paged_endpoint(format!("/assets/{}/addresses", asset).as_str(), pagination)
             .await
     }
@@ -52,7 +49,7 @@ impl BlockFrostApi {
         &self,
         policy_id: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AssetPolicyInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AssetPolicyInner>> {
         self.call_paged_endpoint(format!("/assets/policy/{}", policy_id).as_str(), pagination)
             .await
     }

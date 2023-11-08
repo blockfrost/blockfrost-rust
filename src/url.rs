@@ -1,13 +1,15 @@
-use crate::Pagination;
+use crate::{Pagination, CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL};
 use std::error::Error;
 use url::{form_urlencoded, Url as UrlI};
 
 #[derive(Clone, Debug)]
-pub(crate) struct Url(pub String);
+pub struct Url(pub String);
 
 impl Url {
     pub fn from_endpoint(base_url: String, endpoint_url: &str) -> String {
-        base_url + endpoint_url
+        let mut url = UrlI::parse(base_url.as_str())?;
+
+        url.join(endpoint_url)?
     }
 
     pub fn from_paginated_endpoint(
@@ -31,46 +33,14 @@ impl Url {
 
         Ok(url.to_string())
     }
+
+    pub fn get_base_url_from_project_id(project_id: &str) -> String {
+        let base_url = match project_id {
+            id if id.starts_with("mainnet") => CARDANO_MAINNET_URL,
+            id if id.starts_with("preview") => CARDANO_PREVIEW_URL,
+            id if id.starts_with("preprod") => CARDANO_PREPROD_URL,
+            _ => CARDANO_MAINNET_URL,
+        }
+        .to_string();
+    }
 }
-
-// fn create_query_parameters_suffix(parameters: &QueryParameters, page: Option<u32>) -> String {
-//     fn append_parameter(string: &mut String, parameter_name: &str, parameter: impl AsRef<str>) {
-//         if string.is_empty() {
-//             // First parameter comes after a question mark
-//             string.push('?');
-//         } else {
-//             // Separator between parameters
-//             string.push('&');
-//         }
-//         string.push_str(parameter_name);
-//         string.push('=');
-//         string.push_str(parameter.as_ref());
-//     }
-
-//     let QueryParameters {
-//         count,
-//         order,
-//         from,
-//         to,
-//         ..
-//     } = &parameters;
-//     let mut string = String::new();
-
-//     if let Some(count) = count {
-//         append_parameter(&mut string, "count", count.to_string());
-//     }
-//     if let Some(order) = order {
-//         append_parameter(&mut string, "order", order.to_string());
-//     }
-//     if let Some(from) = from {
-//         append_parameter(&mut string, "from", from);
-//     }
-//     if let Some(to) = to {
-//         append_parameter(&mut string, "to", to);
-//     }
-//     if let Some(page) = page {
-//         append_parameter(&mut string, "page", page.to_string());
-//     }
-
-//     string
-// }

@@ -1,4 +1,4 @@
-use crate::{BlockFrostApi, BlockfrostError, Pagination};
+use crate::{BlockFrostApi, BlockfrostError, BlockfrostResult, Pagination};
 use blockfrost_openapi::models::{
     account_addresses_assets_inner::AccountAddressesAssetsInner,
     account_addresses_content_inner::AccountAddressesContentInner, account_content::AccountContent,
@@ -11,7 +11,7 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn accounts(&self, stake_address: &str) -> Result<AccountContent, BlockfrostError> {
+    pub async fn accounts(&self, stake_address: &str) -> BlockfrostResult<AccountContent> {
         self.call_endpoint(format!("/accounts/{}", stake_address).as_str())
             .await
     }
@@ -21,7 +21,7 @@ impl BlockFrostApi {
         &self,
         stake_address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AccountRewardContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AccountRewardContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/rewards", stake_address).as_str(),
             pagination,
@@ -34,7 +34,7 @@ impl BlockFrostApi {
         &self,
         stake_address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AccountHistoryContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AccountHistoryContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/history", stake_address).as_str(),
             pagination,
@@ -46,7 +46,7 @@ impl BlockFrostApi {
         &self,
         stake_address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AccountDelegationContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AccountDelegationContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/delegations", stake_address).as_str(),
             pagination,
@@ -58,7 +58,7 @@ impl BlockFrostApi {
         &self,
         stake_address: &str,
         pagination: Pagination,
-    ) -> Result<Vec<AccountRegistrationContentInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<AccountRegistrationContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/registrations", stake_address).as_str(),
             pagination,

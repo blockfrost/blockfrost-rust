@@ -1,6 +1,5 @@
-use std::{fmt, time::Duration};
+use std::time::Duration;
 
-/// Customizable settings for requests made with [`BlockFrostApi`](crate::BlockFrostApi).
 #[derive(Debug, Clone)]
 pub struct BlockFrostSettings {
     pub retry_settings: RetrySettings,
@@ -14,7 +13,6 @@ impl BlockFrostSettings {
     }
 }
 
-/// Customizable settings for requests made with [`IpfsApi`](crate::IpfsApi).
 #[derive(Debug, Clone)]
 pub struct IpfsSettings {
     pub retry_settings: RetrySettings,
@@ -46,34 +44,6 @@ impl Default for BlockFrostSettings {
 impl Default for IpfsSettings {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-/// The ordering of items inside of a page.
-///
-/// By default, oldest comes first, newest last.
-///
-/// Defaults to [`QueryOrder::Ascending`].
-#[derive(Debug, Clone)]
-pub enum QueryOrder {
-    Ascending,
-    Descending,
-}
-
-/// Defaults to [`QueryOrder::Ascending`].
-impl Default for QueryOrder {
-    fn default() -> Self {
-        Self::Ascending
-    }
-}
-
-/// Shows if order is "asc" or "desc", used in URLs.
-impl fmt::Display for QueryOrder {
-    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            QueryOrder::Ascending => write!(formatter, "asc"),
-            QueryOrder::Descending => write!(formatter, "desc"),
-        }
     }
 }
 

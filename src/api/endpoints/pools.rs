@@ -7,31 +7,31 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockFrostApi {
-    pub async fn pools_by_id(&self, pool_id: &str) -> Result<Pool, BlockfrostError> {
+    pub async fn pools_by_id(&self, pool_id: &str) -> BlockfrostResult<Pool> {
         self.call_endpoint(format!("/pools/{}", pool_id).as_str())
             .await
     }
 
-    pub async fn pools_metadata(&self, pool_id: &str) -> Result<PoolMetadata, BlockfrostError> {
+    pub async fn pools_metadata(&self, pool_id: &str) -> BlockfrostResult<PoolMetadata> {
         self.call_endpoint(format!("/pools/{}/metadata", pool_id).as_str())
             .await
     }
 
-    pub async fn pools(&self, pagination: Pagination) -> Result<Vec<String>, BlockfrostError> {
+    pub async fn pools(&self, pagination: Pagination) -> BlockfrostResult<Vec<String>> {
         self.call_paged_endpoint("/pools", pagination).await
     }
 
     pub async fn pools_retired(
         &self,
         pagination: Pagination,
-    ) -> Result<Vec<PoolListRetireInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<PoolListRetireInner>> {
         self.call_paged_endpoint("/pools/retired", pagination).await
     }
 
     pub async fn pools_retiring(
         &self,
         pagination: Pagination,
-    ) -> Result<Vec<PoolListRetireInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<PoolListRetireInner>> {
         self.call_paged_endpoint("/pools/retiring", pagination)
             .await
     }
@@ -40,7 +40,7 @@ impl BlockFrostApi {
         &self,
         pool_id: &str,
         pagination: Pagination,
-    ) -> Result<Vec<PoolHistoryInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<PoolHistoryInner>> {
         self.call_paged_endpoint(format!("/pools/{}/history", pool_id).as_str(), pagination)
             .await
     }
@@ -48,7 +48,7 @@ impl BlockFrostApi {
     pub async fn pools_relays(
         &self,
         pool_id: &str,
-    ) -> Result<Vec<TxContentPoolCertsInnerRelaysInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<TxContentPoolCertsInnerRelaysInner>> {
         self.call_endpoint(format!("/pools/{}/relays", pool_id).as_str())
             .await
     }
@@ -57,7 +57,7 @@ impl BlockFrostApi {
         &self,
         pool_id: &str,
         pagination: Pagination,
-    ) -> Result<Vec<PoolDelegatorsInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<PoolDelegatorsInner>> {
         self.call_paged_endpoint(
             format!("/pools/{}/delegators", pool_id).as_str(),
             pagination,
@@ -69,7 +69,7 @@ impl BlockFrostApi {
         &self,
         pool_id: &str,
         pagination: Pagination,
-    ) -> Result<Vec<String>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<String>> {
         self.call_paged_endpoint(format!("/pools/{}/blocks", pool_id).as_str(), pagination)
             .await
     }
@@ -78,7 +78,7 @@ impl BlockFrostApi {
         &self,
         pool_id: &str,
         pagination: Pagination,
-    ) -> Result<Vec<PoolUpdatesInner>, BlockfrostError> {
+    ) -> BlockfrostResult<Vec<PoolUpdatesInner>> {
         self.call_paged_endpoint(format!("/pools/{}/updates", pool_id).as_str(), pagination)
             .await
     }
