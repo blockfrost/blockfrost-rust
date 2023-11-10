@@ -1,13 +1,13 @@
 # Endpoints implemented
 
-- Health Endpoints
+- Health
   - [x] `GET /`
   - [x] `GET /health`
   - [x] `GET /health/clock`
-- Metrics Endpoints
+- Metrics
   - [x] `GET /metrics`
   - [x] `GET /metrics/endpoints`
-- Accounts endpoints
+- Accounts
   - [x] `GET /accounts/:stake_address`
   - [x] `GET /accounts/:stake_address/rewards`
   - [x] `GET /accounts/:stake_address/history`
@@ -18,11 +18,27 @@
   - [x] `GET /accounts/:stake_address/addresses`
   - [x] `GET /accounts/:stake_address/addresses/assets`
   - [x] `GET /accounts/:stake_address/addresses/total`
-- Addresses Endpoints
+- Addresses
   - [x] `GET /addresses/:address`
   - [x] `GET /addresses/:address/extended`
   - [x] `GET /addresses/:address/total`
   - [x] `GET /addresses/:address/utxos`
   - [x] `GET /addresses/:address/utxos/:asset`
-  - [x] `GET /addresses/:address/txs`
   - [x] `GET /addresses/:address/transactions`
+- Assets
+  - [x] `GET /assets`
+  - [x] `GET /assets/:asset`
+  - [x] `GET /assets/:asset/history`
+  - [x] `GET /assets/:asset/transactions`
+  - [x] `GET /assets/:asset/addresses`
+  - [x] `GET /assets/policy/:policy_id`
+- Blocks
+  - [x] `GET /blocks/latest`
+  - [x] `GET /blocks/latest/txs`
+  - [x] `GET /blocks/:hash_or_number`
+  - [x] `GET /blocks/:hash_or_number/next`
+  - [x] `GET /blocks/:hash_or_number/previous`
+  - [x] `GET /blocks/slot/:slot_number`
+  - [x] `GET /blocks/epoch/:epoch_number/slot/:slot_number`
+  - [x] `GET /blocks/:hash_or_number/txs`
+  - [x] `GET /blocks/:hash_or_number/addresses`

@@ -11,24 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Per endpoint pagination
 - Github Continuous integration
 - Cargo Clippy + rustfmt
 - Removed macros
 - Tests
 - Added tx evaluate endpoint
 - Fetch all methods
-- Methods with pagination
 - Cleanup
 - Settings refactored
 - Updated data and schemas
 - Added missing endpoints
 - More examples
 - Unit tests
-- Added missing endpoints `accounts_addresses_total`, `addresses_extended`, `addresses_utxos_asset`, `addresses_txs`
-
-### Changed
-
 - linting
+- Added missing endpoints `accounts_addresses_total`, `addresses_extended`, `addresses_utxos_asset`
 
 ### Removed
 

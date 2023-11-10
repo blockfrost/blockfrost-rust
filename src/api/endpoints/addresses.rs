@@ -48,15 +48,6 @@ impl BlockfrostAPI {
         .await
     }
 
-    pub async fn addresses_txs(
-        &self,
-        address: &str,
-        pagination: Pagination,
-    ) -> BlockfrostResult<Vec<String>> {
-        self.call_paged_endpoint(format!("/addresses/{}/txs", address).as_str(), pagination)
-            .await
-    }
-
     pub async fn addresses_transactions(
         &self,
         address: &str,
