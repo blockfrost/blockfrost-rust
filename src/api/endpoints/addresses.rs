@@ -42,6 +42,7 @@ impl BlockfrostAPI {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use blockfrost_openapi::models::tx_content_output_amount_inner::TxContentOutputAmountInner;
     use serde_json::json;
 
     #[tokio::test]
@@ -186,6 +187,7 @@ mod tests {
             "unit": "lovelace",
             "quantity": "42000000"
         });
-        serde_json::from_value::<Amount>(json_value).unwrap();
+
+        serde_json::from_value::<TxContentOutputAmountInner>(json_value).unwrap();
     }
 }

@@ -1,7 +1,8 @@
 use crate::{BlockfrostAPI, BlockfrostResult, Pagination};
 use blockfrost_openapi::models::{
     account_addresses_assets_inner::AccountAddressesAssetsInner,
-    account_addresses_content_inner::AccountAddressesContentInner, account_content::AccountContent,
+    account_addresses_content_inner::AccountAddressesContentInner,
+    account_addresses_total::AccountAddressesTotal, account_content::AccountContent,
     account_delegation_content_inner::AccountDelegationContentInner,
     account_history_content_inner::AccountHistoryContentInner,
     account_mir_content_inner::AccountMirContentInner,
@@ -112,6 +113,14 @@ impl BlockfrostAPI {
             pagination,
         )
         .await
+    }
+
+    pub async fn accounts_addresses_total(
+        &self,
+        stake_address: &str,
+    ) -> BlockfrostResult<AccountAddressesTotal> {
+        self.call_endpoint(format!("/accounts/{}/addresses/total", stake_address).as_str())
+            .await
     }
 }
 #[cfg(test)]

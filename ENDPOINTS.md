@@ -1,38 +1,20 @@
 # Endpoints implemented
 
-- blocks
-  - blocks_latest
-  - blocks_by_id
-  - blocks_next
-  - blocks_slot
-  - blocks_epoch
-  - blocks_latest_txs
-  - blocks_by_epoch_and_slot
-- epochs
-  - epochs_latest
-  - epochs_by_number
-  - epochs_next
-  - epochs_previous
-  - epochs_parameters
-  - epochs_stakes
-  - epochs_blocks
-  - epochs_blocks_by_number
-  - epochs_protocol_parameters
-- addresses
-  - addresses_details
-  - addresses_utxos
-  - addresses_transactions
-  - addresses_transactions_all
-  - addresses_transactions_pending
-  - addresses_transactions_older_than
-  - addresses_transactions_after
-  - addresses_transactions_before
-  - addresses_transactions_last
-  - addresses_transactions_next
-  - addresses_transactions_previous
-- metadata
-  - metadata_txs_labels
-  - metadata_txs_labels_cbor
-  - metadata_txs_labels_json
-  - metadata_txs_labels_cbor_by_label
-  - metadata_txs_labels_json_by_label
+- Health Endpoints
+  - [x] `GET /`
+  - [x] `GET /health`
+  - [x] `GET /health/clock`
+- Metrics Endpoints
+  - [x] `GET /metrics`
+  - [x] `GET /metrics/endpoints`
+- Accounts endpoints
+  - [x] `GET /accounts/:stake_address`
+  - [x] `GET /accounts/:stake_address/rewards`
+  - [x] `GET /accounts/:stake_address/history`
+  - [x] `GET /accounts/:stake_address/delegations`
+  - [x] `GET /accounts/:stake_address/registrations`
+  - [x] `GET /accounts/:stake_address/withdrawals`
+  - [x] `GET /accounts/:stake_address/mirs`
+  - [x] `GET /accounts/:stake_address/addresses`
+  - [x] `GET /accounts/:stake_address/addresses/assets`
+  - [x] `GET /accounts/:stake_address/addresses/total`

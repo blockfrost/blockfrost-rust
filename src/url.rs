@@ -6,20 +6,6 @@ use url::{form_urlencoded, Url as UrlI};
 pub struct Url(pub String);
 
 impl Url {
-    pub fn create_base_url(
-        base_url: &str,
-        endpoint_url: &str,
-    ) -> Result<reqwest::Url, Box<dyn Error>> {
-        let mut url = UrlI::parse(base_url)?;
-        let endpoint = endpoint_url.strip_prefix('/').unwrap_or(endpoint_url);
-
-        if !url.path().ends_with('/') {
-            url.set_path(&format!("{}/", url.path()));
-        }
-
-        Ok(url.join(endpoint)?)
-    }
-
     pub fn from_endpoint(base_url: &str, endpoint_url: &str) -> Result<String, Box<dyn Error>> {
         let url = Self::create_base_url(base_url, endpoint_url)?;
 
@@ -54,5 +40,16 @@ impl Url {
             _ => CARDANO_MAINNET_URL,
         }
         .to_string()
+    }
+
+    fn create_base_url(base_url: &str, endpoint_url: &str) -> Result<reqwest::Url, Box<dyn Error>> {
+        let mut url = UrlI::parse(base_url)?;
+        let endpoint = endpoint_url.strip_prefix('/').unwrap_or(endpoint_url);
+
+        if !url.path().ends_with('/') {
+            url.set_path(&format!("{}/", url.path()));
+        }
+
+        Ok(url.join(endpoint)?)
     }
 }

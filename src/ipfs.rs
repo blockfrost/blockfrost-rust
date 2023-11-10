@@ -4,6 +4,7 @@ use crate::{
     utils::{build_header_map, create_client_with_project_id},
     BlockfrostError, Integer, IpfsSettings, RetrySettings, IPFS_URL,
 };
+use blockfrost_openapi::models::_ipfs_pin_list__ipfs_path__get_200_response::IpfsPinListIpfsPathGet200Response;
 use reqwest::{
     multipart::{Form, Part},
     ClientBuilder,
@@ -157,7 +158,9 @@ impl BlockfrostIPFS {
     /// OpenAPI endpoint reference: [`/ipfs/pin/list`].
     ///
     /// [`/ipfs/pin/list`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1list~1/get
-    pub async fn pin_list(&self) -> Result<Vec<IpfsPinList>, BlockfrostError> {
+    pub async fn pin_list(
+        &self,
+    ) -> Result<Vec<IpfsPinListIpfsPathGet200Response>, BlockfrostError> {
         let url = self.base_url.clone() + "/ipfs/pin/list";
 
         let request = self.client.get(&url);

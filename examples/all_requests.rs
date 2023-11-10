@@ -34,6 +34,7 @@ async fn main() -> BlockfrostResult<()> {
     let accounts_mirs = api.accounts_mirs(address, pagination).await;
     let accounts_addresses = api.accounts_addresses(address, pagination).await;
     let accounts_addresses_assets = api.accounts_addresses_assets(address, pagination).await;
+    let accounts_addresses_total = api.accounts_addresses_total(address).await;
 
     // Addresses
     let address =
@@ -157,6 +158,7 @@ async fn main() -> BlockfrostResult<()> {
     println!("addresses_total: {:#?}", addresses_total);
     println!("addresses_utxos: {:#?}", addresses_utxos);
     println!("addresses_transactions: {:#?}", addresses_transactions);
+    println!("accounts_addresses_total: {:#?}", accounts_addresses_total);
     println!("assets: {:#?}", assets);
     println!("assets_by_id: {:#?}", assets_by_id);
     println!("assets_history: {:#?}", assets_history);
