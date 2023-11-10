@@ -18,3 +18,11 @@
   - [x] `GET /accounts/:stake_address/addresses`
   - [x] `GET /accounts/:stake_address/addresses/assets`
   - [x] `GET /accounts/:stake_address/addresses/total`
+- Addresses Endpoints
+  - [x] `GET /addresses/:address`
+  - [x] `GET /addresses/:address/extended`
+  - [x] `GET /addresses/:address/total`
+  - [x] `GET /addresses/:address/utxos`
+  - [x] `GET /addresses/:address/utxos/:asset`
+  - [x] `GET /addresses/:address/txs`
+  - [x] `GET /addresses/:address/transactions`

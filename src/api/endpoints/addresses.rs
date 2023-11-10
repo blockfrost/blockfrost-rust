@@ -1,5 +1,6 @@
 use blockfrost_openapi::models::{
-    address_content::AddressContent, address_content_total::AddressContentTotal,
+    address_content::AddressContent, address_content_extended::AddressContentExtended,
+    address_content_total::AddressContentTotal,
     address_transactions_content_inner::AddressTransactionsContentInner,
     address_utxo_content_inner::AddressUtxoContentInner,
 };
@@ -9,6 +10,14 @@ use crate::*;
 impl BlockfrostAPI {
     pub async fn addresses(&self, address: &str) -> BlockfrostResult<AddressContent> {
         self.call_endpoint(format!("/addresses/{}", address).as_str())
+            .await
+    }
+
+    pub async fn addresses_extended(
+        &self,
+        address: &str,
+    ) -> BlockfrostResult<AddressContentExtended> {
+        self.call_endpoint(format!("/addresses/{}/extended", address).as_str())
             .await
     }
 
@@ -23,6 +32,28 @@ impl BlockfrostAPI {
         pagination: Pagination,
     ) -> BlockfrostResult<Vec<AddressUtxoContentInner>> {
         self.call_paged_endpoint(format!("/addresses/{}/utxos", address).as_str(), pagination)
+            .await
+    }
+
+    pub async fn addresses_utxos_asset(
+        &self,
+        address: &str,
+        asset: &str,
+        pagination: Pagination,
+    ) -> BlockfrostResult<Vec<AddressUtxoContentInner>> {
+        self.call_paged_endpoint(
+            format!("/addresses/{}/utxos/{}", address, asset).as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn addresses_txs(
+        &self,
+        address: &str,
+        pagination: Pagination,
+    ) -> BlockfrostResult<Vec<String>> {
+        self.call_paged_endpoint(format!("/addresses/{}/txs", address).as_str(), pagination)
             .await
     }
 
