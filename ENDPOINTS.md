@@ -99,3 +99,7 @@
   - [x] `GET /txs/:hash/metadata/cbor`
   - [x] `GET /txs/:hash/redeemers`
   - [x] `POST /tx/submit`
+- Utils
+  - [x] `GET /utils/addresses/xpub/:xpub/:role/:index`
+  - [x] `POST /utils/txs/evaluate`
+  - [x] `POST /utils/txs/evaluate/utxos`

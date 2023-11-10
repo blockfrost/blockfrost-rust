@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - More examples
 - Unit tests
 - linting
-- Added missing endpoints `accounts_addresses_total`, `addresses_extended`, `addresses_utxos_asset`, `network_eras`, `mempool`, `mempool_hash`, `mempool_addresses_address`, `scripts_hash_json`, `scripts_hash_cbor`, `scripts_datum_hash`, `scripts_datum_hash_cbor`
+- Added missing endpoints `accounts_addresses_total`, `addresses_extended`, `addresses_utxos_asset`, `network_eras`, `mempool`, `mempool_hash`, `mempool_addresses_address`, `scripts_hash_json`, `scripts_hash_cbor`, `scripts_datum_hash`, `scripts_datum_hash_cbor`, `utils_tx_evaluate`, `utils_tx_evaluate_utxos`
 
 ### Removed
 
