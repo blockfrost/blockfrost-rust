@@ -66,3 +66,36 @@
 - Network
   - [x] `GET /network`
   - [x] `GET /network/eras`
+- Pools
+  - [x] `GET /pools`
+  - [x] `GET /pools/extended`
+  - [x] `GET /pools/retired`
+  - [x] `GET /pools/retiring`
+  - [x] `GET /pools/:pool_id`
+  - [x] `GET /pools/:pool_id/history`
+  - [x] `GET /pools/:pool_id/metadata`
+  - [x] `GET /pools/:pool_id/relays`
+  - [x] `GET /pools/:pool_id/delegators`
+  - [x] `GET /pools/:pool_id/blocks`
+  - [x] `GET /pools/:pool_id/updates`
+- Scripts
+  - [x] `GET /scripts`
+  - [x] `GET /scripts/:hash`
+  - [x] `GET /scripts/:hash/json`
+  - [x] `GET /scripts/:hash/cbor`
+  - [x] `GET /scripts/:script_hash/redeemers`
+  - [x] `GET /scripts/datum/:datum_hash`
+  - [x] `GET /scripts/datum/:datum_hash/cbor`
+- Transactions
+  - [x] `GET /txs/:hash`
+  - [x] `GET /txs/:hash/utxos`
+  - [x] `GET /txs/:hash/stakes`
+  - [x] `GET /txs/:hash/delegations`
+  - [x] `GET /txs/:hash/withdrawals`
+  - [x] `GET /txs/:hash/mirs`
+  - [x] `GET /txs/:hash/pool_updates`
+  - [x] `GET /txs/:hash/pool_retires`
+  - [x] `GET /txs/:hash/metadata`
+  - [x] `GET /txs/:hash/metadata/cbor`
+  - [x] `GET /txs/:hash/redeemers`
+  - [x] `POST /tx/submit`

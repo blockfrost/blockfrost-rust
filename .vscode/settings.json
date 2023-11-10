@@ -30,6 +30,7 @@
     "thiserror",
     "timelock",
     "UTXO",
-    "utxos"
+    "utxos",
+    "xpub"
   ]
 }
