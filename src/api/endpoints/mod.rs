@@ -5,6 +5,7 @@ mod blocks;
 mod epochs;
 mod health;
 mod ledger;
+mod mempool;
 mod metadata;
 mod metrics;
 mod network;
