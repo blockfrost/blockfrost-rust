@@ -1,9 +1,13 @@
 use crate::*;
-use blockfrost_openapi::models::network::Network;
+use blockfrost_openapi::models::{network::Network, network_eras_inner::NetworkErasInner};
 
 impl BlockfrostAPI {
     pub async fn network(&self) -> BlockfrostResult<Network> {
         self.call_endpoint("/network").await
+    }
+
+    pub async fn network_eras(&self) -> BlockfrostResult<Vec<NetworkErasInner>> {
+        self.call_endpoint("/network/eras").await
     }
 }
 

@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - More examples
 - Unit tests
 - linting
-- Added missing endpoints `accounts_addresses_total`, `addresses_extended`, `addresses_utxos_asset`
+- Added missing endpoints `accounts_addresses_total`, `addresses_extended`, `addresses_utxos_asset`, `network_eras`
 
 ### Removed
 

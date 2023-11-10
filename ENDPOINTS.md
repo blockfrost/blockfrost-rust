@@ -1,4 +1,4 @@
-# Endpoints implemented
+# Endpoints
 
 - Health
   - [x] `GET /`
@@ -42,3 +42,27 @@
   - [x] `GET /blocks/epoch/:epoch_number/slot/:slot_number`
   - [x] `GET /blocks/:hash_or_number/txs`
   - [x] `GET /blocks/:hash_or_number/addresses`
+- Epochs
+  - [x] `GET /epochs/latest`
+  - [x] `GET /epochs/latest/parameters`
+  - [x] `GET /epochs/:number`
+  - [x] `GET /epochs/:number/next`
+  - [x] `GET /epochs/:number/previous`
+  - [x] `GET /epochs/:number/stakes`
+  - [x] `GET /epochs/:number/stakes/:pool_id`
+  - [x] `GET /epochs/:number/stakes/blocks`
+  - [x] `GET /epochs/:number/stakes/blocks/:pool_id`
+  - [x] `GET /epochs/:number/parameters`
+- Ledger
+  - [x] `GET /genesis`
+- Mempool
+  - [x] `GET /mempool`
+  - [x] `GET /mempool/:hash`
+  - [x] `GET /mempool/addresses/:address`
+- Metadata
+  - [x] `GET /metadata/txs/labels`
+  - [x] `GET /metadata/txs/labels/:label`
+  - [x] `GET /metadata/txs/labels/:label/cbor`
+- Network
+  - [x] `GET /network`
+  - [x] `GET /network/eras`
