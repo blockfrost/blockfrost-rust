@@ -1,7 +1,12 @@
-use crate::{json_error, process_error_response, reqwest_error, BlockfrostError, RetrySettings};
+use crate::{
+    json_error, process_error_response, reqwest_error, url::Url, BlockfrostError, Pagination,
+    RetrySettings,
+};
+use futures::future;
 use reqwest::{Client, RequestBuilder, Response, StatusCode};
-use serde_json::from_str as json_from;
-use std::{future::Future, thread};
+use serde::de::DeserializeOwned;
+use serde_json::from_str;
+use std::{error::Error, future::Future, thread};
 
 // Used only for simple and common GET requests.
 // Functions that require extra logic may not call this.
@@ -24,7 +29,7 @@ where
             return Err(process_error_response(&text, status, &url));
         }
 
-        json_from::<T>(&text).map_err(|reason| json_error(url, text, reason))
+        from_str::<T>(&text).map_err(|reason| json_error(url, text, reason))
     }
 }
 
@@ -66,4 +71,50 @@ fn clone_request(request: &RequestBuilder) -> RequestBuilder {
     //     Requests in this crate never use streams.
     //     .try_clone() will always succeed.
     request.try_clone().unwrap()
+}
+
+pub(crate) async fn fetch_all_pages<T: DeserializeOwned + Send + Sync>(
+    client: &Client,
+    url: String,
+    retry_settings: RetrySettings,
+    pagination: Pagination,
+) -> Result<Vec<T>, Box<dyn Error>> {
+    const CONCURRENT_REQUESTS: usize = 10;
+    const BATCH_SIZE: usize = 10;
+
+    let mut page_start: usize = 1;
+    let mut is_end = false;
+    let mut result = Vec::new();
+
+    while !is_end {
+        let batch = Url::generate_batch(url.as_str(), BATCH_SIZE, page_start, pagination)?;
+
+        println!("batch {:?}", batch);
+
+        let bodies: Vec<Result<Vec<T>, Box<dyn Error>>> =
+            future::join_all(batch.into_iter().map(|url| {
+                let client = client.clone();
+                async move {
+                    let resp = client.get(url).send().await?;
+                    resp.json::<Vec<T>>().await.map_err(|e| e.into())
+                }
+            }))
+            .await;
+
+        for b in bodies {
+            match b {
+                Ok(data) => {
+                    if data.len() < pagination.count {
+                        is_end = true;
+                    }
+                    result.extend(data);
+                },
+                Err(e) => eprintln!("Got an error: {}", e),
+            }
+        }
+
+        page_start += BATCH_SIZE;
+    }
+
+    Ok(result)
 }

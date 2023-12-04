@@ -1,8 +1,10 @@
 pub(super) mod endpoints;
-
 use crate::{
-    request::send_get_request, url::Url, utils::build_header_map,
-    utils::create_client_with_project_id, BlockFrostSettings, BlockfrostError, Pagination,
+    request::{fetch_all_pages, send_get_request},
+    url::Url,
+    utils::build_header_map,
+    utils::create_client_with_project_id,
+    BlockFrostSettings, BlockfrostError, Pagination,
 };
 use reqwest::ClientBuilder;
 
@@ -61,6 +63,10 @@ impl BlockfrostAPI {
     {
         let url = Url::from_paginated_endpoint(self.base_url.as_str(), url_endpoint, pagination)?;
 
-        send_get_request(&self.client, url, self.settings.retry_settings).await
+        if pagination.fetch_all {
+            fetch_all_pages(&self.client, url, self.settings.retry_settings, pagination).await
+        } else {
+            send_get_request(&self.client, url, self.settings.retry_settings).await
+        }
     }
 }

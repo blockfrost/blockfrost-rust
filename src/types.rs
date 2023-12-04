@@ -105,3 +105,12 @@ impl Default for Pagination {
         }
     }
 }
+
+impl Pagination {
+    pub fn order_to_string(&self) -> String {
+        match self.order {
+            Order::Asc => "asc".to_string(),
+            Order::Desc => "desc".to_string(),
+        }
+    }
+}

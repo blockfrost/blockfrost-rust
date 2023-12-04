@@ -18,18 +18,43 @@ impl Url {
         pagination: Pagination,
     ) -> Result<String, Box<dyn Error>> {
         let mut url = Self::create_base_url(base_url, endpoint_url)?;
-
         let mut query_pairs = form_urlencoded::Serializer::new(String::new());
 
         query_pairs.append_pair("page", pagination.page.to_string().as_str());
         query_pairs.append_pair("count", pagination.count.to_string().as_str());
-        query_pairs.append_pair("count", pagination.count.to_string().as_str());
+        query_pairs.append_pair("order", pagination.order_to_string().as_str());
 
         let query = query_pairs.finish();
 
         url.set_query(Some(&query));
 
         Ok(url.to_string())
+    }
+
+    pub fn generate_batch(
+        url: &str,
+        batch_size: usize,
+        start: usize,
+        pagination: Pagination,
+    ) -> Result<Vec<String>, Box<dyn Error>> {
+        let mut result = Vec::new();
+        let mut url = UrlI::parse(url)?;
+
+        for page in start..batch_size {
+            let mut query_pairs = form_urlencoded::Serializer::new(String::new());
+
+            query_pairs.append_pair("page", page.to_string().as_str());
+            query_pairs.append_pair("count", pagination.count.to_string().as_str());
+            query_pairs.append_pair("order", pagination.order_to_string().as_str());
+
+            let query = query_pairs.finish();
+
+            url.set_query(Some(&query));
+
+            result.push(url.to_string());
+        }
+
+        Ok(result)
     }
 
     pub fn get_base_url_from_project_id(project_id: &str) -> String {
@@ -51,5 +76,20 @@ impl Url {
         }
 
         Ok(url.join(endpoint)?)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_from_endpoint() {
+        let base_url = "http://example.com";
+        let endpoint_url = "api/data";
+        let expected_url = "http://example.com/api/data";
+
+        let result = Url::from_endpoint(base_url, endpoint_url).unwrap();
+        assert_eq!(result, expected_url);
     }
 }
