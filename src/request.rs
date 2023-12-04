@@ -6,7 +6,7 @@ use futures::future;
 use reqwest::{Client, RequestBuilder, Response, StatusCode};
 use serde::de::DeserializeOwned;
 use serde_json::from_str;
-use std::{error::Error, future::Future, thread};
+use std::{future::Future, thread};
 
 // Used only for simple and common GET requests.
 // Functions that require extra logic may not call this.
@@ -73,13 +73,12 @@ fn clone_request(request: &RequestBuilder) -> RequestBuilder {
     request.try_clone().unwrap()
 }
 
-pub(crate) async fn fetch_all_pages<T: DeserializeOwned + Send + Sync>(
+pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
     client: &Client,
     url: String,
     retry_settings: RetrySettings,
     pagination: Pagination,
-) -> Result<Vec<T>, Box<dyn Error>> {
-    const CONCURRENT_REQUESTS: usize = 10;
+) -> Result<Vec<T>, BlockfrostError> {
     const BATCH_SIZE: usize = 10;
 
     let mut page_start: usize = 1;
@@ -88,15 +87,20 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned + Send + Sync>(
 
     while !is_end {
         let batch = Url::generate_batch(url.as_str(), BATCH_SIZE, page_start, pagination)?;
-
-        println!("batch {:?}", batch);
-
-        let bodies: Vec<Result<Vec<T>, Box<dyn Error>>> =
+        let bodies: Vec<Result<Vec<T>, BlockfrostError>> =
             future::join_all(batch.into_iter().map(|url| {
                 let client = client.clone();
                 async move {
-                    let resp = client.get(url).send().await?;
-                    resp.json::<Vec<T>>().await.map_err(|e| e.into())
+                    let request = client.get(&url);
+                    let (status, text) = send_request(request, retry_settings)
+                        .await
+                        .map_err(|reason| reqwest_error(&url, reason))?;
+
+                    if !status.is_success() {
+                        return Err(process_error_response(&text, status, &url));
+                    }
+
+                    from_str::<Vec<T>>(&text).map_err(|reason| json_error(url, text, reason))
                 }
             }))
             .await;
@@ -109,7 +113,7 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned + Send + Sync>(
                     }
                     result.extend(data);
                 },
-                Err(e) => eprintln!("Got an error: {}", e),
+                Err(err) => return Err(err),
             }
         }
 
