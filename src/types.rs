@@ -107,6 +107,22 @@ impl Default for Pagination {
 }
 
 impl Pagination {
+    pub fn new(order: Order, page: usize, count: usize) -> Self {
+        Pagination {
+            fetch_all: false,
+            order,
+            page,
+            count,
+        }
+    }
+
+    pub fn all() -> Self {
+        Pagination {
+            fetch_all: true,
+            ..Default::default()
+        }
+    }
+
     pub fn order_to_string(&self) -> String {
         match self.order {
             Order::Asc => "asc".to_string(),
