@@ -87,7 +87,7 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
 
     while !is_end {
         let batch = Url::generate_batch(url.as_str(), BATCH_SIZE, page_start, pagination)?;
-        let bodies: Vec<Result<Vec<T>, BlockfrostError>> =
+        let responses: Vec<Result<Vec<T>, BlockfrostError>> =
             future::join_all(batch.into_iter().map(|url| {
                 let client = client.clone();
                 async move {
@@ -105,8 +105,8 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
             }))
             .await;
 
-        for b in bodies {
-            match b {
+        for response in responses {
+            match response {
                 Ok(data) => {
                     if data.len() < pagination.count {
                         is_end = true;
