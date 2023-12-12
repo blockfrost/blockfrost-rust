@@ -41,16 +41,30 @@ pub(crate) async fn send_request_unprocessed(
     for _ in 1..retry_settings.amount {
         let request = clone_request(&request);
         let response = request.send().await;
+        let retry_codes = [
+            StatusCode::REQUEST_TIMEOUT,
+            StatusCode::PAYLOAD_TOO_LARGE,
+            StatusCode::TOO_MANY_REQUESTS,
+            StatusCode::INTERNAL_SERVER_ERROR,
+            StatusCode::BAD_GATEWAY,
+            StatusCode::SERVICE_UNAVAILABLE,
+            StatusCode::GATEWAY_TIMEOUT,
+        ];
 
         if let Err(err) = &response {
-            if let Some(StatusCode::TOO_MANY_REQUESTS) = err.status() {
-                thread::sleep(retry_settings.delay);
-                continue;
+            if let Some(status) = err.status() {
+                if retry_codes.contains(&status) {
+                    thread::sleep(retry_settings.delay);
+                    continue;
+                }
             }
-        }
 
-        return response;
+            return response;
+        } else {
+            return response;
+        }
     }
+
     request.send().await
 }
 

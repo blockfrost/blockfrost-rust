@@ -7,6 +7,7 @@ use serde_json::{from_str as json_from, Value as JsonValue};
 
 pub(crate) fn try_formatting_json(text: &str) -> serde_json::Result<String> {
     let json = json_from::<JsonValue>(text)?;
+
     serde_json::to_string_pretty(&json)
 }
 

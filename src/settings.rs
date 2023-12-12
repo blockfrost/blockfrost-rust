@@ -51,9 +51,6 @@ impl Default for IpfsSettings {
 ///
 /// Amount and delay are set to zero by default, you will need to change both to enable retrying.
 ///
-/// Retries are only performed when you reach the rate limits (429 status code is retrieved), the
-/// quantity depends on your account plan.
-///
 /// Check different BlockFrost plans and their limits at <https://blockfrost.io/#pricing>.
 ///
 /// Note: You can disable delay between retries with [`Duration::ZERO`].
