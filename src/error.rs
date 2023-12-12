@@ -47,9 +47,7 @@ impl std::fmt::Display for ResponseError {
 //
 // This function can only return Error::ErrorResponse.
 pub(crate) fn process_error_response(
-    text: &str,
-    status_code: StatusCode,
-    url: &str,
+    text: &str, status_code: StatusCode, url: &str,
 ) -> BlockfrostError {
     let status_code = status_code.as_u16();
 
@@ -79,7 +77,7 @@ pub(crate) fn process_error_response(
                 reason: http_error,
                 url,
             }
-        },
+        }
     }
 }
 
@@ -101,9 +99,7 @@ pub(crate) fn reqwest_error(url: impl ToString, error: ReqwestError) -> Blockfro
 
 // Helper to create a Error::Json
 pub(crate) fn json_error(
-    url: impl ToString,
-    text: impl ToString,
-    error: SerdeJsonError,
+    url: impl ToString, text: impl ToString, error: SerdeJsonError,
 ) -> BlockfrostError {
     BlockfrostError::Json {
         url: url.to_string(),

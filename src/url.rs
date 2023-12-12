@@ -15,9 +15,7 @@ impl Url {
     }
 
     pub fn from_paginated_endpoint(
-        base_url: &str,
-        endpoint_url: &str,
-        pagination: Pagination,
+        base_url: &str, endpoint_url: &str, pagination: Pagination,
     ) -> Result<String, Box<dyn Error>> {
         let mut url = Self::create_base_url(base_url, endpoint_url)?;
         let mut query_pairs = form_urlencoded::Serializer::new(String::new());
@@ -34,10 +32,7 @@ impl Url {
     }
 
     pub fn generate_batch(
-        url: &str,
-        batch_size: usize,
-        start: usize,
-        pagination: Pagination,
+        url: &str, batch_size: usize, start: usize, pagination: Pagination,
     ) -> Result<Vec<String>, Box<dyn Error>> {
         let mut result = Vec::new();
         let mut url = UrlI::parse(url)?;

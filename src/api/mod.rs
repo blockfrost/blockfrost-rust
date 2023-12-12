@@ -29,9 +29,7 @@ impl BlockfrostAPI {
     }
 
     pub fn new_with_client(
-        project_id: &str,
-        settings: BlockFrostSettings,
-        client_builder: ClientBuilder,
+        project_id: &str, settings: BlockFrostSettings, client_builder: ClientBuilder,
     ) -> reqwest::Result<Self> {
         let base_url = Url::get_base_url_from_project_id(project_id);
 
@@ -55,9 +53,7 @@ impl BlockfrostAPI {
     }
 
     async fn call_paged_endpoint<T>(
-        &self,
-        url_endpoint: &str,
-        pagination: Pagination,
+        &self, url_endpoint: &str, pagination: Pagination,
     ) -> Result<Vec<T>, BlockfrostError>
     where
         T: for<'de> serde::Deserialize<'de> + serde::de::DeserializeOwned,

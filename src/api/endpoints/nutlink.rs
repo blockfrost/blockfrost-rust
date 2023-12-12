@@ -12,19 +12,14 @@ impl BlockfrostAPI {
     }
 
     pub async fn nutlink_address_tickers(
-        &self,
-        address: &str,
-        pagination: Pagination,
+        &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkAddressTickersInner>> {
         self.call_paged_endpoint(format!("/nutlink/{}/tickers", address).as_str(), pagination)
             .await
     }
 
     pub async fn nutlink_address_ticker_by_id(
-        &self,
-        address: &str,
-        ticker: &str,
-        pagination: Pagination,
+        &self, address: &str, ticker: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkAddressTickerInnerPayload>> {
         self.call_paged_endpoint(
             format!("/nutlink/{}/tickers/{}", address, ticker).as_str(),
@@ -34,9 +29,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn nutlink_ticker_by_id(
-        &self,
-        ticker: &str,
-        pagination: Pagination,
+        &self, ticker: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkAddressTickerInner>> {
         self.call_paged_endpoint(format!("/nutlink/tickers/{}", ticker).as_str(), pagination)
             .await

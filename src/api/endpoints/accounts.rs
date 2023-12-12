@@ -19,9 +19,7 @@ impl BlockfrostAPI {
 
     /// Reward history of a specific account.
     pub async fn accounts_rewards(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountRewardContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/rewards", stake_address).as_str(),
@@ -32,9 +30,7 @@ impl BlockfrostAPI {
 
     /// History of a specific account.
     pub async fn accounts_history(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountHistoryContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/history", stake_address).as_str(),
@@ -44,9 +40,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn accounts_delegations(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountDelegationContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/delegations", stake_address).as_str(),
@@ -56,9 +50,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn accounts_registrations(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountRegistrationContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/registrations", stake_address).as_str(),
@@ -68,9 +60,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn accounts_withdrawals(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountWithdrawalContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/withdrawals", stake_address).as_str(),
@@ -80,9 +70,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn accounts_mirs(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountMirContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/mirs", stake_address).as_str(),
@@ -92,9 +80,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn accounts_addresses(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountAddressesContentInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/addresses", stake_address).as_str(),
@@ -104,9 +90,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn accounts_addresses_assets(
-        &self,
-        stake_address: &str,
-        pagination: Pagination,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountAddressesAssetsInner>> {
         self.call_paged_endpoint(
             format!("/accounts/{}/addresses/assets", stake_address).as_str(),
@@ -116,8 +100,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn accounts_addresses_total(
-        &self,
-        stake_address: &str,
+        &self, stake_address: &str,
     ) -> BlockfrostResult<AccountAddressesTotal> {
         self.call_endpoint(format!("/accounts/{}/addresses/total", stake_address).as_str())
             .await

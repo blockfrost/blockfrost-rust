@@ -9,8 +9,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn metrics_endpoints(
-        &self,
-        pagination: Pagination,
+        &self, pagination: Pagination,
     ) -> BlockfrostResult<Vec<MetricsEndpointsInner>> {
         self.call_paged_endpoint("/metrics/endpoints", pagination)
             .await

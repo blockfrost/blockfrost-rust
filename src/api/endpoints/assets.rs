@@ -16,18 +16,14 @@ impl BlockfrostAPI {
     }
 
     pub async fn assets_history(
-        &self,
-        asset: &str,
-        pagination: Pagination,
+        &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetHistoryInner>> {
         self.call_paged_endpoint(format!("/assets/{}/history", asset).as_str(), pagination)
             .await
     }
 
     pub async fn assets_transactions(
-        &self,
-        asset: &str,
-        pagination: Pagination,
+        &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetTransactionsInner>> {
         self.call_paged_endpoint(
             format!("/assets/{}/transactions", asset).as_str(),
@@ -37,18 +33,14 @@ impl BlockfrostAPI {
     }
 
     pub async fn assets_addresses(
-        &self,
-        asset: &str,
-        pagination: Pagination,
+        &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetAddressesInner>> {
         self.call_paged_endpoint(format!("/assets/{}/addresses", asset).as_str(), pagination)
             .await
     }
 
     pub async fn assets_policy_by_id(
-        &self,
-        policy_id: &str,
-        pagination: Pagination,
+        &self, policy_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetPolicyInner>> {
         self.call_paged_endpoint(format!("/assets/policy/{}", policy_id).as_str(), pagination)
             .await

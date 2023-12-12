@@ -11,9 +11,7 @@ use std::{future::Future, thread};
 // Used only for simple and common GET requests.
 // Functions that require extra logic may not call this.
 pub(crate) fn send_get_request<T>(
-    client: &Client,
-    url: String,
-    retry_settings: RetrySettings,
+    client: &Client, url: String, retry_settings: RetrySettings,
 ) -> impl Future<Output = Result<T, BlockfrostError>> + Send
 where
     T: serde::de::DeserializeOwned,
@@ -35,8 +33,7 @@ where
 
 // Send requests with delayed retries, cloning the request builder only when necessary.
 pub(crate) async fn send_request_unprocessed(
-    request: RequestBuilder,
-    retry_settings: RetrySettings,
+    request: RequestBuilder, retry_settings: RetrySettings,
 ) -> reqwest::Result<Response> {
     for _ in 1..retry_settings.amount {
         let request = clone_request(&request);
@@ -70,8 +67,7 @@ pub(crate) async fn send_request_unprocessed(
 
 // Calls send_request_unprocessed but break is down
 pub(crate) async fn send_request(
-    request: RequestBuilder,
-    retry_settings: RetrySettings,
+    request: RequestBuilder, retry_settings: RetrySettings,
 ) -> reqwest::Result<(StatusCode, String)> {
     let response = send_request_unprocessed(request, retry_settings).await?;
     let status = response.status();
@@ -88,10 +84,7 @@ fn clone_request(request: &RequestBuilder) -> RequestBuilder {
 }
 
 pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
-    client: &Client,
-    url: String,
-    retry_settings: RetrySettings,
-    pagination: Pagination,
+    client: &Client, url: String, retry_settings: RetrySettings, pagination: Pagination,
 ) -> Result<Vec<T>, BlockfrostError> {
     const BATCH_SIZE: usize = 10;
 
@@ -126,7 +119,7 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
                         is_end = true;
                     }
                     result.extend(data);
-                },
+                }
                 Err(err) => return Err(err),
             }
         }

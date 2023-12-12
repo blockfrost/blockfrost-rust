@@ -24,9 +24,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn scripts_redeemers(
-        &self,
-        script_hash: &str,
-        pagination: Pagination,
+        &self, script_hash: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<ScriptRedeemersInner>> {
         self.call_paged_endpoint(
             format!("/scripts/{}/redeemers", script_hash).as_str(),
@@ -36,16 +34,14 @@ impl BlockfrostAPI {
     }
 
     pub async fn scripts_datum_hash(
-        &self,
-        datum_hash: &str,
+        &self, datum_hash: &str,
     ) -> BlockfrostResult<serde_json::Value> {
         self.call_endpoint(format!("/scripts/datum/{}", datum_hash).as_str())
             .await
     }
 
     pub async fn scripts_datum_hash_cbor(
-        &self,
-        datum_hash: &str,
+        &self, datum_hash: &str,
     ) -> BlockfrostResult<serde_json::Value> {
         self.call_endpoint(format!("/scripts/{}/cbor", datum_hash).as_str())
             .await

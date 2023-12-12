@@ -5,8 +5,7 @@ use blockfrost_openapi::models::{
 
 impl BlockfrostAPI {
     pub async fn mempool(
-        &self,
-        pagination: Pagination,
+        &self, pagination: Pagination,
     ) -> BlockfrostResult<Vec<MempoolContentInner>> {
         self.call_paged_endpoint("/mempool", pagination).await
     }
@@ -16,9 +15,7 @@ impl BlockfrostAPI {
             .await
     }
     pub async fn mempool_addresses_address(
-        &self,
-        address: &str,
-        pagination: Pagination,
+        &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<MempoolContentInner>> {
         self.call_paged_endpoint(
             format!("/mempool/addresses/{}", address).as_str(),
