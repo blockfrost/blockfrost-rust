@@ -1,4 +1,6 @@
-use crate::{Pagination, CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL};
+use crate::{
+    pagination::Pagination, CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
+};
 use std::error::Error;
 use url::{form_urlencoded, Url as UrlI};
 

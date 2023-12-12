@@ -1,6 +1,6 @@
 use crate::{
-    json_error, process_error_response, reqwest_error, url::Url, BlockfrostError, Pagination,
-    RetrySettings,
+    json_error, pagination::Pagination, process_error_response, reqwest_error, url::Url,
+    BlockfrostError, RetrySettings,
 };
 use futures::future;
 use reqwest::{Client, RequestBuilder, Response, StatusCode};

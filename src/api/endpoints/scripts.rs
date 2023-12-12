@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{pagination::Pagination, *};
 use blockfrost_openapi::models::{
     script::Script, script_redeemers_inner::ScriptRedeemersInner, scripts_inner::ScriptsInner,
 };

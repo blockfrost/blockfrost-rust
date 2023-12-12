@@ -1,4 +1,4 @@
-use crate::{BlockfrostAPI, BlockfrostResult, Pagination};
+use crate::{BlockfrostAPI, BlockfrostResult, pagination::Pagination};
 use blockfrost_openapi::models::{
     account_addresses_assets_inner::AccountAddressesAssetsInner,
     account_addresses_content_inner::AccountAddressesContentInner,

@@ -5,7 +5,7 @@ use blockfrost_openapi::models::{
     address_utxo_content_inner::AddressUtxoContentInner,
 };
 
-use crate::*;
+use crate::{pagination::Pagination, *};
 
 impl BlockfrostAPI {
     pub async fn addresses(&self, address: &str) -> BlockfrostResult<AddressContent> {

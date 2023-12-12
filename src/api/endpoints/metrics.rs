@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{pagination::Pagination, *};
 use blockfrost_openapi::models::{
     metrics_endpoints_inner::MetricsEndpointsInner, metrics_inner::MetricsInner,
 };

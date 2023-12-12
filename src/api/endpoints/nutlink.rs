@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{pagination::Pagination, *};
 use blockfrost_openapi::models::{
     nutlink_address::NutlinkAddress, nutlink_address_ticker_inner::NutlinkAddressTickerInner,
     nutlink_address_ticker_inner_payload::NutlinkAddressTickerInnerPayload,

@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{pagination::Pagination, *};
 use blockfrost_openapi::models::{
     tx_metadata_label_cbor_inner::TxMetadataLabelCborInner,
     tx_metadata_label_json_inner::TxMetadataLabelJsonInner,

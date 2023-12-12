@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{pagination::Pagination, *};
 use blockfrost_openapi::models::{
     mempool_content_inner::MempoolContentInner, mempool_tx_content::MempoolTxContent,
 };

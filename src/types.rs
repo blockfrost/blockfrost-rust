@@ -1,7 +1,3 @@
-//! Definitions for common types returned in requests.
-
-use serde::{Deserialize, Serialize};
-
 // Use this module as an interface to export all types declared inside of endpoints/
 //
 // These are not used in here, just exporting
@@ -9,33 +5,6 @@ pub use crate::{
     api::endpoints::*,
     ipfs::{IpfsAdd, IpfsPinList, IpfsPinState, IpfsPinUpdate},
 };
-
-/// Inner member of [`Address`], [`AddressTotal`], [`AddressUtxo`] and [`Transaction`].
-///
-/// # Format:
-///
-/// The `unit` String can be "lovelace" or other, in the latter case, the String will be made of
-/// a concatenation of the asset `policy_id` and hex-encoded `asset_name`.
-///
-/// # Example:
-///
-/// ```
-/// # use blockfrost::Amount;
-/// let unit = "lovelace".to_string();
-/// let quantity = "700".to_string();
-///
-/// // Amount: 700 lovelaces
-/// let amount = Amount { unit, quantity };
-/// ```
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Amount {
-    /// The unit of the value.
-    ///
-    /// Format: "Lovelace" or concatenation of asset `policy_id` and hex-encoded `asset_name`.
-    pub unit: String,
-    /// The quantity of the unit.
-    pub quantity: String,
-}
 
 /// Enum for any possible JSON value.
 ///
@@ -71,62 +40,3 @@ pub type Float = f64;
 /// [`EpochParameters`]
 /// [`AssetDetails`]
 pub type JsonMap = serde_json::Map<String, JsonValue>;
-
-/// Inner enum for [`PoolUpdate`] and [`AccountRegistration`].
-///
-/// Action in the certificate.
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(rename_all = "snake_case")]
-pub enum ActionType {
-    Registered,
-    Deregistered,
-}
-#[derive(Clone, Copy)]
-pub enum Order {
-    Asc,
-    Desc,
-}
-
-#[derive(Clone, Copy)]
-pub struct Pagination {
-    pub fetch_all: bool,
-    pub count: usize,
-    pub page: usize,
-    pub order: Order,
-}
-
-impl Default for Pagination {
-    fn default() -> Self {
-        Pagination {
-            fetch_all: false,
-            count: 100,
-            page: 1,
-            order: Order::Asc,
-        }
-    }
-}
-
-impl Pagination {
-    pub fn new(order: Order, page: usize, count: usize) -> Self {
-        Pagination {
-            fetch_all: false,
-            order,
-            page,
-            count,
-        }
-    }
-
-    pub fn all() -> Self {
-        Pagination {
-            fetch_all: true,
-            ..Default::default()
-        }
-    }
-
-    pub fn order_to_string(&self) -> String {
-        match self.order {
-            Order::Asc => "asc".to_string(),
-            Order::Desc => "desc".to_string(),
-        }
-    }
-}

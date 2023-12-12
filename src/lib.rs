@@ -4,6 +4,7 @@
 #![doc = include_str!("../README.md")]
 mod api;
 mod ipfs;
+mod pagination;
 mod request;
 mod settings;
 mod url;
@@ -14,6 +15,7 @@ pub mod types;
 pub use api::*;
 pub use error::*;
 pub use ipfs::BlockfrostIPFS;
+pub use pagination::Pagination;
 pub use settings::*;
 pub use types::*;
 

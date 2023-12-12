@@ -1,10 +1,11 @@
 pub(super) mod endpoints;
 use crate::{
+    pagination::Pagination,
     request::{fetch_all_pages, send_get_request},
     url::Url,
     utils::build_header_map,
     utils::create_client_with_project_id,
-    BlockFrostSettings, BlockfrostError, Pagination,
+    BlockFrostSettings, BlockfrostError,
 };
 use reqwest::ClientBuilder;
 
