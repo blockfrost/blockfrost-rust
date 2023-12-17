@@ -1,71 +1,57 @@
-use serde::{Deserialize, Serialize};
-
 use crate::*;
+use blockfrost_openapi::models::{
+    __get_200_response::Get200Response, _health_clock_get_200_response::HealthClockGet200Response,
+    _health_get_200_response::HealthGet200Response,
+};
 
-impl BlockFrostApi {
-    endpoints! {
-        /// Root endpoint, points end users to documentation.
-        root() -> Root => "/";
-            ("https://docs.blockfrost.io/#tag/Health/paths/~1/get"),
-
-        /// Backend health status as a boolean.
-        ///
-        /// Your application should handle when backend is unavailable for the given chain.
-        health() -> Health => "/health";
-            ("https://docs.blockfrost.io/#tag/Health/paths/~1health/get"),
-
-        /// Current backend time.
-        ///
-        /// This endpoint provides the current UNIX time. Your application might use this to verify
-        /// if the client clock is not out of sync.
-        health_clock() -> HealthClock => "/health/clock";
-            ("https://docs.blockfrost.io/#tag/Health/paths/~1health~1clock/get"),
+impl BlockfrostAPI {
+    /// Root endpoint, points end users to documentation.
+    pub async fn root(&self) -> BlockfrostResult<Get200Response> {
+        self.call_endpoint("/").await
     }
-}
 
-/// Created by [`root`](BlockFrostApi::root) method.
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Root {
-    /// Points end users to the website url.
-    pub url: String,
-    /// Current blockfrost backend version.
-    pub version: String,
-}
+    /// Backend health status as a boolean.
+    pub async fn health(&self) -> BlockfrostResult<HealthGet200Response> {
+        self.call_endpoint("/health").await
+    }
 
-/// Created by [`health`](BlockFrostApi::health) method.
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Health {
-    /// Status of the backend health.
-    pub is_healthy: bool,
-}
-
-/// Created by [`health_clock`](BlockFrostApi::health_clock) method.
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct HealthClock {
-    /// Server UNIX time in milliseconds.
-    pub server_time: Integer,
+    /// Current backend time.
+    pub async fn health_clock(&self) -> BlockfrostResult<HealthClockGet200Response> {
+        self.call_endpoint("/health/clock").await
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
 
-    test_example! { test_root, Root, r#"
-    {
-      "url": "https://blockfrost.io/",
-      "version": "0.1.0"
-    }
-    "# }
+    #[test]
+    fn test_root() {
+        let json_value = json!({
+            "url": "https://blockfrost.io/",
+            "version": "0.1.0"
+        });
 
-    test_example! { test_health, Health, r#"
-    {
-      "is_healthy": true
+        serde_json::from_value::<Get200Response>(json_value).unwrap();
     }
-    "# }
 
-    test_example! { test_health_clock, HealthClock, r#"
-    {
-      "server_time": 1603400958947
+    #[test]
+    fn test_health() {
+        let json_value = json!({
+            "is_healthy": true,
+        });
+
+        serde_json::from_value::<HealthGet200Response>(json_value).unwrap();
     }
-    "# }
+
+    #[test]
+    fn test_health_clock() {
+        let json_value = json!({
+            "is_healthy": true,
+            "server_time": "1603400958947",
+        });
+
+        serde_json::from_value::<HealthGet200Response>(json_value).unwrap();
+    }
 }

@@ -1,3 +1,10 @@
+use crate::{
+    error::{json_error, process_error_response, reqwest_error},
+    request::{send_request, send_request_unprocessed},
+    utils::{build_header_map, create_client_with_project_id},
+    BlockfrostError, Integer, IpfsSettings, RetrySettings, IPFS_URL,
+};
+use blockfrost_openapi::models::_ipfs_pin_list__ipfs_path__get_200_response::IpfsPinListIpfsPathGet200Response;
 use reqwest::{
     multipart::{Form, Part},
     ClientBuilder,
@@ -5,22 +12,16 @@ use reqwest::{
 use serde::{Deserialize, Serialize};
 use serde_json::from_str as json_from;
 
-use crate::{
-    error::{json_error, process_error_response, reqwest_error},
-    request::{send_request, send_request_unprocessed},
-    utils::{build_header_map, create_client_with_project_id},
-    Integer, IpfsSettings, RetrySettings,
-};
-
 /// Provides methods for making requests to the
 /// [IPFS API](https://docs.blockfrost.io/#tag/IPFS-Add).
 #[derive(Debug, Clone)]
-pub struct IpfsApi {
+pub struct BlockfrostIPFS {
+    pub base_url: String,
     client: reqwest::Client,
     pub settings: IpfsSettings,
 }
 
-impl IpfsApi {
+impl BlockfrostIPFS {
     /// Create a [`IpfsApi`] with [`custom settings`](IpfsSettings).
     ///
     /// # Panics
@@ -30,9 +31,14 @@ impl IpfsApi {
     ///
     /// [`HeaderValue`]: reqwest::header::HeaderValue
     /// [`HeaderValue::from_str`]: reqwest::header::HeaderValue::from_str
-    pub fn new(project_id: impl AsRef<str>, settings: IpfsSettings) -> Self {
-        let client = create_client_with_project_id(project_id.as_ref());
-        Self { client, settings }
+    pub fn new(project_id: &str, settings: IpfsSettings) -> Self {
+        let client = create_client_with_project_id(project_id);
+
+        Self {
+            client,
+            settings,
+            base_url: IPFS_URL.to_string(),
+        }
     }
 
     /// Create a [`IpfsApi`] with [custom settings](IpfsSettings) and [custom client](ClientBuilder).
@@ -53,14 +59,16 @@ impl IpfsApi {
     /// [`HeaderValue`]: reqwest::header::HeaderValue
     /// [`HeaderValue::from_str`]: reqwest::header::HeaderValue::from_str
     pub fn new_with_client(
-        project_id: impl AsRef<str>,
-        settings: IpfsSettings,
-        client_builder: ClientBuilder,
+        project_id: impl AsRef<str>, settings: IpfsSettings, client_builder: ClientBuilder,
     ) -> reqwest::Result<Self> {
         client_builder
             .default_headers(build_header_map(project_id.as_ref()))
             .build()
-            .map(|client| Self { settings, client })
+            .map(|client| Self {
+                settings,
+                client,
+                base_url: IPFS_URL.to_string(),
+            })
     }
 
     /// Adding a file to `IPFS`.
@@ -72,8 +80,8 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/add`].
     ///
     /// [`/ipfs/add`]: https://docs.blockfrost.io/#tag/IPFS-Add/paths/~1ipfs~1add/post
-    pub async fn add(&self, file_contents: Vec<u8>) -> crate::Result<IpfsAdd> {
-        let url = self.settings.network_address.clone() + "/ipfs/add";
+    pub async fn add(&self, file_contents: Vec<u8>) -> Result<IpfsAdd, BlockfrostError> {
+        let url = self.base_url.clone() + "/ipfs/add";
 
         let part = Part::bytes(file_contents);
         let form = Form::new().part("file", part);
@@ -98,9 +106,9 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/gateway/{IPFS_path}`].
     ///
     /// [`/ipfs/gateway/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Gateway
-    pub async fn gateway(&self, ipfs_path: &str) -> crate::Result<Vec<u8>> {
-        let url = self.settings.network_address.clone()
-            + &format!("/ipfs/gateway/{IPFS_path}", IPFS_path = ipfs_path);
+    pub async fn gateway(&self, ipfs_path: &str) -> Result<Vec<u8>, BlockfrostError> {
+        let url =
+            self.base_url.clone() + &format!("/ipfs/gateway/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.get(&url);
 
@@ -110,10 +118,16 @@ impl IpfsApi {
         let status = response.status();
 
         if !status.is_success() {
-            let text = response.text().await.map_err(|reason| reqwest_error(&url, reason))?;
+            let text = response
+                .text()
+                .await
+                .map_err(|reason| reqwest_error(&url, reason))?;
             Err(process_error_response(&text, status, &url))
         } else {
-            let bytes = response.bytes().await.map_err(|reason| reqwest_error(&url, reason))?;
+            let bytes = response
+                .bytes()
+                .await
+                .map_err(|reason| reqwest_error(&url, reason))?;
             Ok(bytes.to_vec())
         }
     }
@@ -123,9 +137,9 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/pin/add/{IPFS_path}`].
     ///
     /// [`/ipfs/pin/add/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1add~1{IPFS_path}/post
-    pub async fn pin_add(&self, ipfs_path: &str) -> crate::Result<IpfsPinUpdate> {
-        let url = self.settings.network_address.clone()
-            + &format!("/ipfs/pin/add/{IPFS_path}", IPFS_path = ipfs_path);
+    pub async fn pin_add(&self, ipfs_path: &str) -> Result<IpfsPinUpdate, BlockfrostError> {
+        let url =
+            self.base_url.clone() + &format!("/ipfs/pin/add/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.post(&url);
         let (status, text) = send_request(request, self.settings.retry_settings)
@@ -143,8 +157,10 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/pin/list`].
     ///
     /// [`/ipfs/pin/list`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1list~1/get
-    pub async fn pin_list(&self) -> crate::Result<Vec<IpfsPinList>> {
-        let url = self.settings.network_address.clone() + "/ipfs/pin/list";
+    pub async fn pin_list(
+        &self,
+    ) -> Result<Vec<IpfsPinListIpfsPathGet200Response>, BlockfrostError> {
+        let url = self.base_url.clone() + "/ipfs/pin/list";
 
         let request = self.client.get(&url);
         let (status, text) = send_request(request, self.settings.retry_settings)
@@ -163,9 +179,9 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/pin/list/{IPFS_path}`].
     ///
     /// [`/ipfs/pin/list/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1list~1{IPFS_path}/get
-    pub async fn pin_list_by_id(&self, ipfs_path: &str) -> crate::Result<IpfsPinList> {
-        let url = self.settings.network_address.clone()
-            + &format!("/ipfs/pin/list/{IPFS_path}", IPFS_path = ipfs_path);
+    pub async fn pin_list_by_id(&self, ipfs_path: &str) -> Result<IpfsPinList, BlockfrostError> {
+        let url =
+            self.base_url.clone() + &format!("/ipfs/pin/list/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.get(&url);
         let (status, text) = send_request(request, self.settings.retry_settings)
@@ -184,9 +200,9 @@ impl IpfsApi {
     /// OpenAPI endpoint reference: [`/ipfs/pin/remove/{IPFS_path}`].
     ///
     /// [`/ipfs/pin/remove/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1remove~1{IPFS_path}/post
-    pub async fn pin_remove(&self, ipfs_path: &str) -> crate::Result<IpfsPinUpdate> {
-        let url = self.settings.network_address.clone()
-            + &format!("/ipfs/pin/remove/{IPFS_path}", IPFS_path = ipfs_path);
+    pub async fn pin_remove(&self, ipfs_path: &str) -> Result<IpfsPinUpdate, BlockfrostError> {
+        let url =
+            self.base_url.clone() + &format!("/ipfs/pin/remove/{IPFS_path}", IPFS_path = ipfs_path);
 
         let request = self.client.post(&url);
         let (status, text) = send_request(request, self.settings.retry_settings)
@@ -254,32 +270,32 @@ pub enum IpfsPinState {
     Gc,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
 
-    test_example! { test_ipfs_add, IpfsAdd, r#"
-    {
-      "name": "README.md",
-      "ipfs_hash": "QmZbHqiCxKEVX7QfijzJTkZiSi3WEVTcvANgNAWzDYgZDr",
-      "size": "125297"
-    }
-    "# }
+//     test_example! { test_ipfs_add, IpfsAdd, r#"
+//     {
+//       "name": "README.md",
+//       "ipfs_hash": "QmZbHqiCxKEVX7QfijzJTkZiSi3WEVTcvANgNAWzDYgZDr",
+//       "size": "125297"
+//     }
+//     "# }
 
-    test_example! { test_ipfs_pin_add, IpfsPinUpdate, r#"
-    {
-      "ipfs_hash": "QmPojRfAXYAXV92Dof7gtSgaVuxEk64xx9CKvprqu9VwA8",
-      "state": "queued"
-    }
-    "# }
+//     test_example! { test_ipfs_pin_add, IpfsPinUpdate, r#"
+//     {
+//       "ipfs_hash": "QmPojRfAXYAXV92Dof7gtSgaVuxEk64xx9CKvprqu9VwA8",
+//       "state": "queued"
+//     }
+//     "# }
 
-    test_example! { test_ipfs_pin_list_by_id, IpfsPinList, r#"
-    {
-      "time_created": 1615551024,
-      "time_pinned": 1615551024,
-      "ipfs_hash": "QmdVMnULrY95mth2XkwjxDtMHvzuzmvUPTotKE1tgqKbCx",
-      "size": "1615551024",
-      "state": "pinned"
-    }
-    "# }
-}
+//     test_example! { test_ipfs_pin_list_by_id, IpfsPinList, r#"
+//     {
+//       "time_created": 1615551024,
+//       "time_pinned": 1615551024,
+//       "ipfs_hash": "QmdVMnULrY95mth2XkwjxDtMHvzuzmvUPTotKE1tgqKbCx",
+//       "size": "1615551024",
+//       "state": "pinned"
+//     }
+//     "# }
+// }

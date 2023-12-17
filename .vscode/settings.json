@@ -1,18 +1,36 @@
 {
   "cSpell.words": [
+    "ADAUSD",
     "Adress",
     "Bech",
     "blockfrost",
     "CARDANO",
     "cbor",
+    "Clippy",
+    "decentralisation",
     "delegators",
     "deregistration",
+    "IFPS",
     "ipfs",
     "Lovelaces",
+    "mirs",
+    "naersk",
+    "nixpkgs",
     "Nutlink",
+    "openapi",
+    "preprodnet",
+    "previewnet",
+    "println",
     "redemeers",
     "reqwest",
+    "retriving",
+    "rustfmt",
+    "serialised",
+    "stakenuts",
+    "thiserror",
+    "timelock",
     "UTXO",
-    "utxos"
+    "utxos",
+    "xpub"
   ]
 }

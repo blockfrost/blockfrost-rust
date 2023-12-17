@@ -19,7 +19,8 @@
 <p align="center">
   <a href="#getting-started">Getting started</a> •
   <a href="#installation">Installation</a> •
-  <a href="#examples">Examples</a>
+  <a href="#examples">Examples</a> •
+  <a hred="./ENDPOINTS.md">Endpoints</a>
 </p>
 
 ## Getting started
@@ -34,7 +35,7 @@ and create a new project to receive an API key.
 Add to your project's `Cargo.toml`:
 
 ```toml
-blockfrost = "0.2.1"
+blockfrost = "1.0.0"
 ```
 
 ## Examples
@@ -47,17 +48,15 @@ Here is [`simple_request.rs`] with the basic setup necessary and no settings
 customization:
 
 ```rust
-use blockfrost::{load, BlockFrostApi};
+use blockfrost::{BlockfrostAPI, BlockfrostResult};
 
-fn build_api() -> blockfrost::Result<BlockFrostApi> {
-    let configurations = load::configurations_from_env()?;
-    let project_id = configurations["project_id"].as_str().unwrap();
-    let api = BlockFrostApi::new(project_id, Default::default());
+fn build_api() -> BlockfrostResult<BlockfrostAPI> {
+    let api = BlockfrostAPI::new("mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be", Default::default());
     Ok(api)
 }
 
 #[tokio::main]
-async fn main() -> blockfrost::Result<()> {
+async fn main() -> blockfrost::BlockfrostResult<()> {
     let api = build_api()?;
     let genesis = api.genesis().await?;
 

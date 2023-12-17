@@ -1,60 +1,38 @@
-use serde::{Deserialize, Serialize};
-
 use crate::*;
+use blockfrost_openapi::models::{network::Network, network_eras_inner::NetworkErasInner};
 
-impl BlockFrostApi {
-    endpoints! {
-        /// Return detailed network information.
-        network() -> Network => "/network";
-            ("https://docs.blockfrost.io/#tag/Cardano-Network/paths/~1network/get"),
+impl BlockfrostAPI {
+    pub async fn network(&self) -> BlockfrostResult<Network> {
+        self.call_endpoint("/network").await
     }
-}
 
-/// Created by [`network`](BlockFrostApi::network) method.
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Network {
-    pub supply: Supply,
-    pub stake: NetworkStake,
-}
-
-/// Inner member of [`Network`].
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Supply {
-    /// Maximum supply in Lovelaces.
-    pub max: String,
-    /// Current total (max supply - reserves) supply in Lovelaces.
-    pub total: String,
-    /// Current circulating (UTXOs + withdrawables) supply in Lovelaces.
-    pub circulating: String,
-    /// Curent locked supply by scripts in Lovelaces.
-    pub locked: String,
-}
-
-/// Inner member of [`Network`].
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct NetworkStake {
-    /// Current live stake in Lovelaces.
-    pub live: String,
-    /// Current active stake in Lovelaces.
-    pub active: String,
+    pub async fn network_eras(&self) -> BlockfrostResult<Vec<NetworkErasInner>> {
+        self.call_endpoint("/network/eras").await
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use blockfrost_openapi::models::network::Network;
+    use serde_json::json;
 
-    test_example! { test_network, Network, r#"
-    {
-      "supply": {
-        "max": "45000000000000000",
-        "total": "32890715183299160",
-        "circulating": "32412601976210393",
-        "locked": "125006953355"
-      },
-      "stake": {
-        "live": "23204950463991654",
-        "active": "22210233523456321"
-      }
+    #[test]
+    fn test_network() {
+        let json_value = json!({
+          "supply": {
+            "max": "45000000000000000",
+            "total": "32890715183299160",
+            "circulating": "32412601976210393",
+            "locked": "125006953355",
+            "treasury": "98635632000000",
+            "reserves": "46635632000000"
+          },
+          "stake": {
+            "live": "23204950463991654",
+            "active": "22210233523456321"
+          }
+        });
+
+        serde_json::from_value::<Network>(json_value).unwrap();
     }
-    "# }
 }

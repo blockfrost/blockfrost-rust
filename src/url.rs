@@ -1,73 +1,92 @@
-//! Internal type to help building the URLs for the requests.
-
-use crate::{BlockFrostSettings, QueryParameters};
+use crate::{
+    pagination::Pagination, CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
+};
+use std::error::Error;
+use url::{form_urlencoded, Url as UrlI};
 
 #[derive(Clone, Debug)]
-pub(crate) struct Url(pub String);
+pub struct Url(pub String);
 
 impl Url {
-    pub(crate) fn from_endpoint(settings: &BlockFrostSettings, endpoint_url: &str) -> Self {
-        let page = settings.query_parameters.page;
-        Self::from_endpoint_with_page(settings, endpoint_url, page)
+    pub fn from_endpoint(base_url: &str, endpoint_url: &str) -> Result<String, Box<dyn Error>> {
+        let url = Self::create_base_url(base_url, endpoint_url)?;
+
+        Ok(url.to_string())
     }
 
-    // Enables us to overwrite/ignore the page argument in the api
-    //
-    // This is useful when using a lister that increments internally it's page value
-    pub(crate) fn from_endpoint_with_page(
-        settings: &BlockFrostSettings,
-        endpoint_url: &str,
-        page: Option<u32>,
-    ) -> Self {
-        // url := "https://cardano-mainnet.blockfrost.io/api/v0" + "/blocks" + "?page=77&order=desc"
-        let url = settings.network_address.clone()
-            + endpoint_url
-            + &create_query_parameters_suffix(&settings.query_parameters, page);
-        Self(url)
+    pub fn from_paginated_endpoint(
+        base_url: &str, endpoint_url: &str, pagination: Pagination,
+    ) -> Result<String, Box<dyn Error>> {
+        let mut url = Self::create_base_url(base_url, endpoint_url)?;
+        let mut query_pairs = form_urlencoded::Serializer::new(String::new());
+
+        query_pairs.append_pair("page", pagination.page.to_string().as_str());
+        query_pairs.append_pair("count", pagination.count.to_string().as_str());
+        query_pairs.append_pair("order", pagination.order_to_string().as_str());
+
+        let query = query_pairs.finish();
+
+        url.set_query(Some(&query));
+
+        Ok(url.to_string())
     }
 
-    pub(crate) fn from_endpoint_without_parameters(
-        settings: &BlockFrostSettings,
-        endpoint_url: &str,
-    ) -> Self {
-        // url := "https://cardano-mainnet.blockfrost.io/api/v0" + "/blocks"
-        let url = settings.network_address.clone() + endpoint_url;
-        Self(url)
+    pub fn generate_batch(
+        url: &str, batch_size: usize, start: usize, pagination: Pagination,
+    ) -> Result<Vec<String>, Box<dyn Error>> {
+        let mut result = Vec::new();
+        let mut url = UrlI::parse(url)?;
+
+        for page in start..batch_size {
+            let mut query_pairs = form_urlencoded::Serializer::new(String::new());
+
+            query_pairs.append_pair("page", page.to_string().as_str());
+            query_pairs.append_pair("count", pagination.count.to_string().as_str());
+            query_pairs.append_pair("order", pagination.order_to_string().as_str());
+
+            let query = query_pairs.finish();
+
+            url.set_query(Some(&query));
+
+            result.push(url.to_string());
+        }
+
+        Ok(result)
+    }
+
+    pub fn get_base_url_from_project_id(project_id: &str) -> String {
+        match project_id {
+            id if id.starts_with("mainnet") => CARDANO_MAINNET_URL,
+            id if id.starts_with("preview") => CARDANO_PREVIEW_URL,
+            id if id.starts_with("preprod") => CARDANO_PREPROD_URL,
+            _ => CARDANO_MAINNET_URL,
+        }
+        .to_string()
+    }
+
+    fn create_base_url(base_url: &str, endpoint_url: &str) -> Result<reqwest::Url, Box<dyn Error>> {
+        let mut url = UrlI::parse(base_url)?;
+        let endpoint = endpoint_url.strip_prefix('/').unwrap_or(endpoint_url);
+
+        if !url.path().ends_with('/') {
+            url.set_path(&format!("{}/", url.path()));
+        }
+
+        Ok(url.join(endpoint)?)
     }
 }
 
-fn create_query_parameters_suffix(parameters: &QueryParameters, page: Option<u32>) -> String {
-    fn append_parameter(string: &mut String, parameter_name: &str, parameter: impl AsRef<str>) {
-        if string.is_empty() {
-            // First parameter comes after a question mark
-            string.push('?');
-        } else {
-            // Separator between parameters
-            string.push('&');
-        }
-        string.push_str(parameter_name);
-        string.push('=');
-        string.push_str(parameter.as_ref());
-    }
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let QueryParameters { count, order, from, to, .. } = &parameters;
-    let mut string = String::new();
+    #[test]
+    fn test_from_endpoint() {
+        let base_url = "http://example.com";
+        let endpoint_url = "api/data";
+        let expected_url = "http://example.com/api/data";
 
-    if let Some(count) = count {
-        append_parameter(&mut string, "count", count.to_string());
+        let result = Url::from_endpoint(base_url, endpoint_url).unwrap();
+        assert_eq!(result, expected_url);
     }
-    if let Some(order) = order {
-        append_parameter(&mut string, "order", order.to_string());
-    }
-    if let Some(from) = from {
-        append_parameter(&mut string, "from", from);
-    }
-    if let Some(to) = to {
-        append_parameter(&mut string, "to", to);
-    }
-    if let Some(page) = page {
-        append_parameter(&mut string, "page", page.to_string());
-    }
-
-    string
 }

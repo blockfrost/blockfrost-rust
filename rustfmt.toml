@@ -1,8 +1,11 @@
+# Sets the maximum line length. Code will be wrapped beyond this length.
 max_width = 100
-use_field_init_shorthand = true
-newline_style = "Unix"
-edition = "2021"
-reorder_imports = true
-reorder_modules = true
-use_try_shorthand = true
-use_small_heuristics = "Max"
+
+# Use spaces for indentation rather than tabs.
+hard_tabs = false
+
+# Configure the visual indentation of arguments and parameters.
+fn_params_layout = "Compressed"
+
+# Controls whether to put `else` on a new line.
+newline_style = "Auto"

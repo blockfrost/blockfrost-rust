@@ -1,0 +1,105 @@
+# Endpoints
+
+- Health
+  - [x] `GET /`
+  - [x] `GET /health`
+  - [x] `GET /health/clock`
+- Metrics
+  - [x] `GET /metrics`
+  - [x] `GET /metrics/endpoints`
+- Accounts
+  - [x] `GET /accounts/:stake_address`
+  - [x] `GET /accounts/:stake_address/rewards`
+  - [x] `GET /accounts/:stake_address/history`
+  - [x] `GET /accounts/:stake_address/delegations`
+  - [x] `GET /accounts/:stake_address/registrations`
+  - [x] `GET /accounts/:stake_address/withdrawals`
+  - [x] `GET /accounts/:stake_address/mirs`
+  - [x] `GET /accounts/:stake_address/addresses`
+  - [x] `GET /accounts/:stake_address/addresses/assets`
+  - [x] `GET /accounts/:stake_address/addresses/total`
+- Addresses
+  - [x] `GET /addresses/:address`
+  - [x] `GET /addresses/:address/extended`
+  - [x] `GET /addresses/:address/total`
+  - [x] `GET /addresses/:address/utxos`
+  - [x] `GET /addresses/:address/utxos/:asset`
+  - [x] `GET /addresses/:address/transactions`
+- Assets
+  - [x] `GET /assets`
+  - [x] `GET /assets/:asset`
+  - [x] `GET /assets/:asset/history`
+  - [x] `GET /assets/:asset/transactions`
+  - [x] `GET /assets/:asset/addresses`
+  - [x] `GET /assets/policy/:policy_id`
+- Blocks
+  - [x] `GET /blocks/latest`
+  - [x] `GET /blocks/latest/txs`
+  - [x] `GET /blocks/:hash_or_number`
+  - [x] `GET /blocks/:hash_or_number/next`
+  - [x] `GET /blocks/:hash_or_number/previous`
+  - [x] `GET /blocks/slot/:slot_number`
+  - [x] `GET /blocks/epoch/:epoch_number/slot/:slot_number`
+  - [x] `GET /blocks/:hash_or_number/txs`
+  - [x] `GET /blocks/:hash_or_number/addresses`
+- Epochs
+  - [x] `GET /epochs/latest`
+  - [x] `GET /epochs/latest/parameters`
+  - [x] `GET /epochs/:number`
+  - [x] `GET /epochs/:number/next`
+  - [x] `GET /epochs/:number/previous`
+  - [x] `GET /epochs/:number/stakes`
+  - [x] `GET /epochs/:number/stakes/:pool_id`
+  - [x] `GET /epochs/:number/stakes/blocks`
+  - [x] `GET /epochs/:number/stakes/blocks/:pool_id`
+  - [x] `GET /epochs/:number/parameters`
+- Ledger
+  - [x] `GET /genesis`
+- Mempool
+  - [x] `GET /mempool`
+  - [x] `GET /mempool/:hash`
+  - [x] `GET /mempool/addresses/:address`
+- Metadata
+  - [x] `GET /metadata/txs/labels`
+  - [x] `GET /metadata/txs/labels/:label`
+  - [x] `GET /metadata/txs/labels/:label/cbor`
+- Network
+  - [x] `GET /network`
+  - [x] `GET /network/eras`
+- Pools
+  - [x] `GET /pools`
+  - [x] `GET /pools/extended`
+  - [x] `GET /pools/retired`
+  - [x] `GET /pools/retiring`
+  - [x] `GET /pools/:pool_id`
+  - [x] `GET /pools/:pool_id/history`
+  - [x] `GET /pools/:pool_id/metadata`
+  - [x] `GET /pools/:pool_id/relays`
+  - [x] `GET /pools/:pool_id/delegators`
+  - [x] `GET /pools/:pool_id/blocks`
+  - [x] `GET /pools/:pool_id/updates`
+- Scripts
+  - [x] `GET /scripts`
+  - [x] `GET /scripts/:hash`
+  - [x] `GET /scripts/:hash/json`
+  - [x] `GET /scripts/:hash/cbor`
+  - [x] `GET /scripts/:script_hash/redeemers`
+  - [x] `GET /scripts/datum/:datum_hash`
+  - [x] `GET /scripts/datum/:datum_hash/cbor`
+- Transactions
+  - [x] `GET /txs/:hash`
+  - [x] `GET /txs/:hash/utxos`
+  - [x] `GET /txs/:hash/stakes`
+  - [x] `GET /txs/:hash/delegations`
+  - [x] `GET /txs/:hash/withdrawals`
+  - [x] `GET /txs/:hash/mirs`
+  - [x] `GET /txs/:hash/pool_updates`
+  - [x] `GET /txs/:hash/pool_retires`
+  - [x] `GET /txs/:hash/metadata`
+  - [x] `GET /txs/:hash/metadata/cbor`
+  - [x] `GET /txs/:hash/redeemers`
+  - [x] `POST /tx/submit`
+- Utils
+  - [x] `GET /utils/addresses/xpub/:xpub/:role/:index`
+  - [x] `POST /utils/txs/evaluate`
+  - [x] `POST /utils/txs/evaluate/utxos`

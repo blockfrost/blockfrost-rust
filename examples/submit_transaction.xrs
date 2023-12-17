@@ -1,4 +1,4 @@
-use blockfrost::{load, BlockFrostApi, BlockFrostSettings};
+use blockfrost::{BlockFrostApi, BlockFrostSettings};
 
 fn build_api() -> blockfrost::Result<BlockFrostApi> {
     let configurations = load::configurations_from_env()?;
