@@ -20,7 +20,7 @@
   <a href="#getting-started">Getting started</a> •
   <a href="#installation">Installation</a> •
   <a href="#examples">Examples</a> •
-  <a hred="./ENDPOINTS.md">Endpoints</a>
+  <a href="./ENDPOINTS.md">Endpoints</a>
 </p>
 
 ## Getting started
