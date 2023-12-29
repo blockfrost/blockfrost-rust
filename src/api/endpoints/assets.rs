@@ -52,7 +52,9 @@ impl BlockfrostAPI {
 mod tests {
     use super::*;
     use blockfrost_openapi::models::{
-        asset::Asset, asset_transactions_inner::AssetTransactionsInner,
+        asset::Asset, 
+        asset_transactions_inner::AssetTransactionsInner,
+        assets_inner::AssetsInner,
     };
     use serde_json::json;
 
@@ -73,7 +75,7 @@ mod tests {
             }
         ]);
 
-        serde_json::from_value::<Vec<Asset>>(json_value).unwrap();
+        serde_json::from_value::<Vec<AssetsInner>>(json_value).unwrap();
     }
 
     #[tokio::test]
