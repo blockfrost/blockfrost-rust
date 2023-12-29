@@ -3,6 +3,7 @@ use blockfrost_openapi::models::{
     asset_addresses_inner::AssetAddressesInner, asset_history_inner::AssetHistoryInner,
     asset_policy_inner::AssetPolicyInner, asset_transactions_inner::AssetTransactionsInner,
     asset::Asset,
+    assets_inner::AssetsInner,
 };
 
 impl BlockfrostAPI {
@@ -11,7 +12,7 @@ impl BlockfrostAPI {
             .await
     }
 
-    pub async fn assets(&self, pagination: Pagination) -> BlockfrostResult<Vec<Asset>> {
+    pub async fn assets(&self, pagination: Pagination) -> BlockfrostResult<Vec<AssetsInner>> {
         self.call_paged_endpoint("/assets", pagination).await
     }
 
