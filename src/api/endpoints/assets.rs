@@ -2,16 +2,16 @@ use crate::*;
 use blockfrost_openapi::models::{
     asset_addresses_inner::AssetAddressesInner, asset_history_inner::AssetHistoryInner,
     asset_policy_inner::AssetPolicyInner, asset_transactions_inner::AssetTransactionsInner,
-    assets_inner::AssetsInner,
+    asset::Asset,
 };
 
 impl BlockfrostAPI {
-    pub async fn assets_by_id(&self, asset: &str) -> BlockfrostResult<AssetsInner> {
+    pub async fn assets_by_id(&self, asset: &str) -> BlockfrostResult<Asset> {
         self.call_endpoint(format!("/assets/{}", asset).as_str())
             .await
     }
 
-    pub async fn assets(&self, pagination: Pagination) -> BlockfrostResult<Vec<AssetsInner>> {
+    pub async fn assets(&self, pagination: Pagination) -> BlockfrostResult<Vec<Asset>> {
         self.call_paged_endpoint("/assets", pagination).await
     }
 
@@ -72,7 +72,7 @@ mod tests {
             }
         ]);
 
-        serde_json::from_value::<Vec<AssetsInner>>(json_value).unwrap();
+        serde_json::from_value::<Vec<Asset>>(json_value).unwrap();
     }
 
     #[tokio::test]
