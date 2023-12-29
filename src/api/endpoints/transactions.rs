@@ -1,6 +1,7 @@
 use crate::{request::send_request, url::Url, *};
 use blockfrost_openapi::models::{
-    address_transactions_content_inner::AddressTransactionsContentInner, tx_content::TxContent,
+    tx_content::TxContent,
+    tx_content_utxo::TxContentUtxo,
     tx_content_delegations_inner::TxContentDelegationsInner,
     tx_content_metadata_cbor_inner::TxContentMetadataCborInner,
     tx_content_metadata_inner::TxContentMetadataInner, tx_content_mirs_inner::TxContentMirsInner,
@@ -44,11 +45,11 @@ impl BlockfrostAPI {
 
     pub async fn transaction_by_hash(
         &self, hash: &str,
-    ) -> BlockfrostResult<AddressTransactionsContentInner> {
+    ) -> BlockfrostResult<TxContent> {
         self.call_endpoint(format!("/txs/{}", hash).as_str()).await
     }
 
-    pub async fn transactions_utxos(&self, hash: &str) -> BlockfrostResult<TxContent> {
+    pub async fn transactions_utxos(&self, hash: &str) -> BlockfrostResult<TxContentUtxo> {
         self.call_endpoint(format!("/txs/{}/utxos", hash).as_str())
             .await
     }
