@@ -16,6 +16,7 @@ pub use api::*;
 pub use error::*;
 pub use ipfs::BlockfrostIPFS;
 pub use pagination::Pagination;
+pub use pagination::Order;
 pub use settings::*;
 pub use types::*;
 
