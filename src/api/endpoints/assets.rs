@@ -2,11 +2,12 @@ use crate::*;
 use blockfrost_openapi::models::{
     asset_addresses_inner::AssetAddressesInner, asset_history_inner::AssetHistoryInner,
     asset_policy_inner::AssetPolicyInner, asset_transactions_inner::AssetTransactionsInner,
+    asset::Asset,
     assets_inner::AssetsInner,
 };
 
 impl BlockfrostAPI {
-    pub async fn assets_by_id(&self, asset: &str) -> BlockfrostResult<AssetsInner> {
+    pub async fn assets_by_id(&self, asset: &str) -> BlockfrostResult<Asset> {
         self.call_endpoint(format!("/assets/{}", asset).as_str())
             .await
     }
@@ -51,7 +52,9 @@ impl BlockfrostAPI {
 mod tests {
     use super::*;
     use blockfrost_openapi::models::{
-        asset::Asset, asset_transactions_inner::AssetTransactionsInner,
+        asset::Asset, 
+        asset_transactions_inner::AssetTransactionsInner,
+        assets_inner::AssetsInner,
     };
     use serde_json::json;
 
