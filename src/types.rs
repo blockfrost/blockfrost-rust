@@ -1,10 +1,7 @@
 // Use this module as an interface to export all types declared inside of endpoints/
 //
 // These are not used in here, just exporting
-pub use crate::{
-    api::endpoints::*,
-    ipfs::{IpfsAdd, IpfsPinList, IpfsPinState, IpfsPinUpdate},
-};
+pub use crate::ipfs::{IpfsAdd, IpfsPinList, IpfsPinState, IpfsPinUpdate};
 
 /// Enum for any possible JSON value.
 ///
