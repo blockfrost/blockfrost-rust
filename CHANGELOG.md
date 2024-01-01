@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.0.1 - 2023-01-01
+
+### Fixed
+
+- Return types for asset and tx endpoints
+
 ## 1.0.0 - 2023-12-18
 
 ### Changed
