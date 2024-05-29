@@ -137,6 +137,8 @@ async fn main() -> BlockfrostResult<()> {
         .await;
     let nutlink_ticker_by_id = api.nutlink_ticker_by_id(ticker, pagination).await;
 
+    // Utils
+
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
     println!("health_clock: {:#?}", health_clock);

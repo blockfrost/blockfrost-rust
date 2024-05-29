@@ -13,3 +13,4 @@ mod nutlink;
 mod pools;
 mod scripts;
 mod transactions;
+mod utils;
