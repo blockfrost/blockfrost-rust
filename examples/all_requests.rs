@@ -138,6 +138,7 @@ async fn main() -> BlockfrostResult<()> {
     let nutlink_ticker_by_id = api.nutlink_ticker_by_id(ticker, pagination).await;
 
     // Utils
+    let derive_result = api.derive_address("d507c8f866691bd96e131334c355188b1a1d0b2fa0ab11545075aab332d77d9eb19657ad13ee581b56b0f8d744d66ca356b93d42fe176b3de007d53e9c4c4e7a", "0", "1").await;
 
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
@@ -237,6 +238,7 @@ async fn main() -> BlockfrostResult<()> {
         nutlink_address_ticker_by_id
     );
     println!("nutlink_ticker_by_id: {:#?}", nutlink_ticker_by_id);
+    println!("derive_result: {:#?}", derive_result);
 
     Ok(())
 }

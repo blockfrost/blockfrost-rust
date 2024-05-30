@@ -1,13 +1,17 @@
 use crate::{request::send_request, url::Url, *};
+use blockfrost_openapi::models::utils_addresses_xpub::UtilsAddressesXpub;
 use reqwest::{header::HeaderValue, Body, Method};
 use serde_json::from_str as json_from;
 
 impl BlockfrostAPI {
     pub async fn derive_address(
         &self, xpub: &str, role: &str, index: &str,
-    ) -> BlockfrostResult<String> {
-        self.call_endpoint(format!("/utils/addresses/xpub/{}/{}/{}", xpub, role, index).as_str())
-            .await
+    ) -> BlockfrostResult<UtilsAddressesXpub> {
+        self.call_endpoint(&format!(
+            "/utils/addresses/xpub/{}/{}/{}",
+            xpub, role, index
+        ))
+        .await
     }
 
     pub async fn utils_tx_evaluate(&self, transaction_data: Vec<u8>) -> BlockfrostResult<String> {
