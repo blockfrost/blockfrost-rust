@@ -102,4 +102,4 @@
 - Utils
   - [x] `GET /utils/addresses/xpub/:xpub/:role/:index`
   - [x] `POST /utils/txs/evaluate`
-  - [x] `POST /utils/txs/evaluate/utxos`
+  - [] `POST /utils/txs/evaluate/utxos`
