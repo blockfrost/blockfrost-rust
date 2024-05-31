@@ -1,7 +1,7 @@
 use crate::{request::send_request, url::Url, *};
 use blockfrost_openapi::models::utils_addresses_xpub::UtilsAddressesXpub;
 use reqwest::{header::HeaderValue, Body, Method};
-use serde_json::from_str as json_from;
+use serde_json::{from_str as json_from, Value};
 
 impl BlockfrostAPI {
     pub async fn derive_address(
@@ -14,14 +14,14 @@ impl BlockfrostAPI {
         .await
     }
 
-    pub async fn utils_tx_evaluate(&self, transaction_data: Vec<u8>) -> BlockfrostResult<String> {
+    pub async fn utils_tx_evaluate(&self, transaction_data: Vec<u8>) -> BlockfrostResult<Value> {
         let body = Body::from(transaction_data);
         let url = Url::from_endpoint(self.base_url.as_str(), "/utils/txs/evaluate")?;
 
         let request = self
             .client
             .request(Method::POST, &url)
-            .header("Content-Type", HeaderValue::from_static("application/json"))
+            .header("Content-Type", HeaderValue::from_static("application/cbor"))
             .body(body);
 
         let (status, text) = send_request(request, self.settings.retry_settings)
@@ -40,7 +40,7 @@ impl BlockfrostAPI {
 
     pub async fn utils_tx_evaluate_utxos(
         &self, transaction_data: Vec<u8>,
-    ) -> BlockfrostResult<String> {
+    ) -> BlockfrostResult<Value> {
         let body = Body::from(transaction_data);
         let url = Url::from_endpoint(self.base_url.as_str(), "/utils/txs/evaluate/utxos")?;
 
