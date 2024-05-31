@@ -141,7 +141,6 @@ async fn main() -> BlockfrostResult<()> {
     // Utils
     let utils_derive_result = api.derive_address("d507c8f866691bd96e131334c355188b1a1d0b2fa0ab11545075aab332d77d9eb19657ad13ee581b56b0f8d744d66ca356b93d42fe176b3de007d53e9c4c4e7a", "0", "1").await;
     let utils_tx_evaluate_result = api.utils_tx_evaluate(tx_data).await;
-    // let utils_tx_evaluate_utxos_result = api.utils_tx_evaluate_utxos(vec![0, 1, 2, 3]).await;
 
     println!("root: {:#?}", root);
     println!("health: {:#?}", health);
