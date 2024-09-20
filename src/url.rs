@@ -5,7 +5,7 @@ use std::error::Error;
 use url::{form_urlencoded, Url as UrlI};
 
 #[derive(Clone, Debug)]
-pub struct Url(pub String);
+pub struct Url;
 
 impl Url {
     pub fn from_endpoint(base_url: &str, endpoint_url: &str) -> Result<String, Box<dyn Error>> {
