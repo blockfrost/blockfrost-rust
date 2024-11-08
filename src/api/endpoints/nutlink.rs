@@ -1,8 +1,8 @@
 use crate::*;
 use blockfrost_openapi::models::{
     nutlink_address::NutlinkAddress, nutlink_address_ticker_inner::NutlinkAddressTickerInner,
-    nutlink_address_ticker_inner_payload::NutlinkAddressTickerInnerPayload,
     nutlink_address_tickers_inner::NutlinkAddressTickersInner,
+    nutlink_tickers_ticker_inner::NutlinkTickersTickerInner,
 };
 
 impl BlockfrostAPI {
@@ -20,7 +20,7 @@ impl BlockfrostAPI {
 
     pub async fn nutlink_address_ticker_by_id(
         &self, address: &str, ticker: &str, pagination: Pagination,
-    ) -> BlockfrostResult<Vec<NutlinkAddressTickerInnerPayload>> {
+    ) -> BlockfrostResult<Vec<NutlinkAddressTickerInner>> {
         self.call_paged_endpoint(
             format!("/nutlink/{}/tickers/{}", address, ticker).as_str(),
             pagination,
@@ -30,7 +30,7 @@ impl BlockfrostAPI {
 
     pub async fn nutlink_ticker_by_id(
         &self, ticker: &str, pagination: Pagination,
-    ) -> BlockfrostResult<Vec<NutlinkAddressTickerInner>> {
+    ) -> BlockfrostResult<Vec<NutlinkTickersTickerInner>> {
         self.call_paged_endpoint(format!("/nutlink/tickers/{}", ticker).as_str(), pagination)
             .await
     }
