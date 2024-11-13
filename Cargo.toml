@@ -10,7 +10,7 @@ repository = "https://github.com/blockfrost/blockfrost-rust"
 homepage = "https://blockfrost.io"
 
 [dependencies]
-blockfrost-openapi = { git = "https://github.com/SupernaviX/blockfrost-openapi", rev = "0b905a8" }
+blockfrost-openapi = "0.1.69"
 futures = "0.3.30"
 reqwest = { version = "0.12.7", default-features = false, features = [
   "http2",
