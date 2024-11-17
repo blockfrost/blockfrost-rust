@@ -97,40 +97,67 @@ mod tests {
 
     #[tokio::test]
     async fn test_epochs_latest_parameters() {
-        let json_value = json!({
-            "epoch": 225,
-            "min_fee_a": 44,
-            "min_fee_b": 155381,
-            "max_block_size": 65536,
-            "max_tx_size": 16384,
-            "max_block_header_size": 1100,
-            "key_deposit": "2000000",
-            "pool_deposit": "500000000",
-            "e_max": 18,
-            "n_opt": 150,
-            "a0": 0.3,
-            "rho": 0.003,
-            "tau": 0.2,
-            "decentralisation_param": 0.5,
-            "extra_entropy": null,
-            "protocol_major_ver": 2,
-            "protocol_minor_ver": 0,
-            "min_utxo": "1000000",
-            "min_pool_cost": "340000000",
-            "nonce": "1a3be38bcbb7911969283716ad7aa550250226b76a61fc51cc9a9a35d9276d81",
-            "price_mem": 0.001,
-            "price_step": 0.01,
-            "max_tx_ex_mem": "11000000000",
-            "max_tx_ex_steps": "11000000000",
-            "max_block_ex_mem": "110000000000",
-            "max_block_ex_steps": "110000000000",
-            "max_val_size": "5000",
-            "collateral_percent": 15,
-            "max_collateral_inputs": 6,
-            "coins_per_utxo_word": "34482",
-            "cost_models": null,
-            "coins_per_utxo_size": "34482"
-        });
+        // not building with `json!` macro because this payload is too big
+        let mut json_value = serde_json::Map::new();
+        json_value.insert("epoch".to_string(), json!(225));
+        json_value.insert("min_fee_a".to_string(), json!(44));
+        json_value.insert("min_fee_b".to_string(), json!(155381));
+        json_value.insert("max_block_size".to_string(), json!(65536));
+        json_value.insert("max_tx_size".to_string(), json!(16384));
+        json_value.insert("max_block_header_size".to_string(), json!(1100));
+        json_value.insert("key_deposit".to_string(), json!("2000000"));
+        json_value.insert("pool_deposit".to_string(), json!("500000000"));
+        json_value.insert("e_max".to_string(), json!(18));
+        json_value.insert("n_opt".to_string(), json!(150));
+        json_value.insert("a0".to_string(), json!(0.3));
+        json_value.insert("rho".to_string(), json!(0.003));
+        json_value.insert("tau".to_string(), json!(0.2));
+        json_value.insert("decentralisation_param".to_string(), json!(0.5));
+        json_value.insert("extra_entropy".to_string(), json!(null));
+        json_value.insert("protocol_major_ver".to_string(), json!(2));
+        json_value.insert("protocol_minor_ver".to_string(), json!(0));
+        json_value.insert("min_utxo".to_string(), json!("1000000"));
+        json_value.insert("min_pool_cost".to_string(), json!("340000000"));
+        json_value.insert(
+            "nonce".to_string(),
+            json!("1a3be38bcbb7911969283716ad7aa550250226b76a61fc51cc9a9a35d9276d81"),
+        );
+        json_value.insert("price_mem".to_string(), json!(0.001));
+        json_value.insert("price_step".to_string(), json!(0.01));
+        json_value.insert("max_tx_ex_mem".to_string(), json!("11000000000"));
+        json_value.insert("max_tx_ex_steps".to_string(), json!("11000000000"));
+        json_value.insert("max_block_ex_mem".to_string(), json!("110000000000"));
+        json_value.insert("max_block_ex_steps".to_string(), json!("110000000000"));
+        json_value.insert("max_val_size".to_string(), json!("5000"));
+        json_value.insert("collateral_percent".to_string(), json!(15));
+        json_value.insert("max_collateral_inputs".to_string(), json!(6));
+        json_value.insert("coins_per_utxo_word".to_string(), json!("34482"));
+        json_value.insert("cost_models".to_string(), json!(null));
+        json_value.insert("coins_per_utxo_size".to_string(), json!("34482"));
+        json_value.insert("pvt_motion_no_confidence".to_string(), json!(null));
+        json_value.insert("pvt_committee_normal".to_string(), json!(null));
+        json_value.insert("pvt_committee_no_confidence".to_string(), json!(null));
+        json_value.insert("pvt_hard_fork_initiation".to_string(), json!(null));
+        json_value.insert("dvt_motion_no_confidence".to_string(), json!(null));
+        json_value.insert("dvt_committee_normal".to_string(), json!(null));
+        json_value.insert("dvt_committee_no_confidence".to_string(), json!(null));
+        json_value.insert("dvt_update_to_constitution".to_string(), json!(null));
+        json_value.insert("dvt_hard_fork_initiation".to_string(), json!(null));
+        json_value.insert("dvt_p_p_network_group".to_string(), json!(null));
+        json_value.insert("dvt_p_p_economic_group".to_string(), json!(null));
+        json_value.insert("dvt_p_p_technical_group".to_string(), json!(null));
+        json_value.insert("dvt_p_p_gov_group".to_string(), json!(null));
+        json_value.insert("dvt_treasury_withdrawal".to_string(), json!(null));
+        json_value.insert("committee_min_size".to_string(), json!(null));
+        json_value.insert("committee_max_term_length".to_string(), json!(null));
+        json_value.insert("gov_action_lifetime".to_string(), json!(null));
+        json_value.insert("gov_action_deposit".to_string(), json!(null));
+        json_value.insert("drep_deposit".to_string(), json!(null));
+        json_value.insert("drep_activity".to_string(), json!(null));
+        json_value.insert("pvtpp_security_group".to_string(), json!(null));
+        json_value.insert("pvt_p_p_security_group".to_string(), json!(null));
+        json_value.insert("min_fee_ref_script_cost_per_byte".to_string(), json!(null));
+        let json_value = serde_json::Value::Object(json_value);
 
         serde_json::from_value::<EpochParamContent>(json_value).unwrap();
     }

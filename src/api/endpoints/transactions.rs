@@ -1,6 +1,7 @@
 use crate::{request::send_request, url::Url, *};
 use blockfrost_openapi::models::{
-    tx_content::TxContent, tx_content_delegations_inner::TxContentDelegationsInner,
+    tx_content::TxContent, tx_content_cbor::TxContentCbor,
+    tx_content_delegations_inner::TxContentDelegationsInner,
     tx_content_metadata_cbor_inner::TxContentMetadataCborInner,
     tx_content_metadata_inner::TxContentMetadataInner, tx_content_mirs_inner::TxContentMirsInner,
     tx_content_pool_retires_inner::TxContentPoolRetiresInner,
@@ -101,6 +102,11 @@ impl BlockfrostAPI {
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentMetadataCborInner>> {
         self.call_endpoint(format!("/txs/{}/metadata/cbor", hash).as_str())
+            .await
+    }
+
+    pub async fn transactions_cbor(&self, hash: &str) -> BlockfrostResult<TxContentCbor> {
+        self.call_endpoint(format!("/txs/{}/cbor", hash).as_str())
             .await
     }
 

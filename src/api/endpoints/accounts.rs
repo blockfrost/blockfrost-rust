@@ -123,7 +123,8 @@ mod tests {
             "reserves_sum": "319154618165",
             "treasury_sum": "12000000",
             "withdrawable_amount": "319154618165",
-            "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy"
+            "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
+            "drep_id": "drep124w9k5ml25kcshqet8r3g2pwk6kqdhj79thg2rphf5u5urve0an"
         });
 
         serde_json::from_value::<AccountContent>(json_value).unwrap();
