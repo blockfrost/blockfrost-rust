@@ -3,10 +3,11 @@ use crate::{
     BlockfrostError, RetrySettings,
 };
 use futures::future;
+use futures_timer::Delay;
 use reqwest::{Client, RequestBuilder, Response, StatusCode};
 use serde::de::DeserializeOwned;
 use serde_json::from_str;
-use std::{future::Future, thread};
+use std::future::Future;
 
 // Used only for simple and common GET requests.
 // Functions that require extra logic may not call this.
@@ -51,7 +52,7 @@ pub(crate) async fn send_request_unprocessed(
         if let Err(err) = &response {
             if let Some(status) = err.status() {
                 if retry_codes.contains(&status) {
-                    thread::sleep(retry_settings.delay);
+                    Delay::new(retry_settings.delay).await;
                     continue;
                 }
             }
