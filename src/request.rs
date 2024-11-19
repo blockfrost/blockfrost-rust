@@ -86,15 +86,14 @@ fn clone_request(request: &RequestBuilder) -> RequestBuilder {
 
 pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
     client: &Client, url: String, retry_settings: RetrySettings, pagination: Pagination,
+    batch_size: usize,
 ) -> Result<Vec<T>, BlockfrostError> {
-    const BATCH_SIZE: usize = 10;
-
     let mut page_start: usize = 1;
     let mut is_end = false;
     let mut result = Vec::new();
 
     while !is_end {
-        let batch = Url::generate_batch(url.as_str(), BATCH_SIZE, page_start, pagination)?;
+        let batch = Url::generate_batch(url.as_str(), batch_size, page_start, pagination)?;
         let responses: Vec<Result<Vec<T>, BlockfrostError>> =
             future::join_all(batch.into_iter().map(|url| {
                 let client = client.clone();
@@ -125,7 +124,7 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
             }
         }
 
-        page_start += BATCH_SIZE;
+        page_start += batch_size;
     }
 
     Ok(result)

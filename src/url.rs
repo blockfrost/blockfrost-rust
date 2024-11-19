@@ -37,7 +37,7 @@ impl Url {
         let mut result = Vec::new();
         let mut url = UrlI::parse(url)?;
 
-        for page in start..batch_size {
+        for page in start..=batch_size {
             let mut query_pairs = form_urlencoded::Serializer::new(String::new());
 
             query_pairs.append_pair("page", page.to_string().as_str());
