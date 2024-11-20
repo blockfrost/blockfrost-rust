@@ -7,11 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.0.5 - 2023-11-20
+
+## Fixed
+
+- Readme version
+
 ## 1.0.4 - 2023-11-20
 
-### Fixed
-
+## Fixed
 - Off-by-one when using Pagination::all(). Thanks [SupernaviX](https://github.com/SupernaviX) 💖
+
+## Added
+- Transactions cbor by @SupernaviX in https://github.com/blockfrost/blockfrost-rust/pull/51
+
+## Changed
+- Rate limit handling by @SupernaviX in https://github.com/blockfrost/blockfrost-rust/pull/52
 
 ## 1.0.3 - 2023-10-05
 
