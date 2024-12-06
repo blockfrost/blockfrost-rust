@@ -32,7 +32,7 @@ impl BlockfrostIPFS {
     /// [`HeaderValue`]: reqwest::header::HeaderValue
     /// [`HeaderValue::from_str`]: reqwest::header::HeaderValue::from_str
     pub fn new(project_id: &str, settings: IpfsSettings) -> Self {
-        let client = create_client_with_project_id(project_id);
+        let client = create_client_with_project_id(project_id, &settings.headers);
 
         Self {
             client,
@@ -62,7 +62,7 @@ impl BlockfrostIPFS {
         project_id: impl AsRef<str>, settings: IpfsSettings, client_builder: ClientBuilder,
     ) -> reqwest::Result<Self> {
         client_builder
-            .default_headers(build_header_map(project_id.as_ref()))
+            .default_headers(build_header_map(project_id.as_ref(), &settings.headers))
             .build()
             .map(|client| Self {
                 settings,
