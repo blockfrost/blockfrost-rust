@@ -1,6 +1,8 @@
+use std::{collections::HashMap, str::FromStr};
+
 use crate::USER_AGENT;
 use reqwest::{
-    header::{HeaderMap, HeaderValue},
+    header::{HeaderMap, HeaderName, HeaderValue},
     Client,
 };
 use serde_json::{from_str as json_from, Value as JsonValue};
@@ -11,8 +13,10 @@ pub(crate) fn try_formatting_json(text: &str) -> serde_json::Result<String> {
     serde_json::to_string_pretty(&json)
 }
 
-pub(crate) fn create_client_with_project_id(project_id: impl AsRef<str>) -> Client {
-    let header_map = build_header_map(project_id.as_ref());
+pub(crate) fn create_client_with_project_id(
+    project_id: impl AsRef<str>, headers: &HashMap<String, String>,
+) -> Client {
+    let header_map = build_header_map(project_id.as_ref(), headers);
     // Safety: This unwrap is guaranteed to never fail if we only call .default_headers()
     Client::builder()
         .default_headers(header_map)
@@ -20,7 +24,7 @@ pub(crate) fn create_client_with_project_id(project_id: impl AsRef<str>) -> Clie
         .unwrap()
 }
 
-pub(crate) fn build_header_map(project_id: &str) -> HeaderMap {
+pub(crate) fn build_header_map(project_id: &str, headers: &HashMap<String, String>) -> HeaderMap {
     let mut header_map = HeaderMap::new();
     let mut project_id = HeaderValue::from_str(project_id).unwrap_or_else(|_| {
         panic!(
@@ -33,5 +37,11 @@ pub(crate) fn build_header_map(project_id: &str) -> HeaderMap {
 
     header_map.insert("project_id", project_id);
     header_map.insert("User-Agent", user_agent);
+    for (key, val) in headers.iter() {
+        let (Ok(key), Ok(val)) = (HeaderName::from_str(key), HeaderValue::from_str(val)) else {
+            panic!("Header \"{key}: {val}\" is invalid")
+        };
+        header_map.insert(key, val);
+    }
     header_map
 }

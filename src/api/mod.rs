@@ -18,7 +18,7 @@ pub struct BlockfrostAPI {
 
 impl BlockfrostAPI {
     pub fn new(project_id: &str, settings: BlockFrostSettings) -> Self {
-        let client = create_client_with_project_id(project_id);
+        let client = create_client_with_project_id(project_id, &settings.headers);
         let base_url = Url::get_base_url_from_project_id(project_id);
 
         Self {
@@ -34,7 +34,7 @@ impl BlockfrostAPI {
         let base_url = Url::get_base_url_from_project_id(project_id);
 
         client_builder
-            .default_headers(build_header_map(project_id))
+            .default_headers(build_header_map(project_id, &settings.headers))
             .build()
             .map(|client| Self {
                 settings,

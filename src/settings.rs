@@ -1,21 +1,26 @@
-use std::time::Duration;
+use std::{collections::HashMap, time::Duration};
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub struct BlockFrostSettings {
     pub retry_settings: RetrySettings,
+    pub headers: HashMap<String, String>,
 }
 
 impl BlockFrostSettings {
     pub fn new() -> Self {
         Self {
             retry_settings: RetrySettings::default(),
+            headers: HashMap::new(),
         }
     }
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub struct IpfsSettings {
     pub retry_settings: RetrySettings,
+    pub headers: HashMap<String, String>,
 }
 
 impl IpfsSettings {
@@ -29,6 +34,7 @@ impl IpfsSettings {
     pub fn new() -> Self {
         Self {
             retry_settings: RetrySettings::default(),
+            headers: HashMap::new(),
         }
     }
 }
