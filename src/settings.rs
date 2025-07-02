@@ -3,6 +3,7 @@ use std::{collections::HashMap, time::Duration};
 #[derive(Debug, Clone)]
 #[non_exhaustive]
 pub struct BlockFrostSettings {
+    pub base_url: Option<String>,
     pub retry_settings: RetrySettings,
     pub headers: HashMap<String, String>,
 }
@@ -10,6 +11,7 @@ pub struct BlockFrostSettings {
 impl BlockFrostSettings {
     pub fn new() -> Self {
         Self {
+            base_url: None,
             retry_settings: RetrySettings::default(),
             headers: HashMap::new(),
         }

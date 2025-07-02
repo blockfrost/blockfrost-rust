@@ -19,7 +19,10 @@ pub struct BlockfrostAPI {
 impl BlockfrostAPI {
     pub fn new(project_id: &str, settings: BlockFrostSettings) -> Self {
         let client = create_client_with_project_id(project_id, &settings.headers);
-        let base_url = Url::get_base_url_from_project_id(project_id);
+        let base_url = settings
+            .base_url
+            .clone()
+            .unwrap_or_else(|| Url::get_base_url_from_project_id(project_id));
 
         Self {
             settings,
@@ -31,7 +34,10 @@ impl BlockfrostAPI {
     pub fn new_with_client(
         project_id: &str, settings: BlockFrostSettings, client_builder: ClientBuilder,
     ) -> reqwest::Result<Self> {
-        let base_url = Url::get_base_url_from_project_id(project_id);
+        let base_url = settings
+            .base_url
+            .clone()
+            .unwrap_or_else(|| Url::get_base_url_from_project_id(project_id));
 
         client_builder
             .default_headers(build_header_map(project_id, &settings.headers))
