@@ -9,26 +9,26 @@ use crate::*;
 
 impl BlockfrostAPI {
     pub async fn addresses(&self, address: &str) -> BlockfrostResult<AddressContent> {
-        self.call_endpoint(format!("/addresses/{}", address).as_str())
+        self.call_endpoint(format!("/addresses/{address}").as_str())
             .await
     }
 
     pub async fn addresses_extended(
         &self, address: &str,
     ) -> BlockfrostResult<AddressContentExtended> {
-        self.call_endpoint(format!("/addresses/{}/extended", address).as_str())
+        self.call_endpoint(format!("/addresses/{address}/extended").as_str())
             .await
     }
 
     pub async fn addresses_total(&self, address: &str) -> BlockfrostResult<AddressContentTotal> {
-        self.call_endpoint(format!("/addresses/{}/total", address).as_str())
+        self.call_endpoint(format!("/addresses/{address}/total").as_str())
             .await
     }
 
     pub async fn addresses_utxos(
         &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AddressUtxoContentInner>> {
-        self.call_paged_endpoint(format!("/addresses/{}/utxos", address).as_str(), pagination)
+        self.call_paged_endpoint(format!("/addresses/{address}/utxos").as_str(), pagination)
             .await
     }
 
@@ -36,7 +36,7 @@ impl BlockfrostAPI {
         &self, address: &str, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AddressUtxoContentInner>> {
         self.call_paged_endpoint(
-            format!("/addresses/{}/utxos/{}", address, asset).as_str(),
+            format!("/addresses/{address}/utxos/{asset}").as_str(),
             pagination,
         )
         .await
@@ -46,7 +46,7 @@ impl BlockfrostAPI {
         &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AddressTransactionsContentInner>> {
         self.call_paged_endpoint(
-            format!("/addresses/{}/transactions", address).as_str(),
+            format!("/addresses/{address}/transactions").as_str(),
             pagination,
         )
         .await

@@ -107,8 +107,7 @@ impl BlockfrostIPFS {
     ///
     /// [`/ipfs/gateway/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Gateway
     pub async fn gateway(&self, ipfs_path: &str) -> Result<Vec<u8>, BlockfrostError> {
-        let url =
-            self.base_url.clone() + &format!("/ipfs/gateway/{IPFS_path}", IPFS_path = ipfs_path);
+        let url = self.base_url.clone() + &format!("/ipfs/gateway/{ipfs_path}");
 
         let request = self.client.get(&url);
 
@@ -138,8 +137,7 @@ impl BlockfrostIPFS {
     ///
     /// [`/ipfs/pin/add/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1add~1{IPFS_path}/post
     pub async fn pin_add(&self, ipfs_path: &str) -> Result<IpfsPinUpdate, BlockfrostError> {
-        let url =
-            self.base_url.clone() + &format!("/ipfs/pin/add/{IPFS_path}", IPFS_path = ipfs_path);
+        let url = self.base_url.clone() + &format!("/ipfs/pin/add/{ipfs_path}");
 
         let request = self.client.post(&url);
         let (status, text) = send_request(request, self.settings.retry_settings)
@@ -180,8 +178,7 @@ impl BlockfrostIPFS {
     ///
     /// [`/ipfs/pin/list/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1list~1{IPFS_path}/get
     pub async fn pin_list_by_id(&self, ipfs_path: &str) -> Result<IpfsPinList, BlockfrostError> {
-        let url =
-            self.base_url.clone() + &format!("/ipfs/pin/list/{IPFS_path}", IPFS_path = ipfs_path);
+        let url = self.base_url.clone() + &format!("/ipfs/pin/list/{ipfs_path}");
 
         let request = self.client.get(&url);
         let (status, text) = send_request(request, self.settings.retry_settings)
@@ -201,8 +198,7 @@ impl BlockfrostIPFS {
     ///
     /// [`/ipfs/pin/remove/{IPFS_path}`]: https://docs.blockfrost.io/#tag/IPFS-Pins/paths/~1ipfs~1pin~1remove~1{IPFS_path}/post
     pub async fn pin_remove(&self, ipfs_path: &str) -> Result<IpfsPinUpdate, BlockfrostError> {
-        let url =
-            self.base_url.clone() + &format!("/ipfs/pin/remove/{IPFS_path}", IPFS_path = ipfs_path);
+        let url = self.base_url.clone() + &format!("/ipfs/pin/remove/{ipfs_path}");
 
         let request = self.client.post(&url);
         let (status, text) = send_request(request, self.settings.retry_settings)

@@ -9,17 +9,17 @@ impl BlockfrostAPI {
     }
 
     pub async fn scripts_by_id(&self, script_hash: &str) -> BlockfrostResult<Script> {
-        self.call_endpoint(format!("/scripts/{}", script_hash).as_str())
+        self.call_endpoint(format!("/scripts/{script_hash}").as_str())
             .await
     }
 
     pub async fn scripts_hash_json(&self, script_hash: &str) -> BlockfrostResult<ScriptsInner> {
-        self.call_endpoint(format!("/scripts/{}/json", script_hash).as_str())
+        self.call_endpoint(format!("/scripts/{script_hash}/json").as_str())
             .await
     }
 
     pub async fn scripts_hash_cbor(&self, script_hash: &str) -> BlockfrostResult<ScriptsInner> {
-        self.call_endpoint(format!("/scripts/{}/cbor", script_hash).as_str())
+        self.call_endpoint(format!("/scripts/{script_hash}/cbor").as_str())
             .await
     }
 
@@ -27,7 +27,7 @@ impl BlockfrostAPI {
         &self, script_hash: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<ScriptRedeemersInner>> {
         self.call_paged_endpoint(
-            format!("/scripts/{}/redeemers", script_hash).as_str(),
+            format!("/scripts/{script_hash}/redeemers").as_str(),
             pagination,
         )
         .await
@@ -36,14 +36,14 @@ impl BlockfrostAPI {
     pub async fn scripts_datum_hash(
         &self, datum_hash: &str,
     ) -> BlockfrostResult<serde_json::Value> {
-        self.call_endpoint(format!("/scripts/datum/{}", datum_hash).as_str())
+        self.call_endpoint(format!("/scripts/datum/{datum_hash}").as_str())
             .await
     }
 
     pub async fn scripts_datum_hash_cbor(
         &self, datum_hash: &str,
     ) -> BlockfrostResult<serde_json::Value> {
-        self.call_endpoint(format!("/scripts/{}/cbor", datum_hash).as_str())
+        self.call_endpoint(format!("/scripts/{datum_hash}/cbor").as_str())
             .await
     }
 }

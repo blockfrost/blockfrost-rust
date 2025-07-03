@@ -7,14 +7,14 @@ use blockfrost_openapi::models::{
 
 impl BlockfrostAPI {
     pub async fn nutlink_address(&self, address: &str) -> BlockfrostResult<NutlinkAddress> {
-        self.call_endpoint(format!("/nutlink/{}", address).as_str())
+        self.call_endpoint(format!("/nutlink/{address}").as_str())
             .await
     }
 
     pub async fn nutlink_address_tickers(
         &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkAddressTickersInner>> {
-        self.call_paged_endpoint(format!("/nutlink/{}/tickers", address).as_str(), pagination)
+        self.call_paged_endpoint(format!("/nutlink/{address}/tickers").as_str(), pagination)
             .await
     }
 
@@ -22,7 +22,7 @@ impl BlockfrostAPI {
         &self, address: &str, ticker: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkAddressTickerInner>> {
         self.call_paged_endpoint(
-            format!("/nutlink/{}/tickers/{}", address, ticker).as_str(),
+            format!("/nutlink/{address}/tickers/{ticker}").as_str(),
             pagination,
         )
         .await
@@ -31,7 +31,7 @@ impl BlockfrostAPI {
     pub async fn nutlink_ticker_by_id(
         &self, ticker: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkTickersTickerInner>> {
-        self.call_paged_endpoint(format!("/nutlink/tickers/{}", ticker).as_str(), pagination)
+        self.call_paged_endpoint(format!("/nutlink/tickers/{ticker}").as_str(), pagination)
             .await
     }
 }

@@ -1,11 +1,10 @@
-use std::{collections::HashMap, str::FromStr};
-
 use crate::USER_AGENT;
 use reqwest::{
     header::{HeaderMap, HeaderName, HeaderValue},
     Client,
 };
 use serde_json::{from_str as json_from, Value as JsonValue};
+use std::{collections::HashMap, str::FromStr};
 
 pub(crate) fn try_formatting_json(text: &str) -> serde_json::Result<String> {
     let json = json_from::<JsonValue>(text)?;
@@ -28,8 +27,7 @@ pub(crate) fn build_header_map(project_id: &str, headers: &HashMap<String, Strin
     let mut header_map = HeaderMap::new();
     let mut project_id = HeaderValue::from_str(project_id).unwrap_or_else(|_| {
         panic!(
-            "Cannot create reqwest::Client because given project_id '{}'cannot be parsed as HeaderValue",
-            project_id
+            "Cannot create reqwest::Client because given project_id '{project_id}'cannot be parsed as HeaderValue",
         )
     });
     project_id.set_sensitive(true);

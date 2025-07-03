@@ -16,33 +16,33 @@ impl BlockfrostAPI {
     }
 
     pub async fn epochs_by_number(&self, number: i32) -> BlockfrostResult<EpochContent> {
-        self.call_endpoint(format!("/epochs/{}", number).as_str())
+        self.call_endpoint(format!("/epochs/{number}").as_str())
             .await
     }
 
     pub async fn epochs_parameters(&self, number: i32) -> BlockfrostResult<EpochParamContent> {
-        self.call_endpoint(format!("/epochs/{}/parameters", number).as_str())
+        self.call_endpoint(format!("/epochs/{number}/parameters").as_str())
             .await
     }
 
     pub async fn epochs_next(
         &self, number: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<EpochContent>> {
-        self.call_paged_endpoint(format!("/epochs/{}/next", number).as_str(), pagination)
+        self.call_paged_endpoint(format!("/epochs/{number}/next").as_str(), pagination)
             .await
     }
 
     pub async fn epochs_previous(
         &self, number: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<EpochContent>> {
-        self.call_paged_endpoint(format!("/epochs/{}/previous", number).as_str(), pagination)
+        self.call_paged_endpoint(format!("/epochs/{number}/previous",).as_str(), pagination)
             .await
     }
 
     pub async fn epochs_stakes(
         &self, number: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<EpochStakeContentInner>> {
-        self.call_paged_endpoint(format!("/epochs/{}/stakes", number).as_str(), pagination)
+        self.call_paged_endpoint(format!("/epochs/{number}/stakes").as_str(), pagination)
             .await
     }
 
@@ -50,21 +50,21 @@ impl BlockfrostAPI {
         &self, number: i32, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<EpochStakePoolContentInner>> {
         self.call_paged_endpoint(
-            format!("/epochs/{}/stakes/{}", number, pool_id).as_str(),
+            format!("/epochs/{number}/stakes/{pool_id}").as_str(),
             pagination,
         )
         .await
     }
 
     pub async fn epochs_blocks(&self, number: i32) -> BlockfrostResult<Vec<String>> {
-        self.call_endpoint(format!("/epochs/{}/blocks", number).as_str())
+        self.call_endpoint(format!("/epochs/{number}/blocks").as_str())
             .await
     }
 
     pub async fn epochs_blocks_by_pool(
         &self, number: i32, pool_id: &str,
     ) -> BlockfrostResult<Vec<String>> {
-        self.call_endpoint(format!("/epochs/{}/blocks/{}", number, pool_id).as_str())
+        self.call_endpoint(format!("/epochs/{number}/blocks/{pool_id}").as_str())
             .await
     }
 }

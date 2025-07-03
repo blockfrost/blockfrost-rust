@@ -14,6 +14,6 @@ async fn main() -> BlockfrostResult<()> {
     let api = build_api()?;
     let genesis = api.genesis().await?;
 
-    println!("{:#?}", genesis);
+    println!("{genesis:#?}");
     Ok(())
 }

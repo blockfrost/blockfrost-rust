@@ -6,7 +6,6 @@ fn build_ipfs() -> BlockfrostResult<BlockfrostIPFS> {
         "mainnetxvMK4xOpp5mHJgihi055KDLU64JJv2be",
         IpfsSettings::new(),
     );
-
     Ok(api)
 }
 
@@ -17,30 +16,30 @@ async fn main() -> BlockfrostResult<()> {
 
     // Add file
     let added_file = ipfs.add(file).await?;
-    println!("{:#?}", added_file);
+    println!("{added_file:#?}");
     let hash = &added_file.ipfs_hash;
 
     // Pin it
     let pinned_file = ipfs.pin_add(hash).await?;
-    println!("{:#?}", pinned_file);
+    println!("{pinned_file:#?}");
     let hash = &pinned_file.ipfs_hash;
 
     // List pins
     let pin_list = ipfs.pin_list().await?;
-    println!("{:#?}", pin_list);
+    println!("{pin_list:#?}");
 
     // List pin by ipfs_hash (id)
     let pin_list_by_id = ipfs.pin_list_by_id(hash).await?;
-    println!("{:#?}", pin_list_by_id);
+    println!("{pin_list_by_id:#?}");
 
     // Query contents
     let gateway = ipfs.gateway(hash).await?;
     let string = String::from_utf8(gateway).unwrap();
-    println!("content: '{:#?}'", string);
+    println!("content: '{string:#?}'");
 
     // Remove pin
     let pin_removed = ipfs.pin_remove(hash).await?;
-    println!("{:#?}", pin_removed);
+    println!("{pin_removed:#?}");
 
     Ok(())
 }

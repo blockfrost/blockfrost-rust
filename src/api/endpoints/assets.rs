@@ -7,7 +7,7 @@ use blockfrost_openapi::models::{
 
 impl BlockfrostAPI {
     pub async fn assets_by_id(&self, asset: &str) -> BlockfrostResult<Asset> {
-        self.call_endpoint(format!("/assets/{}", asset).as_str())
+        self.call_endpoint(format!("/assets/{asset}").as_str())
             .await
     }
 
@@ -18,31 +18,28 @@ impl BlockfrostAPI {
     pub async fn assets_history(
         &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetHistoryInner>> {
-        self.call_paged_endpoint(format!("/assets/{}/history", asset).as_str(), pagination)
+        self.call_paged_endpoint(format!("/assets/{asset}/history").as_str(), pagination)
             .await
     }
 
     pub async fn assets_transactions(
         &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetTransactionsInner>> {
-        self.call_paged_endpoint(
-            format!("/assets/{}/transactions", asset).as_str(),
-            pagination,
-        )
-        .await
+        self.call_paged_endpoint(format!("/assets/{asset}/transactions").as_str(), pagination)
+            .await
     }
 
     pub async fn assets_addresses(
         &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetAddressesInner>> {
-        self.call_paged_endpoint(format!("/assets/{}/addresses", asset).as_str(), pagination)
+        self.call_paged_endpoint(format!("/assets/{asset}/addresses").as_str(), pagination)
             .await
     }
 
     pub async fn assets_policy_by_id(
         &self, policy_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetPolicyInner>> {
-        self.call_paged_endpoint(format!("/assets/policy/{}", policy_id).as_str(), pagination)
+        self.call_paged_endpoint(format!("/assets/policy/{policy_id}").as_str(), pagination)
             .await
     }
 }
