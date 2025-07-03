@@ -11,16 +11,13 @@ impl BlockfrostAPI {
     }
 
     pub async fn mempool_hash(&self, hash: &str) -> BlockfrostResult<MempoolTxContent> {
-        self.call_endpoint(format!("/mempool/{}", hash).as_str())
+        self.call_endpoint(format!("/mempool/{hash}").as_str())
             .await
     }
     pub async fn mempool_addresses_address(
         &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<MempoolContentInner>> {
-        self.call_paged_endpoint(
-            format!("/mempool/addresses/{}", address).as_str(),
-            pagination,
-        )
-        .await
+        self.call_paged_endpoint(format!("/mempool/addresses/{address}").as_str(), pagination)
+            .await
     }
 }

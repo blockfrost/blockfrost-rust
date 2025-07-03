@@ -7,11 +7,8 @@ impl BlockfrostAPI {
     pub async fn derive_address(
         &self, xpub: &str, role: &str, index: &str,
     ) -> BlockfrostResult<UtilsAddressesXpub> {
-        self.call_endpoint(&format!(
-            "/utils/addresses/xpub/{}/{}/{}",
-            xpub, role, index
-        ))
-        .await
+        self.call_endpoint(&format!("/utils/addresses/xpub/{xpub}/{role}/{index}",))
+            .await
     }
 
     pub async fn utils_tx_evaluate(&self, transaction_data: Vec<u8>) -> BlockfrostResult<Value> {

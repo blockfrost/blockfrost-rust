@@ -8,12 +8,12 @@ use blockfrost_openapi::models::{
 
 impl BlockfrostAPI {
     pub async fn pools_by_id(&self, pool_id: &str) -> BlockfrostResult<Pool> {
-        self.call_endpoint(format!("/pools/{}", pool_id).as_str())
+        self.call_endpoint(format!("/pools/{pool_id}").as_str())
             .await
     }
 
     pub async fn pools_metadata(&self, pool_id: &str) -> BlockfrostResult<PoolMetadata> {
-        self.call_endpoint(format!("/pools/{}/metadata", pool_id).as_str())
+        self.call_endpoint(format!("/pools/{pool_id}/metadata").as_str())
             .await
     }
 
@@ -37,38 +37,35 @@ impl BlockfrostAPI {
     pub async fn pools_history(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolHistoryInner>> {
-        self.call_paged_endpoint(format!("/pools/{}/history", pool_id).as_str(), pagination)
+        self.call_paged_endpoint(format!("/pools/{pool_id}/history").as_str(), pagination)
             .await
     }
 
     pub async fn pools_relays(
         &self, pool_id: &str,
     ) -> BlockfrostResult<Vec<TxContentPoolCertsInnerRelaysInner>> {
-        self.call_endpoint(format!("/pools/{}/relays", pool_id).as_str())
+        self.call_endpoint(format!("/pools/{pool_id}/relays").as_str())
             .await
     }
 
     pub async fn pools_delegators(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolDelegatorsInner>> {
-        self.call_paged_endpoint(
-            format!("/pools/{}/delegators", pool_id).as_str(),
-            pagination,
-        )
-        .await
+        self.call_paged_endpoint(format!("/pools/{pool_id}/delegators").as_str(), pagination)
+            .await
     }
 
     pub async fn pools_blocks(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<String>> {
-        self.call_paged_endpoint(format!("/pools/{}/blocks", pool_id).as_str(), pagination)
+        self.call_paged_endpoint(format!("/pools/{pool_id}/blocks").as_str(), pagination)
             .await
     }
 
     pub async fn pools_updates(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolUpdatesInner>> {
-        self.call_paged_endpoint(format!("/pools/{}/updates", pool_id).as_str(), pagination)
+        self.call_paged_endpoint(format!("/pools/{pool_id}/updates").as_str(), pagination)
             .await
     }
 }

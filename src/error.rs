@@ -53,7 +53,7 @@ pub(crate) fn process_error_response(
 
     let expected_error_codes = &[400, 403, 404, 418, 429, 500];
     if !expected_error_codes.contains(&status_code) {
-        eprintln!("Warning: status code {} was not expected.", status_code);
+        eprintln!("Warning: status code {status_code} was not expected.");
     }
     let url = url.into();
 

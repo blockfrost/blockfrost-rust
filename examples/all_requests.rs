@@ -20,7 +20,7 @@ async fn main() -> BlockfrostResult<()> {
     let health = api.health().await;
     let health_clock = api.health_clock().await;
 
-    // // Metrics
+    // Metrics
     let metrics = api.metrics(pagination).await;
     let metrics_endpoints = api.metrics_endpoints(pagination).await;
 
