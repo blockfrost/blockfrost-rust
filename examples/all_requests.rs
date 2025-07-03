@@ -142,106 +142,85 @@ async fn main() -> BlockfrostResult<()> {
     let utils_derive_result = api.derive_address("d507c8f866691bd96e131334c355188b1a1d0b2fa0ab11545075aab332d77d9eb19657ad13ee581b56b0f8d744d66ca356b93d42fe176b3de007d53e9c4c4e7a", "0", "1").await;
     let utils_tx_evaluate_result = api.utils_tx_evaluate(tx_data).await;
 
-    println!("root: {:#?}", root);
-    println!("health: {:#?}", health);
-    println!("health_clock: {:#?}", health_clock);
-    println!("metrics: {:#?}", metrics);
-    println!("metrics_endpoints: {:#?}", metrics_endpoints);
-    println!("accounts: {:#?}", accounts);
-    println!("accounts_rewards: {:#?}", accounts_rewards);
-    println!("accounts_history: {:#?}", accounts_history);
-    println!("accounts_delegations: {:#?}", accounts_delegations);
-    println!("accounts_registrations: {:#?}", accounts_registrations);
-    println!("accounts_withdrawals: {:#?}", accounts_withdrawals);
-    println!("accounts_mirs: {:#?}", accounts_mirs);
-    println!("accounts_addresses: {:#?}", accounts_addresses);
-    println!(
-        "accounts_addresses_assets: {:#?}",
-        accounts_addresses_assets
-    );
-    println!("addresses: {:#?}", addresses);
-    println!("addresses_total: {:#?}", addresses_total);
-    println!("addresses_utxos: {:#?}", addresses_utxos);
-    println!("addresses_transactions: {:#?}", addresses_transactions);
-    println!("accounts_addresses_total: {:#?}", accounts_addresses_total);
-    println!("assets: {:#?}", assets);
-    println!("assets_by_id: {:#?}", assets_by_id);
-    println!("assets_history: {:#?}", assets_history);
-    println!("assets_transactions: {:#?}", assets_transactions);
-    println!("assets_addresses: {:#?}", assets_addresses);
-    println!("assets_policy_by_id: {:#?}", assets_policy_by_id);
-    println!("epochs_latest: {:#?}", epochs_latest);
-    println!("epochs_latest_parameters: {:#?}", epochs_latest_parameters);
-    println!("epochs_by_number: {:#?}", epochs_by_number);
-    println!("epochs_next: {:#?}", epochs_next);
-    println!("epochs_previous: {:#?}", epochs_previous);
-    println!("epochs_stakes: {:#?}", epochs_stakes);
-    println!("epochs_stakes_by_pool: {:#?}", epochs_stakes_by_pool);
-    println!("epochs_blocks: {:#?}", epochs_blocks);
-    println!("epochs_blocks_by_pool: {:#?}", epochs_blocks_by_pool);
-    println!("epochs_parameters: {:#?}", epochs_parameters);
-    println!("pools: {:#?}", pools);
-    println!("pools_retired: {:#?}", pools_retired);
-    println!("pools_retiring: {:#?}", pools_retiring);
-    println!("pools_by_id: {:#?}", pools_by_id);
-    println!("pools_history: {:#?}", pools_history);
-    println!("pools_metadata: {:#?}", pools_metadata);
-    println!("pools_relays: {:#?}", pools_relays);
-    println!("pools_delegators: {:#?}", pools_delegators);
-    println!("pools_blocks: {:#?}", pools_blocks);
-    println!("pools_updates: {:#?}", pools_updates);
-    println!("blocks_latest: {:#?}", blocks_latest);
-    println!("blocks_latest_txs: {:#?}", blocks_latest_txs);
-    println!("blocks_by_id: {:#?}", blocks_by_id);
-    println!("blocks_slot: {:#?}", blocks_slot);
-    println!("blocks_by_epoch_and_slot: {:#?}", blocks_by_epoch_and_slot);
-    println!("blocks_next: {:#?}", blocks_next);
-    println!("blocks_previous: {:#?}", blocks_previous);
-    println!("blocks_txs: {:#?}", blocks_txs);
-    println!(
-        "blocks_affected_addresses: {:#?}",
-        blocks_affected_addresses
-    );
-    println!("genesis: {:#?}", genesis);
-    println!("metadata_txs_labels: {:#?}", metadata_txs_labels);
-    println!("metadata_txs_by_label: {:#?}", metadata_txs_by_label);
-    println!(
-        "metadata_txs_by_label_cbor: {:#?}",
-        metadata_txs_by_label_cbor
-    );
-    println!("network: {:#?}", network);
-    println!("scripts: {:#?}", scripts);
-    println!("scripts_by_id: {:#?}", scripts_by_id);
-    println!("scripts_redeemers: {:#?}", scripts_redeemers);
-    println!("transaction_by_hash: {:#?}", transaction_by_hash);
-    println!("transactions_utxos: {:#?}", transactions_utxos);
-    println!("transactions_stakes: {:#?}", transactions_stakes);
-    println!("transactions_delegations: {:#?}", transactions_delegations);
-    println!("transactions_withdrawals: {:#?}", transactions_withdrawals);
-    println!("transactions_mirs: {:#?}", transactions_mirs);
-    println!(
-        "transactions_pool_updates: {:#?}",
-        transactions_pool_updates
-    );
-    println!(
-        "transactions_pool_retires: {:#?}",
-        transactions_pool_retires
-    );
-    println!("transactions_metadata: {:#?}", transactions_metadata);
-    println!(
-        "transactions_metadata_cbor: {:#?}",
-        transactions_metadata_cbor
-    );
-    println!("transactions_redeemers: {:#?}", transactions_redeemers);
-    println!("nutlink_address: {:#?}", nutlink_address);
-    println!("nutlink_address_tickers: {:#?}", nutlink_address_tickers);
-    println!(
-        "nutlink_address_ticker_by_id: {:#?}",
-        nutlink_address_ticker_by_id
-    );
-    println!("nutlink_ticker_by_id: {:#?}", nutlink_ticker_by_id);
-    println!("derive_result: {:#?}", utils_derive_result);
-    println!("tx_evaluate_result: {:#?}", utils_tx_evaluate_result);
+    println!("root: {root:#?}");
+    println!("health: {health:#?}");
+    println!("health_clock: {health_clock:#?}");
+    println!("metrics: {metrics:#?}");
+    println!("metrics_endpoints: {metrics_endpoints:#?}");
+    println!("accounts: {accounts:#?}");
+    println!("accounts_rewards: {accounts_rewards:#?}");
+    println!("accounts_history: {accounts_history:#?}");
+    println!("accounts_delegations: {accounts_delegations:#?}");
+    println!("accounts_registrations: {accounts_registrations:#?}");
+    println!("accounts_withdrawals: {accounts_withdrawals:#?}");
+    println!("accounts_mirs: {accounts_mirs:#?}");
+    println!("accounts_addresses: {accounts_addresses:#?}");
+    println!("accounts_addresses_assets: {accounts_addresses_assets:#?}");
+    println!("addresses: {addresses:#?}");
+    println!("addresses_total: {addresses_total:#?}");
+    println!("addresses_utxos: {addresses_utxos:#?}");
+    println!("addresses_transactions: {addresses_transactions:#?}");
+    println!("accounts_addresses_total: {accounts_addresses_total:#?}");
+    println!("assets: {assets:#?}");
+    println!("assets_by_id: {assets_by_id:#?}");
+    println!("assets_history: {assets_history:#?}");
+    println!("assets_transactions: {assets_transactions:#?}");
+    println!("assets_addresses: {assets_addresses:#?}");
+    println!("assets_policy_by_id: {assets_policy_by_id:#?}");
+    println!("epochs_latest: {epochs_latest:#?}");
+    println!("epochs_latest_parameters: {epochs_latest_parameters:#?}");
+    println!("epochs_by_number: {epochs_by_number:#?}");
+    println!("epochs_next: {epochs_next:#?}");
+    println!("epochs_previous: {epochs_previous:#?}");
+    println!("epochs_stakes: {epochs_stakes:#?}");
+    println!("epochs_stakes_by_pool: {epochs_stakes_by_pool:#?}");
+    println!("epochs_blocks: {epochs_blocks:#?}");
+    println!("epochs_blocks_by_pool: {epochs_blocks_by_pool:#?}");
+    println!("epochs_parameters: {epochs_parameters:#?}");
+    println!("pools: {pools:#?}");
+    println!("pools_retired: {pools_retired:#?}");
+    println!("pools_retiring: {pools_retiring:#?}");
+    println!("pools_by_id: {pools_by_id:#?}");
+    println!("pools_history: {pools_history:#?}");
+    println!("pools_metadata: {pools_metadata:#?}");
+    println!("pools_relays: {pools_relays:#?}");
+    println!("pools_delegators: {pools_delegators:#?}");
+    println!("pools_blocks: {pools_blocks:#?}");
+    println!("pools_updates: {pools_updates:#?}");
+    println!("blocks_latest: {blocks_latest:#?}");
+    println!("blocks_latest_txs: {blocks_latest_txs:#?}");
+    println!("blocks_by_id: {blocks_by_id:#?}");
+    println!("blocks_slot: {blocks_slot:#?}");
+    println!("blocks_by_epoch_and_slot: {blocks_by_epoch_and_slot:#?}");
+    println!("blocks_next: {blocks_next:#?}");
+    println!("blocks_previous: {blocks_previous:#?}");
+    println!("blocks_txs: {blocks_txs:#?}");
+    println!("blocks_affected_addresses: {blocks_affected_addresses:#?}");
+    println!("genesis: {genesis:#?}");
+    println!("metadata_txs_labels: {metadata_txs_labels:#?}");
+    println!("metadata_txs_by_label: {metadata_txs_by_label:#?}");
+    println!("metadata_txs_by_label_cbor: {metadata_txs_by_label_cbor:#?}");
+    println!("network: {network:#?}");
+    println!("scripts: {scripts:#?}");
+    println!("scripts_by_id: {scripts_by_id:#?}");
+    println!("scripts_redeemers: {scripts_redeemers:#?}");
+    println!("transaction_by_hash: {transaction_by_hash:#?}");
+    println!("transactions_utxos: {transactions_utxos:#?}");
+    println!("transactions_stakes: {transactions_stakes:#?}");
+    println!("transactions_delegations: {transactions_delegations:#?}");
+    println!("transactions_withdrawals: {transactions_withdrawals:#?}");
+    println!("transactions_mirs: {transactions_mirs:#?}");
+    println!("transactions_pool_updates: {transactions_pool_updates:#?}");
+    println!("transactions_pool_retires: {transactions_pool_retires:#?}");
+    println!("transactions_metadata: {transactions_metadata:#?}");
+    println!("transactions_metadata_cbor: {transactions_metadata_cbor:#?}");
+    println!("transactions_redeemers: {transactions_redeemers:#?}");
+    println!("nutlink_address: {nutlink_address:#?}");
+    println!("nutlink_address_tickers: {nutlink_address_tickers:#?}");
+    println!("nutlink_address_ticker_by_id: {nutlink_address_ticker_by_id:#?}");
+    println!("nutlink_ticker_by_id: {nutlink_ticker_by_id:#?}");
+    println!("derive_result: {utils_derive_result:#?}");
+    println!("tx_evaluate_result: {utils_tx_evaluate_result:#?}");
 
     Ok(())
 }
