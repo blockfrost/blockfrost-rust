@@ -89,7 +89,7 @@ impl BlockfrostAPI {
         if pagination.fetch_all {
             fetch_all_pages(
                 &self.client,
-                url,
+                &url,
                 self.settings.retry_settings,
                 pagination,
                 batch_size,
