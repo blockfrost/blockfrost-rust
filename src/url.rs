@@ -1,6 +1,5 @@
 use crate::{
-    pagination::Pagination, BlockfrostError, CARDANO_MAINNET_URL, CARDANO_PREPROD_URL,
-    CARDANO_PREVIEW_URL,
+    pagination::Pagination, CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
 };
 use std::error::Error;
 use url::{form_urlencoded, Url as UrlI};
@@ -33,24 +32,28 @@ impl Url {
     }
 
     pub fn generate_batch(
-        base: &str, batch_size: usize, page_start: usize, pagination: Pagination,
-    ) -> Result<Vec<String>, BlockfrostError> {
-        let mut urls = Vec::with_capacity(batch_size);
+        url: &str, batch_size: usize, start: usize, pagination: Pagination,
+    ) -> Result<Vec<String>, Box<dyn Error>> {
+        let mut result = Vec::new();
+        let url = UrlI::parse(url)?;
 
-        for i in 0..batch_size {
-            let page = page_start + i;
-            let url = format!(
-                "{}?page={}&count={}&order={}",
-                base,
-                page,
-                pagination.count,
-                pagination.order_to_string(),
-            );
+        for page in start..(start + batch_size) {
+            let mut query_pairs = form_urlencoded::Serializer::new(String::new());
 
-            urls.push(url);
+            query_pairs.append_pair("page", page.to_string().as_str());
+            query_pairs.append_pair("count", pagination.count.to_string().as_str());
+            query_pairs.append_pair("order", pagination.order_to_string().as_str());
+
+            let query = query_pairs.finish();
+
+            let mut url = url.clone();
+
+            url.set_query(Some(&query));
+
+            result.push(url.to_string());
         }
 
-        Ok(urls)
+        Ok(result)
     }
 
     pub fn get_base_url_from_project_id(project_id: &str) -> String {
