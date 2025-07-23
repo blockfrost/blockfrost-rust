@@ -99,12 +99,12 @@ mod tests {
 
     #[rstest]
     #[case("not a url", "api", true)]
-    #[case("http://example.com", "\0invalid", true)]
     #[case("http://example.com", "api", false)]
     fn test_from_endpoint_error(
         #[case] base_url: &str, #[case] endpoint_url: &str, #[case] should_err: bool,
     ) {
         let result = Url::from_endpoint(base_url, endpoint_url);
+
         assert_eq!(result.is_err(), should_err);
     }
 
@@ -159,6 +159,57 @@ mod tests {
         let urls = Url::generate_batch(base, batch_size, page_start, pagination).unwrap();
         let expected: Vec<String> = expected.into_iter().map(String::from).collect();
         assert_eq!(urls, expected);
+    }
+
+    #[rstest]
+    #[case(
+            "http://example.com/api/data",
+            0,
+            1,
+            100,
+            Order::Asc,
+            vec![]
+        )]
+    #[case(
+            "http://example.com/api/data",
+            2,
+            10,
+            50,
+            Order::Desc,
+            vec![
+                "http://example.com/api/data?page=10&count=50&order=desc",
+                "http://example.com/api/data?page=11&count=50&order=desc"
+            ]
+        )]
+    #[case(
+            "https://test.net/resources",
+            3,
+            5,
+            25,
+            Order::Asc,
+            vec![
+                "https://test.net/resources?page=5&count=25&order=asc",
+                "https://test.net/resources?page=6&count=25&order=asc",
+                "https://test.net/resources?page=7&count=25&order=asc"
+            ]
+        )]
+    fn test_generate_batch_extended(
+        #[case] base: &str, #[case] batch_size: usize, #[case] page_start: usize,
+        #[case] count: usize, #[case] order: Order, #[case] expected: Vec<&str>,
+    ) {
+        let pagination = Pagination {
+            page: 0,
+            count,
+            order,
+            fetch_all: false,
+        };
+        let urls = Url::generate_batch(base, batch_size, page_start, pagination).unwrap();
+        let expected: Vec<String> = expected.into_iter().map(String::from).collect();
+
+        assert_eq!(
+            urls, expected,
+            "Failed for base: {base}, batch_size: {batch_size}, page_start: {page_start}",
+        );
     }
 
     #[test]

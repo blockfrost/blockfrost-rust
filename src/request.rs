@@ -148,54 +148,59 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
     Ok(all)
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//     use httpmock::{Method::GET, MockServer};
-//     use reqwest::Client;
+#[cfg(test)]
+mod tests {
 
-//     #[tokio::test]
-//     async fn test_fetch_all_pages_success_multi_page() {
-//         let server = MockServer::start_async().await;
-//         let base_url = server.url("/items");
+    use super::*;
+    use crate::pagination::{Order, Pagination};
+    use httpmock::{Method::GET, MockServer};
+    use reqwest::Client;
 
-//         let m1 = server
-//             .mock_async(|when, then| {
-//                 when.method(GET).path("/items");
-//                 then.status(200)
-//                     .header("Content-Type", "application/json")
-//                     .body("[1,2]");
-//             })
-//             .await;
+    #[tokio::test]
+    async fn test_fetch_all_pages_success_multi_page() {
+        let server = MockServer::start_async().await;
+        let base_url = server.url("/items");
 
-//         let m2 = server
-//             .mock_async(|when, then| {
-//                 when.method(GET).path("/items");
-//                 then.status(200)
-//                     .header("Content-Type", "application/json")
-//                     .body("[3,4]");
-//             })
-//             .await;
+        // page=1
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/items").query_param("page", "1");
+                then.status(200)
+                    .header("Content-Type", "application/json")
+                    .body("[1,2]");
+            })
+            .await;
 
-//         let m3 = server
-//             .mock_async(|when, then| {
-//                 when.method(GET).path("/items");
-//                 then.status(200)
-//                     .header("Content-Type", "application/json")
-//                     .body("[5]");
-//             })
-//             .await;
+        // page=2
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/items").query_param("page", "2");
+                then.status(200)
+                    .header("Content-Type", "application/json")
+                    .body("[3,4]");
+            })
+            .await;
 
-//         let client = Client::new();
-//         let retry_settings = RetrySettings::default();
-//         let pagination = Pagination::all();
-//         let batch_size = 1;
+        //page=3 (empty or last page)
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/items").query_param("page", "3");
+                then.status(200)
+                    .header("Content-Type", "application/json")
+                    .body("[]"); // Empty page to stop pagination
+            })
+            .await;
 
-//         let result =
-//             fetch_all_pages::<u32>(&client, &base_url, retry_settings, pagination, batch_size)
-//                 .await
-//                 .unwrap();
+        let client = Client::new();
+        let retry_settings = RetrySettings::default();
+        let pagination = Pagination::all();
+        let batch_size = 1;
 
-//         assert_eq!(vec![1, 2, 3, 4], vec![1, 2, 3, 4, 5]);
-//     }
-// }
+        let result =
+            fetch_all_pages::<u32>(&client, &base_url, retry_settings, pagination, batch_size)
+                .await
+                .unwrap();
+
+        assert_eq!(vec![1, 2, 3, 4], result);
+    }
+}
