@@ -142,7 +142,7 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::pagination::{Order, Pagination};
+    use crate::pagination::Pagination;
     use httpmock::{Method::GET, Mock, MockServer};
     use reqwest::Client;
 
@@ -187,5 +187,32 @@ mod tests {
                 .unwrap();
 
         assert_eq!(vec![1, 2, 3, 4], result);
+    }
+
+    #[tokio::test]
+    async fn test_fetch_all_pages_success_multi_page_different_batch_size() {
+        let (server, client, retry_settings, base_url) = setup_test();
+
+        // mocks
+        setup_page_mock(&server, 1, 200, "[1, 2]");
+        setup_page_mock(&server, 2, 200, "[3, 4]");
+        setup_page_mock(&server, 3, 200, "[5, 6]");
+        setup_page_mock(&server, 4, 200, "[7, 8]");
+        setup_page_mock(&server, 5, 200, "[9]");
+        setup_page_mock(&server, 6, 200, "[]");
+        setup_page_mock(&server, 7, 200, "[]");
+        setup_page_mock(&server, 8, 200, "[]");
+        setup_page_mock(&server, 9, 200, "[]");
+        setup_page_mock(&server, 10, 200, "[]");
+
+        let pagination = Pagination::all();
+        let batch_size = 5;
+
+        let result =
+            fetch_all_pages::<u32>(&client, &base_url, retry_settings, pagination, batch_size)
+                .await
+                .unwrap();
+
+        assert_eq!(vec![1, 2, 3, 4, 5, 6, 7, 8, 9], result);
     }
 }
