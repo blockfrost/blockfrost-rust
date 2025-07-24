@@ -139,102 +139,53 @@ pub(crate) async fn fetch_all_pages<T: DeserializeOwned>(
     Ok(all)
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//     use crate::pagination::{Order, Pagination};
-//     use httpmock::{Method::GET, Mock, MockServer};
-//     use reqwest::Client;
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::pagination::{Order, Pagination};
+    use httpmock::{Method::GET, Mock, MockServer};
+    use reqwest::Client;
 
-//     // helper to set up test environment
-//     fn setup_test() -> (MockServer, Client, RetrySettings, String) {
-//         let server = MockServer::start();
-//         let client = Client::new();
-//         let retry_settings = RetrySettings {
-//             amount: 2,
-//             delay: std::time::Duration::from_millis(100),
-//         };
-//         let base_url = server.url("/items");
+    fn setup_test() -> (MockServer, Client, RetrySettings, String) {
+        let server = MockServer::start();
+        let client = Client::new();
+        let retry_settings = RetrySettings {
+            amount: 2,
+            delay: std::time::Duration::from_millis(100),
+        };
+        let base_url = server.url("/items");
 
-//         (server, client, retry_settings, base_url)
-//     }
+        (server, client, retry_settings, base_url)
+    }
 
-//     // helper to set up page mocks
-//     fn setup_page_mock<'a>(server: &'a MockServer, page: u32, status: u16, body: &str) -> Mock<'a> {
-//         server.mock(|when, then| {
-//             when.method(GET)
-//                 .path("/items")
-//                 .query_param("page", page.to_string());
-//             then.status(status)
-//                 .header("Content-Type", "application/json")
-//                 .body(body);
-//         })
-//     }
+    fn setup_page_mock<'a>(server: &'a MockServer, page: u32, status: u16, body: &str) -> Mock<'a> {
+        server.mock(|when, then| {
+            when.method(GET)
+                .path("/items")
+                .query_param("page", page.to_string());
+            then.status(status)
+                .header("Content-Type", "application/json")
+                .body(body);
+        })
+    }
 
-//     #[tokio::test]
-//     async fn test_fetch_all_pages_success_multi_page() {
-//         let (server, client, retry_settings, base_url) = setup_test();
+    #[tokio::test]
+    async fn test_fetch_all_pages_success_multi_page() {
+        let (server, client, retry_settings, base_url) = setup_test();
 
-//         // mocks
-//         setup_page_mock(&server, 1, 200, "[1, 2]");
-//         setup_page_mock(&server, 2, 200, "[3, 4]");
-//         setup_page_mock(&server, 3, 200, "[]");
+        // mocks
+        setup_page_mock(&server, 1, 200, "[1, 2]");
+        setup_page_mock(&server, 2, 200, "[3, 4]");
+        setup_page_mock(&server, 3, 200, "[]");
 
-//         let pagination = Pagination::all();
-//         let batch_size = 1;
+        let pagination = Pagination::all();
+        let batch_size = 1;
 
-//         let result =
-//             fetch_all_pages::<u32>(&client, &base_url, retry_settings, pagination, batch_size)
-//                 .await
-//                 .unwrap();
+        let result =
+            fetch_all_pages::<u32>(&client, &base_url, retry_settings, pagination, batch_size)
+                .await
+                .unwrap();
 
-//         assert_eq!(vec![1, 2, 3, 4], result);
-//     }
-
-//     #[tokio::test]
-//     async fn test_fetch_all_pages_exact_count() {
-//         let (server, client, retry_settings, base_url) = setup_test();
-
-//         // mocks
-//         setup_page_mock(&server, 1, 200, "[1, 2]");
-//         setup_page_mock(&server, 2, 200, "[3]");
-
-//         let pagination = Pagination {
-//             page: 1,
-//             count: 3,
-//             order: Order::Asc,
-//             fetch_all: false,
-//         };
-//         let batch_size = 1;
-
-//         let result =
-//             fetch_all_pages::<u32>(&client, &base_url, retry_settings, pagination, batch_size)
-//                 .await
-//                 .unwrap();
-
-//         assert_eq!(vec![1, 2, 3], result);
-//     }
-
-//     #[tokio::test]
-//     async fn test_fetch_all_pages_empty_first_page() {
-//         let (server, client, retry_settings, base_url) = setup_test();
-
-//         // mocks
-//         setup_page_mock(&server, 1, 200, "[]");
-
-//         let pagination = Pagination {
-//             page: 1,
-//             count: 100,
-//             order: Order::Asc,
-//             fetch_all: true,
-//         };
-//         let batch_size = 1;
-
-//         let result =
-//             fetch_all_pages::<u32>(&client, &base_url, retry_settings, pagination, batch_size)
-//                 .await
-//                 .unwrap();
-
-//         assert_eq!(Vec::<u32>::new(), result);
-//     }
-// }
+        assert_eq!(vec![1, 2, 3, 4], result);
+    }
+}
