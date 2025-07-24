@@ -1,6 +1,6 @@
 [package]
 name = "blockfrost"
-version = "1.0.6"
+version = "1.1.0"
 edition = "2021"
 keywords = ["blockfrost", "blockchain", "cardano", "ipfs", "nft"]
 categories = ["api-bindings", "asynchronous", "cryptography::cryptocurrencies"]
