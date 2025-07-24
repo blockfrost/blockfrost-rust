@@ -1,3 +1,5 @@
+use crate::{DEFAULT_ORDER, DEFAULT_PAGINATION_PAGE_COUNT, DEFAULT_PAGINATION_PAGE_ITEMS_COUNT};
+
 #[derive(Clone, Copy)]
 pub struct Pagination {
     pub fetch_all: bool,
@@ -10,9 +12,9 @@ impl Default for Pagination {
     fn default() -> Self {
         Pagination {
             fetch_all: false,
-            count: 100,
-            page: 1,
-            order: Order::Asc,
+            count: DEFAULT_PAGINATION_PAGE_ITEMS_COUNT,
+            page: DEFAULT_PAGINATION_PAGE_COUNT,
+            order: DEFAULT_ORDER,
         }
     }
 }

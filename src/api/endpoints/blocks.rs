@@ -26,7 +26,7 @@ impl BlockfrostAPI {
     }
 
     pub async fn blocks_latest_txs(&self, pagination: Pagination) -> BlockfrostResult<Vec<String>> {
-        self.call_paged_endpoint_unbatched("/blocks/latest/txs", pagination)
+        self.call_paged_endpoint("/blocks/latest/txs", pagination)
             .await
     }
 
@@ -53,17 +53,14 @@ impl BlockfrostAPI {
     pub async fn blocks_txs(
         &self, hash_or_number: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<String>> {
-        self.call_paged_endpoint_unbatched(
-            format!("/blocks/{hash_or_number}/txs").as_str(),
-            pagination,
-        )
-        .await
+        self.call_paged_endpoint(format!("/blocks/{hash_or_number}/txs").as_str(), pagination)
+            .await
     }
 
     pub async fn blocks_affected_addresses(
         &self, hash_or_number: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<BlockContentAddressesInner>> {
-        self.call_paged_endpoint_unbatched(
+        self.call_paged_endpoint(
             format!("/blocks/{hash_or_number}/addresses").as_str(),
             pagination,
         )

@@ -64,35 +64,15 @@ impl BlockfrostAPI {
     where
         T: for<'de> serde::Deserialize<'de> + serde::de::DeserializeOwned,
     {
-        self.call_paged_endpoint_batched(url_endpoint, pagination, 10)
-            .await
-    }
-
-    async fn call_paged_endpoint_unbatched<T>(
-        &self, url_endpoint: &str, pagination: Pagination,
-    ) -> Result<Vec<T>, BlockfrostError>
-    where
-        T: for<'de> serde::Deserialize<'de> + serde::de::DeserializeOwned,
-    {
-        self.call_paged_endpoint_batched(url_endpoint, pagination, 1)
-            .await
-    }
-
-    async fn call_paged_endpoint_batched<T>(
-        &self, url_endpoint: &str, pagination: Pagination, batch_size: usize,
-    ) -> Result<Vec<T>, BlockfrostError>
-    where
-        T: for<'de> serde::Deserialize<'de> + serde::de::DeserializeOwned,
-    {
         let url = Url::from_paginated_endpoint(self.base_url.as_str(), url_endpoint, pagination)?;
 
         if pagination.fetch_all {
             fetch_all_pages(
                 &self.client,
-                url,
+                &url,
                 self.settings.retry_settings,
                 pagination,
-                batch_size,
+                10,
             )
             .await
         } else {
