@@ -1,8 +1,8 @@
 use crate::*;
 use blockfrost_openapi::models::{
     pool::Pool, pool_delegators_inner::PoolDelegatorsInner, pool_history_inner::PoolHistoryInner,
-    pool_list_retire_inner::PoolListRetireInner, pool_metadata::PoolMetadata,
-    pool_updates_inner::PoolUpdatesInner,
+    pool_list_extended_inner::PoolListExtendedInner, pool_list_retire_inner::PoolListRetireInner,
+    pool_metadata::PoolMetadata, pool_updates_inner::PoolUpdatesInner,
     tx_content_pool_certs_inner_relays_inner::TxContentPoolCertsInnerRelaysInner,
 };
 
@@ -19,6 +19,13 @@ impl BlockfrostAPI {
 
     pub async fn pools(&self, pagination: Pagination) -> BlockfrostResult<Vec<String>> {
         self.call_paged_endpoint("/pools", pagination).await
+    }
+
+    pub async fn pools_extended(
+        &self, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<PoolListExtendedInner>> {
+        self.call_paged_endpoint("/pools/extended", pagination)
+            .await
     }
 
     pub async fn pools_retired(
@@ -86,6 +93,64 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn test_pools_extended() {
+        let json_value = json!([
+            {
+                "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
+                "hex": "0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735",
+                "active_stake": "5727090990610",
+                "live_stake": "5721241414066",
+                "live_saturation": 0.07458075839782029,
+                "blocks_minted": 3512,
+                "margin_cost": 0.049,
+                "fixed_cost": "340000000",
+                "declared_pledge": "250000000000",
+                "metadata": {
+                    "hash": "47c0c68cb57f4a5b4a87bad896fc274678e7aea98e200fa14a1cb40c0cab1d8c",
+                    "url": "https://stakenuts.com/mainnet.json",
+                    "ticker": "NUTS",
+                    "name": "StakeNuts",
+                    "description": "StakeNuts.com",
+                    "homepage": "https://stakenuts.com/"
+                }
+            },
+            {
+                "pool_id": "pool1ddskftmsscw92d7vnj89pldwx5feegkgcmamgt5t0e4lkd7mdp8",
+                "hex": "6b6164af70861c5537cc9c8e50fdae35139ca2c8c6fbb42e8b7e6bfb",
+                "active_stake": "2671108363",
+                "live_stake": "2671108363",
+                "live_saturation": 0.000034819940823598694,
+                "blocks_minted": 23,
+                "margin_cost": 0.05,
+                "fixed_cost": "340000000",
+                "declared_pledge": "7149000000",
+                "metadata": {
+                    "hash": "79e7cf8d936bf0ced040516b288e2edc76f2f87af5400f92010a682de3a052e9",
+                    "url": "https://pool.adascan.net/meta/v1/poolmeta.json",
+                    "ticker": null,
+                    "name": null,
+                    "description": null,
+                    "homepage": null
+                }
+            },
+            {
+                "pool_id": "pool1a5ld0eulnjxwpg6qyjs6hxzqwj0esft7k0qsf6nj8pkfxy5lml3",
+                "hex": "ed3ed7e79f9c8ce0a34024a1ab9840749f98257eb3c104ea72386c93",
+                "active_stake": "76334298659264",
+                "live_stake": "76301000831243",
+                "live_saturation": 0.9946419136441588,
+                "blocks_minted": 2504,
+                "margin_cost": 1,
+                "fixed_cost": "340000000",
+                "declared_pledge": "73000000000000",
+                "metadata": null
+            }
+        ]);
+
+        serde_json::from_value::<Vec<PoolListExtendedInner>>(json_value).unwrap();
+    }
+
+    #[tokio::test]
     async fn test_pools_retired() {
         let json_value = json!([
             {
@@ -127,33 +192,31 @@ mod tests {
     #[tokio::test]
     async fn test_pools_by_id() {
         let json_value = json!({
-          "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
-          "hex": "0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735",
-          "vrf_key": "0b5245f9934ec2151116fb8ec00f35fd00e0aa3b075c4ed12cce440f999d8233",
-          "blocks_minted": 69,
-          "live_stake": "6900000000",
-          "live_size": 0.42,
-          "live_saturation": 0.93,
-          "live_delegators": 127,
-          "active_stake": "4200000000",
-          "blocks_epoch": 21,
-          "active_size": 0.43,
-          "declared_pledge": "5000000000",
-          "live_pledge": "5000000001",
-          "margin_cost": 0.05,
-          "fixed_cost": "340000000",
-          "reward_account": "stake1uxkptsa4lkr55jleztw43t37vgdn88l6ghclfwuxld2eykgpgvg3f",
-          "owners": [
-            "stake1u98nnlkvkk23vtvf9273uq7cph5ww6u2yq2389psuqet90sv4xv9v"
-          ],
-          "registration": [
-            "9f83e5484f543e05b52e99988272a31da373f3aab4c064c76db96643a355d9dc",
-            "7ce3b8c433bf401a190d58c8c483d8e3564dfd29ae8633c8b1b3e6c814403e95",
-            "3e6e1200ce92977c3fe5996bd4d7d7e192bcb7e231bc762f9f240c76766535b9"
-          ],
-          "retirement": [
-            "252f622976d39e646815db75a77289cf16df4ad2b287dd8e3a889ce14c13d1a8"
-          ]
+            "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
+            "hex": "0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735",
+            "vrf_key": "b512cc7c1a8ba689c2d8fd27adfdbac2049a3f8f95c8b85e8298f14d7d8dc4e6",
+            "blocks_minted": 3512,
+            "blocks_epoch": 1,
+            "live_stake": "5721241414066",
+            "live_size": 0.00026787598158730844,
+            "live_saturation": 0.07458075839782029,
+            "live_delegators": 181,
+            "active_stake": "5727090990610",
+            "active_size": 0.0002677054019934437,
+            "declared_pledge": "250000000000",
+            "live_pledge": "356156149988",
+            "margin_cost": 0.049,
+            "fixed_cost": "340000000",
+            "reward_account": "stake1u98nnlkvkk23vtvf9273uq7cph5ww6u2yq2389psuqet90sv4xv9v",
+            "owners": [
+                "stake1u98nnlkvkk23vtvf9273uq7cph5ww6u2yq2389psuqet90sv4xv9v"
+            ],
+            "registration": [
+                "a96c79773b7506211eb56bf94886a2face17657d1009f52fb5ea05f19cc8823e",
+                "68b302b1a31a47a4688320635c77440f6d5c2845484f1751ac19eb4f361416c6"
+            ],
+            "retirement": [],
+            "calidus_key": null
         });
         serde_json::from_value::<Pool>(json_value).unwrap();
     }
