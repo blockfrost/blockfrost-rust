@@ -1,8 +1,8 @@
 use crate::*;
 use blockfrost_openapi::models::{
     pool::Pool, pool_delegators_inner::PoolDelegatorsInner, pool_history_inner::PoolHistoryInner,
-    pool_list_retire_inner::PoolListRetireInner, pool_metadata::PoolMetadata,
-    pool_updates_inner::PoolUpdatesInner,
+    pool_list_extended_inner::PoolListExtendedInner, pool_list_retire_inner::PoolListRetireInner,
+    pool_metadata::PoolMetadata, pool_updates_inner::PoolUpdatesInner,
     tx_content_pool_certs_inner_relays_inner::TxContentPoolCertsInnerRelaysInner,
 };
 
@@ -19,6 +19,13 @@ impl BlockfrostAPI {
 
     pub async fn pools(&self, pagination: Pagination) -> BlockfrostResult<Vec<String>> {
         self.call_paged_endpoint("/pools", pagination).await
+    }
+
+    pub async fn pools_extended(
+        &self, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<PoolListExtendedInner>> {
+        self.call_paged_endpoint("/pools/extended", pagination)
+            .await
     }
 
     pub async fn pools_retired(
@@ -83,6 +90,64 @@ mod tests {
         ]);
 
         serde_json::from_value::<Vec<String>>(json_value).unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_pools_extended() {
+        let json_value = json!([
+            {
+                "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
+                "hex": "0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735",
+                "active_stake": "5727090990610",
+                "live_stake": "5721241414066",
+                "live_saturation": 0.07458075839782029,
+                "blocks_minted": 3512,
+                "margin_cost": 0.049,
+                "fixed_cost": "340000000",
+                "declared_pledge": "250000000000",
+                "metadata": {
+                    "hash": "47c0c68cb57f4a5b4a87bad896fc274678e7aea98e200fa14a1cb40c0cab1d8c",
+                    "url": "https://stakenuts.com/mainnet.json",
+                    "ticker": "NUTS",
+                    "name": "StakeNuts",
+                    "description": "StakeNuts.com",
+                    "homepage": "https://stakenuts.com/"
+                }
+            },
+            {
+                "pool_id": "pool1ddskftmsscw92d7vnj89pldwx5feegkgcmamgt5t0e4lkd7mdp8",
+                "hex": "6b6164af70861c5537cc9c8e50fdae35139ca2c8c6fbb42e8b7e6bfb",
+                "active_stake": "2671108363",
+                "live_stake": "2671108363",
+                "live_saturation": 0.000034819940823598694,
+                "blocks_minted": 23,
+                "margin_cost": 0.05,
+                "fixed_cost": "340000000",
+                "declared_pledge": "7149000000",
+                "metadata": {
+                    "hash": "79e7cf8d936bf0ced040516b288e2edc76f2f87af5400f92010a682de3a052e9",
+                    "url": "https://pool.adascan.net/meta/v1/poolmeta.json",
+                    "ticker": null,
+                    "name": null,
+                    "description": null,
+                    "homepage": null
+                }
+            },
+            {
+                "pool_id": "pool1a5ld0eulnjxwpg6qyjs6hxzqwj0esft7k0qsf6nj8pkfxy5lml3",
+                "hex": "ed3ed7e79f9c8ce0a34024a1ab9840749f98257eb3c104ea72386c93",
+                "active_stake": "76334298659264",
+                "live_stake": "76301000831243",
+                "live_saturation": 0.9946419136441588,
+                "blocks_minted": 2504,
+                "margin_cost": 1,
+                "fixed_cost": "340000000",
+                "declared_pledge": "73000000000000",
+                "metadata": null
+            }
+        ]);
+
+        serde_json::from_value::<Vec<PoolListExtendedInner>>(json_value).unwrap();
     }
 
     #[tokio::test]

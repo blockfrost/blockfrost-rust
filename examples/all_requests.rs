@@ -72,6 +72,7 @@ async fn main() -> BlockfrostResult<()> {
 
     // Pools
     let pools = api.pools(pagination).await;
+    let pools_extended = api.pools_extended(pagination).await;
     let pools_retired = api.pools_retired(pagination).await;
     let pools_retiring = api.pools_retiring(pagination).await;
     let pools_by_id = api.pools_by_id(pool_id).await;
@@ -178,6 +179,7 @@ async fn main() -> BlockfrostResult<()> {
     println!("epochs_blocks_by_pool: {epochs_blocks_by_pool:#?}");
     println!("epochs_parameters: {epochs_parameters:#?}");
     println!("pools: {pools:#?}");
+    println!("pools_extended: {pools_extended:#?}");
     println!("pools_retired: {pools_retired:#?}");
     println!("pools_retiring: {pools_retiring:#?}");
     println!("pools_by_id: {pools_by_id:#?}");
