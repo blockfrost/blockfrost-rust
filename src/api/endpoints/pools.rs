@@ -127,33 +127,31 @@ mod tests {
     #[tokio::test]
     async fn test_pools_by_id() {
         let json_value = json!({
-          "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
-          "hex": "0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735",
-          "vrf_key": "0b5245f9934ec2151116fb8ec00f35fd00e0aa3b075c4ed12cce440f999d8233",
-          "blocks_minted": 69,
-          "live_stake": "6900000000",
-          "live_size": 0.42,
-          "live_saturation": 0.93,
-          "live_delegators": 127,
-          "active_stake": "4200000000",
-          "blocks_epoch": 21,
-          "active_size": 0.43,
-          "declared_pledge": "5000000000",
-          "live_pledge": "5000000001",
-          "margin_cost": 0.05,
-          "fixed_cost": "340000000",
-          "reward_account": "stake1uxkptsa4lkr55jleztw43t37vgdn88l6ghclfwuxld2eykgpgvg3f",
-          "owners": [
-            "stake1u98nnlkvkk23vtvf9273uq7cph5ww6u2yq2389psuqet90sv4xv9v"
-          ],
-          "registration": [
-            "9f83e5484f543e05b52e99988272a31da373f3aab4c064c76db96643a355d9dc",
-            "7ce3b8c433bf401a190d58c8c483d8e3564dfd29ae8633c8b1b3e6c814403e95",
-            "3e6e1200ce92977c3fe5996bd4d7d7e192bcb7e231bc762f9f240c76766535b9"
-          ],
-          "retirement": [
-            "252f622976d39e646815db75a77289cf16df4ad2b287dd8e3a889ce14c13d1a8"
-          ]
+            "pool_id": "pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy",
+            "hex": "0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735",
+            "vrf_key": "b512cc7c1a8ba689c2d8fd27adfdbac2049a3f8f95c8b85e8298f14d7d8dc4e6",
+            "blocks_minted": 3512,
+            "blocks_epoch": 1,
+            "live_stake": "5721241414066",
+            "live_size": 0.00026787598158730844,
+            "live_saturation": 0.07458075839782029,
+            "live_delegators": 181,
+            "active_stake": "5727090990610",
+            "active_size": 0.0002677054019934437,
+            "declared_pledge": "250000000000",
+            "live_pledge": "356156149988",
+            "margin_cost": 0.049,
+            "fixed_cost": "340000000",
+            "reward_account": "stake1u98nnlkvkk23vtvf9273uq7cph5ww6u2yq2389psuqet90sv4xv9v",
+            "owners": [
+                "stake1u98nnlkvkk23vtvf9273uq7cph5ww6u2yq2389psuqet90sv4xv9v"
+            ],
+            "registration": [
+                "a96c79773b7506211eb56bf94886a2face17657d1009f52fb5ea05f19cc8823e",
+                "68b302b1a31a47a4688320635c77440f6d5c2845484f1751ac19eb4f361416c6"
+            ],
+            "retirement": [],
+            "calidus_key": null
         });
         serde_json::from_value::<Pool>(json_value).unwrap();
     }

@@ -10,7 +10,7 @@ repository = "https://github.com/blockfrost/blockfrost-rust"
 homepage = "https://blockfrost.io"
 
 [dependencies]
-blockfrost-openapi = "0.1.75"
+blockfrost-openapi = "0.1.83"
 futures = "0.3.31"
 futures-timer = "3.0.3"
 reqwest = { version = "0.12.9", default-features = false, features = [
