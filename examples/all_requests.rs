@@ -66,8 +66,8 @@ async fn main() -> BlockfrostResult<()> {
     let epochs_previous = api.epochs_previous(epoch, pagination).await;
     let epochs_stakes = api.epochs_stakes(epoch, pagination).await;
     let epochs_stakes_by_pool = api.epochs_stakes_by_pool(epoch, pool_id, pagination).await;
-    let epochs_blocks = api.epochs_blocks(epoch).await;
-    let epochs_blocks_by_pool = api.epochs_blocks_by_pool(epoch, pool_id).await;
+    let epochs_blocks = api.epochs_blocks(epoch, pagination).await;
+    let epochs_blocks_by_pool = api.epochs_blocks_by_pool(epoch, pool_id, pagination).await;
     let epochs_parameters = api.epochs_parameters(epoch).await;
 
     // Pools
