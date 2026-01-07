@@ -8,6 +8,8 @@ use blockfrost_openapi::models::{
     account_mir_content_inner::AccountMirContentInner,
     account_registration_content_inner::AccountRegistrationContentInner,
     account_reward_content_inner::AccountRewardContentInner,
+    account_transactions_content_inner::AccountTransactionsContentInner,
+    account_utxo_content_inner::AccountUtxoContentInner,
     account_withdrawal_content_inner::AccountWithdrawalContentInner,
 };
 
@@ -104,6 +106,36 @@ impl BlockfrostAPI {
     ) -> BlockfrostResult<AccountAddressesTotal> {
         self.call_endpoint(format!("/accounts/{stake_address}/addresses/total").as_str())
             .await
+    }
+
+    pub async fn accounts_utxos(
+        &self, stake_address: &str, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<AccountUtxoContentInner>> {
+        self.call_paged_endpoint(
+            format!("/accounts/{stake_address}/utxos").as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn accounts_utxos_asset(
+        &self, stake_address: &str, asset: &str, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<AccountUtxoContentInner>> {
+        self.call_paged_endpoint(
+            format!("/accounts/{stake_address}/utxos/{asset}").as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn accounts_transactions(
+        &self, stake_address: &str, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<AccountTransactionsContentInner>> {
+        self.call_paged_endpoint(
+            format!("/accounts/{stake_address}/transactions").as_str(),
+            pagination,
+        )
+        .await
     }
 }
 #[cfg(test)]
@@ -282,5 +314,51 @@ mod tests {
         ]);
 
         serde_json::from_value::<Vec<AccountAddressesAssetsInner>>(json_value).unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_account_utxos() {
+        let json_value = json!([
+            {
+                "address": "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz",
+                "tx_hash": "39a7a284c2a0948189dc45dec670211cd4d72f7b66c5726c08d9b3df11e44d58",
+                "tx_index": 0,
+                "output_index": 0,
+                "amount": [
+                    {
+                        "unit": "lovelace",
+                        "quantity": "42000000"
+                    }
+                ],
+                "block": "7eb8e27d18686c7db9a18f8bbcfe34e3fed6e047afaa2d969904d15e934847e6",
+                "data_hash": null,
+                "inline_datum": null,
+                "reference_script_hash": null
+            }
+        ]);
+
+        serde_json::from_value::<Vec<AccountUtxoContentInner>>(json_value).unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_account_transactions() {
+        let json_value = json!([
+            {
+                "address": "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz",
+                "tx_hash": "8788591983aa73981fc92d6cddbbe643959f5a784e84b8bee0db15823f575a5b",
+                "tx_index": 6,
+                "block_height": 69,
+                "block_time": 1635505891
+            },
+            {
+                "address": "addr1qxqs59lphg8g6qndelq8xwqn60ag3aeyfcp33c2kdp46a09re5df3pzwwmyq946axfcejy5n4x0y99wqpgtp2gd0k09qsgy6pz",
+                "tx_hash": "52e748c4dec58b687b90b0b40d383b9fe1f24c1a833b7395cdf07dd67859f46f",
+                "tx_index": 9,
+                "block_height": 4547,
+                "block_time": 1635505891
+            }
+        ]);
+
+        serde_json::from_value::<Vec<AccountTransactionsContentInner>>(json_value).unwrap();
     }
 }

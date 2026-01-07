@@ -18,6 +18,9 @@
   - [x] `GET /accounts/:stake_address/addresses`
   - [x] `GET /accounts/:stake_address/addresses/assets`
   - [x] `GET /accounts/:stake_address/addresses/total`
+  - [x] `GET /accounts/:stake_address/utxos`
+  - [x] `GET /accounts/:stake_address/utxos/:asset`
+  - [x] `GET /accounts/:stake_address/transactions`
 - Addresses
   - [x] `GET /addresses/:address`
   - [x] `GET /addresses/:address/extended`
@@ -35,12 +38,14 @@
 - Blocks
   - [x] `GET /blocks/latest`
   - [x] `GET /blocks/latest/txs`
+  - [x] `GET /blocks/latest/txs/cbor`
   - [x] `GET /blocks/:hash_or_number`
   - [x] `GET /blocks/:hash_or_number/next`
   - [x] `GET /blocks/:hash_or_number/previous`
   - [x] `GET /blocks/slot/:slot_number`
   - [x] `GET /blocks/epoch/:epoch_number/slot/:slot_number`
   - [x] `GET /blocks/:hash_or_number/txs`
+  - [x] `GET /blocks/:hash_or_number/txs/cbor`
   - [x] `GET /blocks/:hash_or_number/addresses`
 - Epochs
   - [x] `GET /epochs/latest`
@@ -78,6 +83,7 @@
   - [x] `GET /pools/:pool_id/delegators`
   - [x] `GET /pools/:pool_id/blocks`
   - [x] `GET /pools/:pool_id/updates`
+  - [x] `GET /pools/:pool_id/votes`
 - Scripts
   - [x] `GET /scripts`
   - [x] `GET /scripts/:hash`
@@ -97,9 +103,24 @@
   - [x] `GET /txs/:hash/pool_retires`
   - [x] `GET /txs/:hash/metadata`
   - [x] `GET /txs/:hash/metadata/cbor`
+  - [x] `GET /txs/:hash/cbor`
   - [x] `GET /txs/:hash/redeemers`
+  - [x] `GET /txs/:hash/required_signers`
   - [x] `POST /tx/submit`
 - Utils
   - [x] `GET /utils/addresses/xpub/:xpub/:role/:index`
   - [x] `POST /utils/txs/evaluate`
-  - [] `POST /utils/txs/evaluate/utxos`
+  - [x] `POST /utils/txs/evaluate/utxos`
+- Governance
+  - [x] `GET /governance/dreps`
+  - [x] `GET /governance/dreps/:drep_id`
+  - [x] `GET /governance/dreps/:drep_id/delegators`
+  - [x] `GET /governance/dreps/:drep_id/metadata`
+  - [x] `GET /governance/dreps/:drep_id/updates`
+  - [x] `GET /governance/dreps/:drep_id/votes`
+  - [x] `GET /governance/proposals`
+  - [x] `GET /governance/proposals/:tx_hash/:cert_index`
+  - [x] `GET /governance/proposals/:tx_hash/:cert_index/parameters`
+  - [x] `GET /governance/proposals/:tx_hash/:cert_index/withdrawals`
+  - [x] `GET /governance/proposals/:tx_hash/:cert_index/votes`
+  - [x] `GET /governance/proposals/:tx_hash/:cert_index/metadata`

@@ -4,8 +4,10 @@ use blockfrost_openapi::models::{
     tx_content_delegations_inner::TxContentDelegationsInner,
     tx_content_metadata_cbor_inner::TxContentMetadataCborInner,
     tx_content_metadata_inner::TxContentMetadataInner, tx_content_mirs_inner::TxContentMirsInner,
+    tx_content_pool_certs_inner::TxContentPoolCertsInner,
     tx_content_pool_retires_inner::TxContentPoolRetiresInner,
     tx_content_redeemers_inner::TxContentRedeemersInner,
+    tx_content_required_signers_inner::TxContentRequiredSignersInner,
     tx_content_stake_addr_inner::TxContentStakeAddrInner, tx_content_utxo::TxContentUtxo,
     tx_content_withdrawals_inner::TxContentWithdrawalsInner,
 };
@@ -79,7 +81,7 @@ impl BlockfrostAPI {
 
     pub async fn transactions_pool_updates(
         &self, hash: &str,
-    ) -> BlockfrostResult<Vec<TxContentMirsInner>> {
+    ) -> BlockfrostResult<Vec<TxContentPoolCertsInner>> {
         self.call_endpoint(format!("/txs/{hash}/pool_updates").as_str())
             .await
     }
@@ -114,6 +116,13 @@ impl BlockfrostAPI {
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentRedeemersInner>> {
         self.call_endpoint(format!("/txs/{hash}/redeemers").as_str())
+            .await
+    }
+
+    pub async fn transactions_required_signers(
+        &self, hash: &str,
+    ) -> BlockfrostResult<Vec<TxContentRequiredSignersInner>> {
+        self.call_endpoint(format!("/txs/{hash}/required_signers").as_str())
             .await
     }
 }
@@ -393,5 +402,19 @@ mod tests {
         ]);
 
         serde_json::from_value::<Vec<TxContentMetadataCborInner>>(json_value).unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_transaction_required_signers() {
+        let json_value = json!([
+            {
+                "witness_hash": "ed25519_pk1w0l2sr4zgfm26ztc6nl9xy8ghsk5sh6ldwemlpmp9xylzy4dtf7st80fg4"
+            },
+            {
+                "witness_hash": "ed25519_pk1e2smk424cq6v3p8r2g0p7jzq6s3tnrgn0d2s6dp7l8l7lxvqxd5ql6h6j4"
+            }
+        ]);
+
+        serde_json::from_value::<Vec<TxContentRequiredSignersInner>>(json_value).unwrap();
     }
 }

@@ -34,4 +34,28 @@ impl BlockfrostAPI {
 
         json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
+
+    pub async fn utils_tx_evaluate_utxos(&self, request_body: Value) -> BlockfrostResult<Value> {
+        let body = Body::from(request_body.to_string());
+        let url = Url::from_endpoint(self.base_url.as_str(), "/utils/txs/evaluate/utxos")?;
+
+        let request = self
+            .client
+            .request(Method::POST, &url)
+            .header("Content-Type", HeaderValue::from_static("application/json"))
+            .body(body);
+
+        let (status, text) = send_request(request, self.settings.retry_settings)
+            .await
+            .map_err(|reason| BlockfrostError::Reqwest {
+                url: url.clone(),
+                reason,
+            })?;
+
+        if !status.is_success() {
+            return Err(process_error_response(&text, status, &url));
+        }
+
+        json_from(&text).map_err(|reason| json_error(url, text, reason))
+    }
 }

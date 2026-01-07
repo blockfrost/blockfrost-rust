@@ -3,6 +3,7 @@ mod addresses;
 mod assets;
 mod blocks;
 mod epochs;
+mod governance;
 mod health;
 mod ledger;
 mod mempool;
