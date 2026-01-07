@@ -1,6 +1,7 @@
 use crate::*;
 use blockfrost_openapi::models::{
     block_content::BlockContent, block_content_addresses_inner::BlockContentAddressesInner,
+    block_content_txs_cbor_inner::BlockContentTxsCborInner,
 };
 
 impl BlockfrostAPI {
@@ -62,6 +63,23 @@ impl BlockfrostAPI {
     ) -> BlockfrostResult<Vec<BlockContentAddressesInner>> {
         self.call_paged_endpoint(
             format!("/blocks/{hash_or_number}/addresses").as_str(),
+            pagination,
+        )
+        .await
+    }
+
+    pub async fn blocks_latest_txs_cbor(
+        &self, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<BlockContentTxsCborInner>> {
+        self.call_paged_endpoint("/blocks/latest/txs/cbor", pagination)
+            .await
+    }
+
+    pub async fn blocks_txs_cbor(
+        &self, hash_or_number: &str, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<BlockContentTxsCborInner>> {
+        self.call_paged_endpoint(
+            format!("/blocks/{hash_or_number}/txs/cbor").as_str(),
             pagination,
         )
         .await
@@ -145,5 +163,23 @@ mod tests {
         ]);
 
         serde_json::from_value::<Vec<String>>(json_value).unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_blocks_txs_cbor() {
+        use blockfrost_openapi::models::block_content_txs_cbor_inner::BlockContentTxsCborInner;
+
+        let json_value = json!([
+            {
+                "tx_hash": "8788591983aa73981fc92d6cddbbe643959f5a784e84b8bee0db15823f575a5b",
+                "cbor": "84a400818258208788591983aa73981fc92d6cddbbe643959f5a784e84b8bee0db15823f575a5b00018182583900..."
+            },
+            {
+                "tx_hash": "4eef6bb7755d8afbeac526b799f3e32a624691d166657e9d862aaeb66682c036",
+                "cbor": "84a400818258204eef6bb7755d8afbeac526b799f3e32a624691d166657e9d862aaeb66682c03600018182583900..."
+            }
+        ]);
+
+        serde_json::from_value::<Vec<BlockContentTxsCborInner>>(json_value).unwrap();
     }
 }

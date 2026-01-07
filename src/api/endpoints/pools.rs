@@ -3,6 +3,7 @@ use blockfrost_openapi::models::{
     pool::Pool, pool_delegators_inner::PoolDelegatorsInner, pool_history_inner::PoolHistoryInner,
     pool_list_extended_inner::PoolListExtendedInner, pool_list_retire_inner::PoolListRetireInner,
     pool_metadata::PoolMetadata, pool_updates_inner::PoolUpdatesInner,
+    pool_votes_inner::PoolVotesInner,
     tx_content_pool_certs_inner_relays_inner::TxContentPoolCertsInnerRelaysInner,
 };
 
@@ -73,6 +74,13 @@ impl BlockfrostAPI {
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolUpdatesInner>> {
         self.call_paged_endpoint(format!("/pools/{pool_id}/updates").as_str(), pagination)
+            .await
+    }
+
+    pub async fn pools_votes(
+        &self, pool_id: &str, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<PoolVotesInner>> {
+        self.call_paged_endpoint(format!("/pools/{pool_id}/votes").as_str(), pagination)
             .await
     }
 }
@@ -321,5 +329,25 @@ mod tests {
         ]);
 
         serde_json::from_value::<Vec<PoolUpdatesInner>>(json_value).unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_pools_votes() {
+        let json_value = json!([
+            {
+                "tx_hash": "b302de601defdf11a5261ed31a263804dac4a582a888c998ce24dec5",
+                "cert_index": 0,
+                "vote": "yes",
+                "proposal_id": "gov_action1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq94zlf6"
+            },
+            {
+                "tx_hash": "b302de601defdf11a5261ed31a263804dac4a582a888c998ce24dec5",
+                "cert_index": 0,
+                "vote": "no",
+                "proposal_id": "gov_action1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq94zlf7"
+            }
+        ]);
+
+        serde_json::from_value::<Vec<PoolVotesInner>>(json_value).unwrap();
     }
 }

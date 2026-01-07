@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.2.0 - 2026-01-07
+
+### Updated
+
+- dependencies
+
+### Added
+
+- `dreps`
+- `dreps_by_id`
+- `dreps_delegators`
+- `dreps_metadata`
+- `dreps_updates`
+- `dreps_votes`
+- `proposals`
+- `proposals_by_id`
+- `proposals_parameters`
+- `proposals_withdrawals`
+- `proposals_votes`
+- `proposals_metadata`
+- `accounts_utxos`
+- `accounts_utxos_asset`
+- `accounts_transactions`
+- `blocks_latest_txs_cbor`
+- `blocks_txs_cbor`
+- `pools_votes`
+- `transactions_required_signers`
+- `utils_tx_evaluate_utxos`
+
+### Fixed
+
+- `transactions_pool_updates` now returns correct type `TxContentPoolCertsInner`
+
 ## 1.1.0 - 2025-08-05
 
 ## Changed
