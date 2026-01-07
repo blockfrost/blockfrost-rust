@@ -39,6 +39,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `transactions_pool_updates` now returns correct type `TxContentPoolCertsInner`
+- `scripts_datum_hash_cbor` now uses correct url path `/scripts/datum/{hash}/cbor`
+- `scripts_hash_json` now returns `ScriptJson`
+- `scripts_hash_cbor` now returns `ScriptCbor`
+
+### Changed
+
+- `epochs_blocks` and `epochs_blocks_by_pool` now support pagination
 
 ## 1.1.0 - 2025-08-05
 

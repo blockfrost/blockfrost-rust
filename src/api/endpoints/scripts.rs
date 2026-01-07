@@ -1,6 +1,7 @@
 use crate::*;
 use blockfrost_openapi::models::{
-    script::Script, script_redeemers_inner::ScriptRedeemersInner, scripts_inner::ScriptsInner,
+    script::Script, script_cbor::ScriptCbor, script_json::ScriptJson,
+    script_redeemers_inner::ScriptRedeemersInner, scripts_inner::ScriptsInner,
 };
 
 impl BlockfrostAPI {
@@ -13,12 +14,12 @@ impl BlockfrostAPI {
             .await
     }
 
-    pub async fn scripts_hash_json(&self, script_hash: &str) -> BlockfrostResult<ScriptsInner> {
+    pub async fn scripts_hash_json(&self, script_hash: &str) -> BlockfrostResult<ScriptJson> {
         self.call_endpoint(format!("/scripts/{script_hash}/json").as_str())
             .await
     }
 
-    pub async fn scripts_hash_cbor(&self, script_hash: &str) -> BlockfrostResult<ScriptsInner> {
+    pub async fn scripts_hash_cbor(&self, script_hash: &str) -> BlockfrostResult<ScriptCbor> {
         self.call_endpoint(format!("/scripts/{script_hash}/cbor").as_str())
             .await
     }
@@ -43,7 +44,7 @@ impl BlockfrostAPI {
     pub async fn scripts_datum_hash_cbor(
         &self, datum_hash: &str,
     ) -> BlockfrostResult<serde_json::Value> {
-        self.call_endpoint(format!("/scripts/{datum_hash}/cbor").as_str())
+        self.call_endpoint(format!("/scripts/datum/{datum_hash}/cbor").as_str())
             .await
     }
 }

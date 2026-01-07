@@ -114,29 +114,6 @@ mod tests {
     }
 
     #[test]
-    fn test_test_metadata_txs_labels() {
-        let json_value = json!([
-          {
-            "label": "1990",
-            "cip10": null,
-            "count": "1"
-          },
-          {
-            "label": "1967",
-            "cip10": "nut.link metadata oracles registry",
-            "count": "3"
-          },
-          {
-            "label": "1968",
-            "cip10": "nut.link metadata oracles data points",
-            "count": "16321"
-          }
-        ]);
-
-        serde_json::from_value::<Vec<TxMetadataLabelsInner>>(json_value).unwrap();
-    }
-
-    #[test]
     fn test_metadata_txs_by_label_cbor() {
         let json_value = json!([
           {

@@ -56,16 +56,21 @@ impl BlockfrostAPI {
         .await
     }
 
-    pub async fn epochs_blocks(&self, number: i32) -> BlockfrostResult<Vec<String>> {
-        self.call_endpoint(format!("/epochs/{number}/blocks").as_str())
+    pub async fn epochs_blocks(
+        &self, number: i32, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<String>> {
+        self.call_paged_endpoint(format!("/epochs/{number}/blocks").as_str(), pagination)
             .await
     }
 
     pub async fn epochs_blocks_by_pool(
-        &self, number: i32, pool_id: &str,
+        &self, number: i32, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<String>> {
-        self.call_endpoint(format!("/epochs/{number}/blocks/{pool_id}").as_str())
-            .await
+        self.call_paged_endpoint(
+            format!("/epochs/{number}/blocks/{pool_id}").as_str(),
+            pagination,
+        )
+        .await
     }
 }
 

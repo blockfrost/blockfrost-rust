@@ -36,33 +36,33 @@ where
 pub(crate) async fn send_request_unprocessed(
     request: RequestBuilder, retry_settings: RetrySettings,
 ) -> reqwest::Result<Response> {
+    let retry_codes = [
+        StatusCode::REQUEST_TIMEOUT,
+        StatusCode::PAYLOAD_TOO_LARGE,
+        StatusCode::TOO_MANY_REQUESTS,
+        StatusCode::INTERNAL_SERVER_ERROR,
+        StatusCode::BAD_GATEWAY,
+        StatusCode::SERVICE_UNAVAILABLE,
+        StatusCode::GATEWAY_TIMEOUT,
+    ];
+
+    // Try all attempts except the last one (cloning the request each time)
     for _ in 1..retry_settings.amount {
-        let request = clone_request(&request);
-        let response = request.send().await;
-        let retry_codes = [
-            StatusCode::REQUEST_TIMEOUT,
-            StatusCode::PAYLOAD_TOO_LARGE,
-            StatusCode::TOO_MANY_REQUESTS,
-            StatusCode::INTERNAL_SERVER_ERROR,
-            StatusCode::BAD_GATEWAY,
-            StatusCode::SERVICE_UNAVAILABLE,
-            StatusCode::GATEWAY_TIMEOUT,
-        ];
+        let response = clone_request(&request).send().await;
 
-        if let Err(err) = &response {
-            if let Some(status) = err.status() {
-                if retry_codes.contains(&status) {
-                    Delay::new(retry_settings.delay).await;
-                    continue;
-                }
-            }
+        let should_retry = match &response {
+            Ok(resp) => retry_codes.contains(&resp.status()),
+            Err(err) => err.status().is_some_and(|s| retry_codes.contains(&s)),
+        };
 
-            return response;
+        if should_retry {
+            Delay::new(retry_settings.delay).await;
         } else {
             return response;
         }
     }
 
+    // final attempt
     request.send().await
 }
 
@@ -214,5 +214,100 @@ mod tests {
                 .unwrap();
 
         assert_eq!(vec![1, 2, 3, 4, 5, 6, 7, 8, 9], result);
+    }
+
+    #[tokio::test]
+    async fn test_success_returns_immediately() {
+        let server = MockServer::start();
+        let client = Client::new();
+        let retry_settings = RetrySettings {
+            amount: 3,
+            delay: std::time::Duration::from_millis(10),
+        };
+
+        let mock = server.mock(|when, then| {
+            when.method(GET).path("/test");
+            then.status(200).body("ok");
+        });
+
+        let request = client.get(server.url("/test"));
+        let response = send_request_unprocessed(request, retry_settings)
+            .await
+            .unwrap();
+
+        // 200 should hit only once - no retry for success
+        assert_eq!(response.status(), 200);
+        assert_eq!(mock.calls(), 1);
+    }
+
+    #[tokio::test]
+    async fn test_no_retry_on_client_error() {
+        let server = MockServer::start();
+        let client = Client::new();
+        let retry_settings = RetrySettings {
+            amount: 3,
+            delay: std::time::Duration::from_millis(10),
+        };
+
+        let mock = server.mock(|when, then| {
+            when.method(GET).path("/test");
+            then.status(404).body("not found");
+        });
+
+        let request = client.get(server.url("/test"));
+        let response = send_request_unprocessed(request, retry_settings)
+            .await
+            .unwrap();
+
+        // 404 should hit only once - no retry for success
+        assert_eq!(response.status(), 404);
+        assert_eq!(mock.calls(), 1);
+    }
+
+    #[tokio::test]
+    async fn test_retry_on_server_error() {
+        let server = MockServer::start();
+        let client = Client::new();
+        let retry_settings = RetrySettings {
+            amount: 3,
+            delay: std::time::Duration::from_millis(10),
+        };
+
+        let mock = server.mock(|when, then| {
+            when.method(GET).path("/test");
+            then.status(503);
+        });
+
+        let request = client.get(server.url("/test"));
+        let response = send_request_unprocessed(request, retry_settings)
+            .await
+            .unwrap();
+
+        // 503 is retryable, should hit exactly `amount` times
+        assert_eq!(response.status(), 503);
+        assert_eq!(mock.calls(), 3);
+    }
+
+    #[tokio::test]
+    async fn test_single_attempt_no_retry() {
+        let server = MockServer::start();
+        let client = Client::new();
+        let retry_settings = RetrySettings {
+            amount: 1,
+            delay: std::time::Duration::from_millis(10),
+        };
+
+        let mock = server.mock(|when, then| {
+            when.method(GET).path("/test");
+            then.status(503);
+        });
+
+        let request = client.get(server.url("/test"));
+        let response = send_request_unprocessed(request, retry_settings)
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), 503);
+        assert_eq!(mock.calls(), 1);
     }
 }
