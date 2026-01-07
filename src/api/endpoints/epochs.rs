@@ -6,25 +6,30 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Return the information about the latest epoch.
     pub async fn epochs_latest(&self) -> BlockfrostResult<EpochContent> {
         self.call_endpoint("/epochs/latest".to_string().as_str())
             .await
     }
 
+    /// Return the protocol parameters for the latest epoch.
     pub async fn epochs_latest_parameters(&self) -> BlockfrostResult<EpochParamContent> {
         self.call_endpoint("/epochs/latest/parameters").await
     }
 
+    /// Return the content of a specific epoch.
     pub async fn epochs_by_number(&self, number: i32) -> BlockfrostResult<EpochContent> {
         self.call_endpoint(format!("/epochs/{number}").as_str())
             .await
     }
 
+    /// Return the protocol parameters for a specific epoch.
     pub async fn epochs_parameters(&self, number: i32) -> BlockfrostResult<EpochParamContent> {
         self.call_endpoint(format!("/epochs/{number}/parameters").as_str())
             .await
     }
 
+    /// Return the list of epochs following a specific epoch.
     pub async fn epochs_next(
         &self, number: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<EpochContent>> {
@@ -32,6 +37,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the list of epochs preceding a specific epoch.
     pub async fn epochs_previous(
         &self, number: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<EpochContent>> {
@@ -39,6 +45,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the active stake distribution for a specific epoch.
     pub async fn epochs_stakes(
         &self, number: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<EpochStakeContentInner>> {
@@ -46,6 +53,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the stake distribution for a specific pool in an epoch.
     pub async fn epochs_stakes_by_pool(
         &self, number: i32, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<EpochStakePoolContentInner>> {
@@ -56,6 +64,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the blocks minted within a specific epoch.
     pub async fn epochs_blocks(
         &self, number: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<String>> {
@@ -63,6 +72,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the blocks minted by a specific pool within an epoch.
     pub async fn epochs_blocks_by_pool(
         &self, number: i32, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<String>> {

@@ -15,11 +15,7 @@ use reqwest::{header::HeaderValue, Body, Method};
 use serde_json::from_str as json_from;
 
 impl BlockfrostAPI {
-    /// Obtain information about Move Instantaneous Rewards (MIRs) of a specific transaction.
-    ///
-    /// OpenAPI endpoint reference: [`/accounts/{stake_address}/mirs`].
-    ///
-    /// [`/accounts/{stake_address}/mirs`]: https://docs.blockfrost.io/#tag/Cardano-Transactions/paths/~1tx~1submit/post
+    /// Submit a signed transaction to the network.
     pub async fn transactions_submit(&self, transaction_data: Vec<u8>) -> BlockfrostResult<String> {
         let body = Body::from(transaction_data);
         let endpoint_suffix = "/tx/submit";
@@ -44,15 +40,18 @@ impl BlockfrostAPI {
         json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
+    /// Return content of the requested transaction.
     pub async fn transaction_by_hash(&self, hash: &str) -> BlockfrostResult<TxContent> {
         self.call_endpoint(format!("/txs/{hash}").as_str()).await
     }
 
+    /// Return the inputs and UTXOs of the specific transaction.
     pub async fn transactions_utxos(&self, hash: &str) -> BlockfrostResult<TxContentUtxo> {
         self.call_endpoint(format!("/txs/{hash}/utxos").as_str())
             .await
     }
 
+    /// Obtain information about (de)registration of stake addresses within a transaction.
     pub async fn transactions_stakes(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentStakeAddrInner>> {
@@ -60,6 +59,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Obtain information about delegation certificates of a specific transaction.
     pub async fn transactions_delegations(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentDelegationsInner>> {
@@ -67,6 +67,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Obtain information about withdrawals of a specific transaction.
     pub async fn transactions_withdrawals(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentWithdrawalsInner>> {
@@ -74,11 +75,13 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Obtain information about Move Instantaneous Rewards (MIRs) of a specific transaction.
     pub async fn transactions_mirs(&self, hash: &str) -> BlockfrostResult<Vec<TxContentMirsInner>> {
         self.call_endpoint(format!("/txs/{hash}/mirs").as_str())
             .await
     }
 
+    /// Obtain information about stake pool registration and update certificates of a specific transaction.
     pub async fn transactions_pool_updates(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentPoolCertsInner>> {
@@ -86,6 +89,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Obtain information about stake pool retirements within a specific transaction.
     pub async fn transactions_pool_retires(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentPoolRetiresInner>> {
@@ -93,6 +97,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Obtain the transaction metadata.
     pub async fn transactions_metadata(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentMetadataInner>> {
@@ -100,6 +105,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Obtain the transaction metadata in CBOR.
     pub async fn transactions_metadata_cbor(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentMetadataCborInner>> {
@@ -107,11 +113,13 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the transaction content in CBOR.
     pub async fn transactions_cbor(&self, hash: &str) -> BlockfrostResult<TxContentCbor> {
         self.call_endpoint(format!("/txs/{hash}/cbor").as_str())
             .await
     }
 
+    /// Obtain the transaction redeemers.
     pub async fn transactions_redeemers(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentRedeemersInner>> {
@@ -119,6 +127,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Obtain the required signers of a specific transaction.
     pub async fn transactions_required_signers(
         &self, hash: &str,
     ) -> BlockfrostResult<Vec<TxContentRequiredSignersInner>> {

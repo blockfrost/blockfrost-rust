@@ -5,25 +5,30 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Return the list of scripts.
     pub async fn scripts(&self, pagination: Pagination) -> BlockfrostResult<Vec<ScriptsInner>> {
         self.call_paged_endpoint("/scripts", pagination).await
     }
 
+    /// Return information about a specific script.
     pub async fn scripts_by_id(&self, script_hash: &str) -> BlockfrostResult<Script> {
         self.call_endpoint(format!("/scripts/{script_hash}").as_str())
             .await
     }
 
+    /// Return the JSON representation of a timelock script.
     pub async fn scripts_hash_json(&self, script_hash: &str) -> BlockfrostResult<ScriptJson> {
         self.call_endpoint(format!("/scripts/{script_hash}/json").as_str())
             .await
     }
 
+    /// Return the CBOR representation of a Plutus script.
     pub async fn scripts_hash_cbor(&self, script_hash: &str) -> BlockfrostResult<ScriptCbor> {
         self.call_endpoint(format!("/scripts/{script_hash}/cbor").as_str())
             .await
     }
 
+    /// Return the list of redeemers for a specific script.
     pub async fn scripts_redeemers(
         &self, script_hash: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<ScriptRedeemersInner>> {
@@ -34,6 +39,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the JSON value of a datum by its hash.
     pub async fn scripts_datum_hash(
         &self, datum_hash: &str,
     ) -> BlockfrostResult<serde_json::Value> {
@@ -41,6 +47,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the CBOR representation of a datum by its hash.
     pub async fn scripts_datum_hash_cbor(
         &self, datum_hash: &str,
     ) -> BlockfrostResult<serde_json::Value> {

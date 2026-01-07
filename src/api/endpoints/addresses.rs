@@ -8,11 +8,13 @@ use blockfrost_openapi::models::{
 use crate::*;
 
 impl BlockfrostAPI {
+    /// Return information about a specific address.
     pub async fn addresses(&self, address: &str) -> BlockfrostResult<AddressContent> {
         self.call_endpoint(format!("/addresses/{address}").as_str())
             .await
     }
 
+    /// Return extended information about a specific address.
     pub async fn addresses_extended(
         &self, address: &str,
     ) -> BlockfrostResult<AddressContentExtended> {
@@ -20,11 +22,13 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the total sum of all transaction inputs and outputs for a specific address.
     pub async fn addresses_total(&self, address: &str) -> BlockfrostResult<AddressContentTotal> {
         self.call_endpoint(format!("/addresses/{address}/total").as_str())
             .await
     }
 
+    /// Return the UTXOs for a specific address.
     pub async fn addresses_utxos(
         &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AddressUtxoContentInner>> {
@@ -32,6 +36,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the UTXOs for a specific address filtered by asset.
     pub async fn addresses_utxos_asset(
         &self, address: &str, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AddressUtxoContentInner>> {
@@ -42,6 +47,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the transactions for a specific address.
     pub async fn addresses_transactions(
         &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AddressTransactionsContentInner>> {

@@ -8,16 +8,19 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Return the list of registered delegated representatives.
     pub async fn dreps(&self, pagination: Pagination) -> BlockfrostResult<Vec<DrepsInner>> {
         self.call_paged_endpoint("/governance/dreps", pagination)
             .await
     }
 
+    /// Return information about a specific delegated representative.
     pub async fn dreps_by_id(&self, drep_id: &str) -> BlockfrostResult<Drep> {
         self.call_endpoint(format!("/governance/dreps/{drep_id}").as_str())
             .await
     }
 
+    /// Return the list of delegators for a specific DRep.
     pub async fn dreps_delegators(
         &self, drep_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<DrepDelegatorsInner>> {
@@ -28,11 +31,13 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the metadata for a specific DRep.
     pub async fn dreps_metadata(&self, drep_id: &str) -> BlockfrostResult<DrepMetadata> {
         self.call_endpoint(format!("/governance/dreps/{drep_id}/metadata").as_str())
             .await
     }
 
+    /// Return the history of updates for a specific DRep.
     pub async fn dreps_updates(
         &self, drep_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<DrepUpdatesInner>> {
@@ -43,6 +48,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the votes cast by a specific DRep.
     pub async fn dreps_votes(
         &self, drep_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<DrepVotesInner>> {
@@ -53,11 +59,13 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the list of governance proposals.
     pub async fn proposals(&self, pagination: Pagination) -> BlockfrostResult<Vec<ProposalsInner>> {
         self.call_paged_endpoint("/governance/proposals", pagination)
             .await
     }
 
+    /// Return information about a specific governance proposal.
     pub async fn proposals_by_id(
         &self, tx_hash: &str, cert_index: i32,
     ) -> BlockfrostResult<Proposal> {
@@ -65,6 +73,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the proposed protocol parameters for a specific proposal.
     pub async fn proposals_parameters(
         &self, tx_hash: &str, cert_index: i32,
     ) -> BlockfrostResult<ProposalParameters> {
@@ -74,6 +83,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the withdrawals associated with a specific proposal.
     pub async fn proposals_withdrawals(
         &self, tx_hash: &str, cert_index: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<ProposalWithdrawalsInner>> {
@@ -84,6 +94,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the votes cast on a specific proposal.
     pub async fn proposals_votes(
         &self, tx_hash: &str, cert_index: i32, pagination: Pagination,
     ) -> BlockfrostResult<Vec<ProposalVotesInner>> {
@@ -94,6 +105,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the metadata for a specific proposal.
     pub async fn proposals_metadata(
         &self, tx_hash: &str, cert_index: i32,
     ) -> BlockfrostResult<ProposalMetadata> {

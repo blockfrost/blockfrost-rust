@@ -5,20 +5,24 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Return the latest block available to the backends.
     pub async fn blocks_latest(&self) -> BlockfrostResult<BlockContent> {
         self.call_endpoint("/blocks/latest").await
     }
 
+    /// Return the content of a specific block.
     pub async fn blocks_by_id(&self, hash_or_number: &str) -> BlockfrostResult<BlockContent> {
         self.call_endpoint(format!("/blocks/{hash_or_number}").as_str())
             .await
     }
 
+    /// Return the content of a block for a specific slot.
     pub async fn blocks_slot(&self, slot_number: i64) -> BlockfrostResult<BlockContent> {
         self.call_endpoint(format!("/blocks/slot/{slot_number}").as_str())
             .await
     }
 
+    /// Return the content of a block for a specific slot in an epoch.
     pub async fn blocks_by_epoch_and_slot(
         &self, epoch_number: i32, slot_number: i64,
     ) -> BlockfrostResult<BlockContent> {
@@ -26,11 +30,13 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the transactions within the latest block.
     pub async fn blocks_latest_txs(&self, pagination: Pagination) -> BlockfrostResult<Vec<String>> {
         self.call_paged_endpoint("/blocks/latest/txs", pagination)
             .await
     }
 
+    /// Return the list of blocks following a specific block.
     pub async fn blocks_next(
         &self, hash_or_number: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<BlockContent>> {
@@ -41,6 +47,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the list of blocks preceding a specific block.
     pub async fn blocks_previous(
         &self, hash_or_number: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<BlockContent>> {
@@ -51,6 +58,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the transactions within a specific block.
     pub async fn blocks_txs(
         &self, hash_or_number: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<String>> {
@@ -58,6 +66,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the list of addresses affected in a specific block.
     pub async fn blocks_affected_addresses(
         &self, hash_or_number: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<BlockContentAddressesInner>> {
@@ -68,6 +77,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the transactions within the latest block in CBOR format.
     pub async fn blocks_latest_txs_cbor(
         &self, pagination: Pagination,
     ) -> BlockfrostResult<Vec<BlockContentTxsCborInner>> {
@@ -75,6 +85,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the transactions within a specific block in CBOR format.
     pub async fn blocks_txs_cbor(
         &self, hash_or_number: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<BlockContentTxsCborInner>> {

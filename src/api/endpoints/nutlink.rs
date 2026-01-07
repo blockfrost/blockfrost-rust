@@ -6,11 +6,13 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Return the metadata for a Nut.link oracle address.
     pub async fn nutlink_address(&self, address: &str) -> BlockfrostResult<NutlinkAddress> {
         self.call_endpoint(format!("/nutlink/{address}").as_str())
             .await
     }
 
+    /// Return the list of tickers for a Nut.link oracle address.
     pub async fn nutlink_address_tickers(
         &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkAddressTickersInner>> {
@@ -18,6 +20,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the records for a specific ticker from a Nut.link oracle address.
     pub async fn nutlink_address_ticker_by_id(
         &self, address: &str, ticker: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkAddressTickerInner>> {
@@ -28,6 +31,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Return the records for a specific ticker from all Nut.link oracle addresses.
     pub async fn nutlink_ticker_by_id(
         &self, ticker: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<NutlinkTickersTickerInner>> {

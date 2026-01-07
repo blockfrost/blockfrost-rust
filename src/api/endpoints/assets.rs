@@ -6,15 +6,18 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Return information about a specific asset.
     pub async fn assets_by_id(&self, asset: &str) -> BlockfrostResult<Asset> {
         self.call_endpoint(format!("/assets/{asset}").as_str())
             .await
     }
 
+    /// Return a list of all assets.
     pub async fn assets(&self, pagination: Pagination) -> BlockfrostResult<Vec<AssetsInner>> {
         self.call_paged_endpoint("/assets", pagination).await
     }
 
+    /// Return the history of a specific asset.
     pub async fn assets_history(
         &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetHistoryInner>> {
@@ -22,6 +25,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the transactions for a specific asset.
     pub async fn assets_transactions(
         &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetTransactionsInner>> {
@@ -29,6 +33,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the addresses holding a specific asset.
     pub async fn assets_addresses(
         &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetAddressesInner>> {
@@ -36,6 +41,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the list of assets under a specific policy.
     pub async fn assets_policy_by_id(
         &self, policy_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetPolicyInner>> {

@@ -2,10 +2,12 @@ use crate::*;
 use blockfrost_openapi::models::{network::Network, network_eras_inner::NetworkErasInner};
 
 impl BlockfrostAPI {
+    /// Return detailed network information.
     pub async fn network(&self) -> BlockfrostResult<Network> {
         self.call_endpoint("/network").await
     }
 
+    /// Return the list of network eras.
     pub async fn network_eras(&self) -> BlockfrostResult<Vec<NetworkErasInner>> {
         self.call_endpoint("/network/eras").await
     }

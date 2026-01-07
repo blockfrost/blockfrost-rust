@@ -2,6 +2,7 @@ use crate::*;
 use blockfrost_openapi::models::genesis_content::GenesisContent;
 
 impl BlockfrostAPI {
+    /// Return the network genesis parameters.
     pub async fn genesis(&self) -> BlockfrostResult<GenesisContent> {
         self.call_endpoint("/genesis").await
     }

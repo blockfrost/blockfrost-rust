@@ -8,20 +8,24 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Return information about a specific stake pool.
     pub async fn pools_by_id(&self, pool_id: &str) -> BlockfrostResult<Pool> {
         self.call_endpoint(format!("/pools/{pool_id}").as_str())
             .await
     }
 
+    /// Return the metadata for a specific stake pool.
     pub async fn pools_metadata(&self, pool_id: &str) -> BlockfrostResult<PoolMetadata> {
         self.call_endpoint(format!("/pools/{pool_id}/metadata").as_str())
             .await
     }
 
+    /// Return the list of all registered stake pools.
     pub async fn pools(&self, pagination: Pagination) -> BlockfrostResult<Vec<String>> {
         self.call_paged_endpoint("/pools", pagination).await
     }
 
+    /// Return the list of all registered stake pools with extended information.
     pub async fn pools_extended(
         &self, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolListExtendedInner>> {
@@ -29,12 +33,14 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the list of all retired stake pools.
     pub async fn pools_retired(
         &self, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolListRetireInner>> {
         self.call_paged_endpoint("/pools/retired", pagination).await
     }
 
+    /// Return the list of stake pools that are retiring.
     pub async fn pools_retiring(
         &self, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolListRetireInner>> {
@@ -42,6 +48,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the history of a specific stake pool.
     pub async fn pools_history(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolHistoryInner>> {
@@ -49,6 +56,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the relays for a specific stake pool.
     pub async fn pools_relays(
         &self, pool_id: &str,
     ) -> BlockfrostResult<Vec<TxContentPoolCertsInnerRelaysInner>> {
@@ -56,6 +64,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the delegators for a specific stake pool.
     pub async fn pools_delegators(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolDelegatorsInner>> {
@@ -63,6 +72,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the blocks minted by a specific stake pool.
     pub async fn pools_blocks(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<String>> {
@@ -70,6 +80,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the updates for a specific stake pool.
     pub async fn pools_updates(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolUpdatesInner>> {
@@ -77,6 +88,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Return the votes cast by a specific stake pool.
     pub async fn pools_votes(
         &self, pool_id: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<PoolVotesInner>> {

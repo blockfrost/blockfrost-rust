@@ -4,10 +4,12 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Return the usage metrics for the Blockfrost API.
     pub async fn metrics(&self, pagination: Pagination) -> BlockfrostResult<Vec<MetricsInner>> {
         self.call_paged_endpoint("/metrics", pagination).await
     }
 
+    /// Return the usage metrics for each Blockfrost API endpoint.
     pub async fn metrics_endpoints(
         &self, pagination: Pagination,
     ) -> BlockfrostResult<Vec<MetricsEndpointsInner>> {

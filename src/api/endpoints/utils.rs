@@ -4,6 +4,7 @@ use reqwest::{header::HeaderValue, Body, Method};
 use serde_json::{from_str as json_from, Value};
 
 impl BlockfrostAPI {
+    /// Derive an address from an xpub key.
     pub async fn derive_address(
         &self, xpub: &str, role: &str, index: &str,
     ) -> BlockfrostResult<UtilsAddressesXpub> {
@@ -11,6 +12,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// Submit a transaction for execution units evaluation.
     pub async fn utils_tx_evaluate(&self, transaction_data: Vec<u8>) -> BlockfrostResult<Value> {
         let body = Body::from(transaction_data);
         let url = Url::from_endpoint(self.base_url.as_str(), "/utils/txs/evaluate")?;
@@ -35,6 +37,7 @@ impl BlockfrostAPI {
         json_from(&text).map_err(|reason| json_error(url, text, reason))
     }
 
+    /// Submit a transaction for execution units evaluation with additional UTXOs.
     pub async fn utils_tx_evaluate_utxos(&self, request_body: Value) -> BlockfrostResult<Value> {
         let body = Body::from(request_body.to_string());
         let url = Url::from_endpoint(self.base_url.as_str(), "/utils/txs/evaluate/utxos")?;

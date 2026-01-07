@@ -14,6 +14,7 @@ use blockfrost_openapi::models::{
 };
 
 impl BlockfrostAPI {
+    /// Obtain information about a specific stake account.
     pub async fn accounts(&self, stake_address: &str) -> BlockfrostResult<AccountContent> {
         self.call_endpoint(format!("/accounts/{stake_address}").as_str())
             .await
@@ -41,6 +42,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Delegation history of a specific account.
     pub async fn accounts_delegations(
         &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountDelegationContentInner>> {
@@ -51,6 +53,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Registration history of a specific account.
     pub async fn accounts_registrations(
         &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountRegistrationContentInner>> {
@@ -61,6 +64,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Withdrawal history of a specific account.
     pub async fn accounts_withdrawals(
         &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountWithdrawalContentInner>> {
@@ -71,6 +75,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// MIR history of a specific account.
     pub async fn accounts_mirs(
         &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountMirContentInner>> {
@@ -81,16 +86,18 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Addresses associated with a specific account.
     pub async fn accounts_addresses(
         &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountAddressesContentInner>> {
         self.call_paged_endpoint(
-            format!("/accounts/{stake_address}/addresses",).as_str(),
+            format!("/accounts/{stake_address}/addresses").as_str(),
             pagination,
         )
         .await
     }
 
+    /// Assets associated with addresses of a specific account.
     pub async fn accounts_addresses_assets(
         &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountAddressesAssetsInner>> {
@@ -101,6 +108,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Sum of all funds for a specific account.
     pub async fn accounts_addresses_total(
         &self, stake_address: &str,
     ) -> BlockfrostResult<AccountAddressesTotal> {
@@ -108,6 +116,7 @@ impl BlockfrostAPI {
             .await
     }
 
+    /// UTXOs of a specific account.
     pub async fn accounts_utxos(
         &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountUtxoContentInner>> {
@@ -118,6 +127,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// UTXOs of a specific account filtered by asset.
     pub async fn accounts_utxos_asset(
         &self, stake_address: &str, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountUtxoContentInner>> {
@@ -128,6 +138,7 @@ impl BlockfrostAPI {
         .await
     }
 
+    /// Transactions of a specific account.
     pub async fn accounts_transactions(
         &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountTransactionsContentInner>> {
