@@ -190,12 +190,14 @@ mod tests {
             {
                 "tx_hash": "6804edf9712d2b619edb6ac86861fe93a730693183a262b165fcc1ba1bc99cad",
                 "cert_index": 0,
-                "action": "registered"
+                "action": "registered",
+                "deposit": "500000000"
             },
             {
                 "tx_hash": "9c190bc1ac88b2ab0c05a82d7de8b71b67a9316377e865748a89d4426c0d3005",
                 "cert_index": 0,
-                "action": "deregistered"
+                "action": "deregistered",
+                "deposit": "500000000"
             }
         ]);
 

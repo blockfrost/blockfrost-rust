@@ -35,7 +35,7 @@ and create a new project to receive an API key.
 Add to your project's `Cargo.toml`:
 
 ```toml
-blockfrost = "1.2.3"
+blockfrost = "1.2.4"
 ```
 
 ## Examples
