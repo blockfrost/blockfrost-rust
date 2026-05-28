@@ -1,6 +1,6 @@
 [package]
 name = "blockfrost"
-version = "1.2.3"
+version = "1.2.4"
 edition = "2021"
 keywords = ["blockfrost", "blockchain", "cardano", "ipfs", "nft"]
 categories = ["api-bindings", "asynchronous", "cryptography::cryptocurrencies"]
@@ -10,7 +10,7 @@ repository = "https://github.com/blockfrost/blockfrost-rust"
 homepage = "https://blockfrost.io"
 
 [dependencies]
-blockfrost-openapi = { version = "0.1.87", default-features = false }
+blockfrost-openapi = { version = "0.1.88" }
 futures = "0.3.31"
 futures-timer = "3.0.3"
 reqwest = { version = "0.13.2", default-features = false, features = [
@@ -32,8 +32,8 @@ tokio = { version = "1.49.0", features = ["macros", "rt-multi-thread"] }
 
 [features]
 default = ["default-tls"]
-default-tls = ["reqwest/default-tls", "blockfrost-openapi/rustls"]
-native-tls = ["reqwest/native-tls", "blockfrost-openapi/native-tls"]
+default-tls = ["reqwest/default-tls"]
+native-tls = ["reqwest/native-tls"]
 rustls = ["reqwest/rustls"]
 
 # deprecated features: use rustls instead, remove those features while bumping major versions.

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.2.4 - 2026-05-28
+
+### Added
+
+- Re-export of `blockfrost-openapi` crate, so all generated types are accessible via `blockfrost::blockfrost_openapi::models::…` without a second dependency
+
+### Changed
+
+- Updated blockfrost-openapi to 0.1.88
+
 ## 1.2.3 - 2026-04-01
 
 ### Changed

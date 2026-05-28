@@ -256,6 +256,7 @@ mod tests {
             {
                 "tx_hash": "2dd15e0ef6e6a17841cb9541c27724072ce4d4b79b91e58432fbaa32d9572531",
                 "action": "registered",
+                "deposit": "2000000",
                 "tx_slot": 42000000,
                 "block_time": 1635505891,
                 "block_height": 69
@@ -263,6 +264,7 @@ mod tests {
             {
                 "tx_hash": "1a0570af966fb355a7160e4f82d5a80b8681b7955f5d44bec0dde628516157f0",
                 "action": "deregistered",
+                "deposit": "2000000",
                 "tx_slot": 43000000,
                 "block_time": 1635505892,
                 "block_height": 70
