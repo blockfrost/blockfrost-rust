@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Inclusive `from`/`to` block cursor support for account, address, and asset transaction endpoints
+
 ## 1.2.4 - 2026-05-28
 
 ### Added

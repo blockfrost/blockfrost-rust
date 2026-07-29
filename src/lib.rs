@@ -16,6 +16,7 @@ pub use api::*;
 pub use blockfrost_openapi;
 pub use error::*;
 pub use ipfs::BlockfrostIPFS;
+pub use pagination::CursorPagination;
 pub use pagination::Order;
 pub use pagination::Pagination;
 pub use settings::*;

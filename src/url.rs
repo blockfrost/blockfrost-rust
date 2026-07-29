@@ -1,5 +1,6 @@
 use crate::{
-    pagination::Pagination, CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
+    pagination::{CursorPagination, Pagination},
+    CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
 };
 use std::error::Error;
 use url::{form_urlencoded, Url as UrlI};
@@ -31,11 +32,38 @@ impl Url {
         Ok(url.to_string())
     }
 
+    pub fn from_cursor_paginated_endpoint(
+        base_url: &str, endpoint_url: &str, pagination: &CursorPagination,
+    ) -> Result<String, Box<dyn Error>> {
+        let mut url = Self::create_base_url(base_url, endpoint_url)?;
+        let mut query_pairs = form_urlencoded::Serializer::new(String::new());
+
+        query_pairs.append_pair("page", pagination.pagination.page.to_string().as_str());
+        query_pairs.append_pair("count", pagination.pagination.count.to_string().as_str());
+        query_pairs.append_pair("order", pagination.pagination.order_to_string().as_str());
+
+        if let Some(from) = &pagination.from {
+            query_pairs.append_pair("from", from);
+        }
+        if let Some(to) = &pagination.to {
+            query_pairs.append_pair("to", to);
+        }
+
+        url.set_query(Some(&query_pairs.finish()));
+
+        Ok(url.to_string())
+    }
+
     pub fn generate_batch(
         url: &str, batch_size: usize, start: usize, pagination: Pagination,
     ) -> Result<Vec<String>, Box<dyn Error>> {
         let mut result = Vec::new();
         let url = UrlI::parse(url)?;
+        let extra_query_pairs: Vec<(String, String)> = url
+            .query_pairs()
+            .filter(|(name, _)| name != "page" && name != "count" && name != "order")
+            .map(|(name, value)| (name.into_owned(), value.into_owned()))
+            .collect();
 
         for page in start..(start + batch_size) {
             let mut query_pairs = form_urlencoded::Serializer::new(String::new());
@@ -43,6 +71,7 @@ impl Url {
             query_pairs.append_pair("page", page.to_string().as_str());
             query_pairs.append_pair("count", pagination.count.to_string().as_str());
             query_pairs.append_pair("order", pagination.order_to_string().as_str());
+            query_pairs.extend_pairs(&extra_query_pairs);
 
             let query = query_pairs.finish();
 
@@ -81,7 +110,7 @@ impl Url {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::pagination::{Order, Pagination};
+    use crate::pagination::{CursorPagination, Order, Pagination};
     use crate::{CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL};
     use rstest::rstest;
 
@@ -143,6 +172,38 @@ mod tests {
     }
 
     #[rstest]
+    #[case(
+        Some("8929261"),
+        Some("9999269:10"),
+        "http://example.com/api/items?page=2&count=5&order=desc&from=8929261&to=9999269%3A10"
+    )]
+    #[case(
+        Some("8929261:3"),
+        None,
+        "http://example.com/api/items?page=2&count=5&order=desc&from=8929261%3A3"
+    )]
+    #[case(
+        None,
+        Some("9999269"),
+        "http://example.com/api/items?page=2&count=5&order=desc&to=9999269"
+    )]
+    fn test_from_cursor_paginated_endpoint(
+        #[case] from: Option<&str>, #[case] to: Option<&str>, #[case] expected: &str,
+    ) {
+        let pagination = CursorPagination {
+            pagination: Pagination::new(Order::Desc, 2, 5),
+            from: from.map(String::from),
+            to: to.map(String::from),
+        };
+
+        let result =
+            Url::from_cursor_paginated_endpoint("http://example.com", "api/items", &pagination)
+                .unwrap();
+
+        assert_eq!(result, expected);
+    }
+
+    #[rstest]
     #[case("http://example.com/api/data", 3, 1, 10, Order::Asc,
            vec![
                "http://example.com/api/data?page=1&count=10&order=asc",
@@ -162,6 +223,26 @@ mod tests {
         let urls = Url::generate_batch(base, batch_size, page_start, pagination).unwrap();
         let expected: Vec<String> = expected.into_iter().map(String::from).collect();
         assert_eq!(urls, expected);
+    }
+
+    #[test]
+    fn test_generate_batch_preserves_cursor_query_parameters() {
+        let pagination = Pagination::new(Order::Asc, 1, 10);
+        let urls = Url::generate_batch(
+            "http://example.com/api/data?page=1&count=10&order=asc&from=8929261&to=9999269%3A10",
+            2,
+            1,
+            pagination,
+        )
+        .unwrap();
+
+        assert_eq!(
+            urls,
+            vec![
+                "http://example.com/api/data?page=1&count=10&order=asc&from=8929261&to=9999269%3A10",
+                "http://example.com/api/data?page=2&count=10&order=asc&from=8929261&to=9999269%3A10",
+            ]
+        );
     }
 
     #[rstest]

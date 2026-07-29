@@ -1,6 +1,6 @@
 pub(super) mod endpoints;
 use crate::{
-    pagination::Pagination,
+    pagination::{CursorPagination, Pagination},
     request::{fetch_all_pages, send_get_request},
     url::Url,
     utils::build_header_map,
@@ -78,5 +78,86 @@ impl BlockfrostAPI {
         } else {
             send_get_request(&self.client, url, self.settings.retry_settings).await
         }
+    }
+
+    async fn call_cursor_paged_endpoint<T>(
+        &self, url_endpoint: &str, pagination: CursorPagination,
+    ) -> Result<Vec<T>, BlockfrostError>
+    where
+        T: for<'de> serde::Deserialize<'de> + serde::de::DeserializeOwned,
+    {
+        let url =
+            Url::from_cursor_paginated_endpoint(self.base_url.as_str(), url_endpoint, &pagination)?;
+
+        if pagination.pagination.fetch_all {
+            fetch_all_pages(
+                &self.client,
+                &url,
+                self.settings.retry_settings,
+                pagination.pagination,
+                10,
+            )
+            .await
+        } else {
+            send_get_request(&self.client, url, self.settings.retry_settings).await
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::pagination::Pagination;
+    use httpmock::{Method::GET, MockServer};
+
+    #[tokio::test]
+    async fn transaction_endpoints_send_cursor_range() {
+        let server = MockServer::start();
+        let mut settings = BlockFrostSettings::new();
+        settings.base_url = Some(server.base_url());
+        let api = BlockfrostAPI::new("test", settings);
+
+        let account_mock = server.mock(|when, then| {
+            when.method(GET)
+                .path("/accounts/stake_test/transactions")
+                .query_param("from", "8929261")
+                .query_param("to", "9999269:10");
+            then.status(200)
+                .header("Content-Type", "application/json")
+                .body("[]");
+        });
+        let address_mock = server.mock(|when, then| {
+            when.method(GET)
+                .path("/addresses/addr_test/transactions")
+                .query_param("from", "8929261")
+                .query_param("to", "9999269:10");
+            then.status(200)
+                .header("Content-Type", "application/json")
+                .body("[]");
+        });
+        let asset_mock = server.mock(|when, then| {
+            when.method(GET)
+                .path("/assets/asset_test/transactions")
+                .query_param("from", "8929261")
+                .query_param("to", "9999269:10");
+            then.status(200)
+                .header("Content-Type", "application/json")
+                .body("[]");
+        });
+
+        let pagination = Pagination::default().with_range("8929261", "9999269:10");
+        api.accounts_transactions("stake_test", pagination.clone())
+            .await
+            .unwrap();
+        api.addresses_transactions("addr_test", pagination.clone())
+            .await
+            .unwrap();
+        api.assets_transactions("asset_test", pagination)
+            .await
+            .unwrap();
+
+        account_mock.assert();
+        address_mock.assert();
+        asset_mock.assert();
     }
 }

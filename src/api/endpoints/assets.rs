@@ -26,11 +26,17 @@ impl BlockfrostAPI {
     }
 
     /// Return the transactions for a specific asset.
+    ///
+    /// Use [`Pagination::with_from`], [`Pagination::with_to`], or [`Pagination::with_range`] to
+    /// restrict results to an inclusive block range.
     pub async fn assets_transactions(
-        &self, asset: &str, pagination: Pagination,
+        &self, asset: &str, pagination: impl Into<CursorPagination>,
     ) -> BlockfrostResult<Vec<AssetTransactionsInner>> {
-        self.call_paged_endpoint(format!("/assets/{asset}/transactions").as_str(), pagination)
-            .await
+        self.call_cursor_paged_endpoint(
+            format!("/assets/{asset}/transactions").as_str(),
+            pagination.into(),
+        )
+        .await
     }
 
     /// Return the addresses holding a specific asset.
