@@ -1,6 +1,6 @@
 pub(super) mod endpoints;
 use crate::{
-    pagination::{CursorPagination, Pagination},
+    pagination::Pagination,
     request::{fetch_all_pages, send_get_request},
     url::Url,
     utils::build_header_map,
@@ -80,21 +80,24 @@ impl BlockfrostAPI {
         }
     }
 
+    /// Same as [`Self::call_paged_endpoint`], but forwards `from`/`to` block cursors.
+    ///
+    /// Reserved for the endpoints that accept them; see [`crate::BlockCursor`].
     async fn call_cursor_paged_endpoint<T>(
-        &self, url_endpoint: &str, pagination: CursorPagination,
+        &self, url_endpoint: &str, pagination: Pagination,
     ) -> Result<Vec<T>, BlockfrostError>
     where
         T: for<'de> serde::Deserialize<'de> + serde::de::DeserializeOwned,
     {
         let url =
-            Url::from_cursor_paginated_endpoint(self.base_url.as_str(), url_endpoint, &pagination)?;
+            Url::from_cursor_paginated_endpoint(self.base_url.as_str(), url_endpoint, pagination)?;
 
-        if pagination.pagination.fetch_all {
+        if pagination.fetch_all {
             fetch_all_pages(
                 &self.client,
                 &url,
                 self.settings.retry_settings,
-                pagination.pagination,
+                pagination,
                 10,
             )
             .await
@@ -145,11 +148,12 @@ mod tests {
                 .body("[]");
         });
 
-        let pagination = Pagination::default().with_range("8929261", "9999269:10");
-        api.accounts_transactions("stake_test", pagination.clone())
+        // A single Copy `Pagination` is reused across all three calls.
+        let pagination = Pagination::default().with_range(8929261, (9999269, 10));
+        api.accounts_transactions("stake_test", pagination)
             .await
             .unwrap();
-        api.addresses_transactions("addr_test", pagination.clone())
+        api.addresses_transactions("addr_test", pagination)
             .await
             .unwrap();
         api.assets_transactions("asset_test", pagination)

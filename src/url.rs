@@ -1,6 +1,5 @@
 use crate::{
-    pagination::{CursorPagination, Pagination},
-    CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
+    pagination::Pagination, CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL,
 };
 use std::error::Error;
 use url::{form_urlencoded, Url as UrlI};
@@ -15,8 +14,26 @@ impl Url {
         Ok(url.to_string())
     }
 
+    /// Build a paginated URL, ignoring any block cursors set on `pagination`.
+    ///
+    /// This is the variant used by every endpoint that does not accept `from`/`to`.
     pub fn from_paginated_endpoint(
         base_url: &str, endpoint_url: &str, pagination: Pagination,
+    ) -> Result<String, Box<dyn Error>> {
+        Self::build_paginated_url(base_url, endpoint_url, pagination, false)
+    }
+
+    /// Build a paginated URL, appending `from`/`to` when they are set on `pagination`.
+    ///
+    /// Only endpoints documented as accepting block cursors use this variant.
+    pub fn from_cursor_paginated_endpoint(
+        base_url: &str, endpoint_url: &str, pagination: Pagination,
+    ) -> Result<String, Box<dyn Error>> {
+        Self::build_paginated_url(base_url, endpoint_url, pagination, true)
+    }
+
+    fn build_paginated_url(
+        base_url: &str, endpoint_url: &str, pagination: Pagination, with_cursors: bool,
     ) -> Result<String, Box<dyn Error>> {
         let mut url = Self::create_base_url(base_url, endpoint_url)?;
         let mut query_pairs = form_urlencoded::Serializer::new(String::new());
@@ -25,31 +42,18 @@ impl Url {
         query_pairs.append_pair("count", pagination.count.to_string().as_str());
         query_pairs.append_pair("order", pagination.order_to_string().as_str());
 
+        if with_cursors {
+            if let Some(from) = pagination.from {
+                query_pairs.append_pair("from", from.to_string().as_str());
+            }
+            if let Some(to) = pagination.to {
+                query_pairs.append_pair("to", to.to_string().as_str());
+            }
+        }
+
         let query = query_pairs.finish();
 
         url.set_query(Some(&query));
-
-        Ok(url.to_string())
-    }
-
-    pub fn from_cursor_paginated_endpoint(
-        base_url: &str, endpoint_url: &str, pagination: &CursorPagination,
-    ) -> Result<String, Box<dyn Error>> {
-        let mut url = Self::create_base_url(base_url, endpoint_url)?;
-        let mut query_pairs = form_urlencoded::Serializer::new(String::new());
-
-        query_pairs.append_pair("page", pagination.pagination.page.to_string().as_str());
-        query_pairs.append_pair("count", pagination.pagination.count.to_string().as_str());
-        query_pairs.append_pair("order", pagination.pagination.order_to_string().as_str());
-
-        if let Some(from) = &pagination.from {
-            query_pairs.append_pair("from", from);
-        }
-        if let Some(to) = &pagination.to {
-            query_pairs.append_pair("to", to);
-        }
-
-        url.set_query(Some(&query_pairs.finish()));
 
         Ok(url.to_string())
     }
@@ -110,7 +114,7 @@ impl Url {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::pagination::{CursorPagination, Order, Pagination};
+    use crate::pagination::{BlockCursor, Order, Pagination};
     use crate::{CARDANO_MAINNET_URL, CARDANO_PREPROD_URL, CARDANO_PREVIEW_URL};
     use rstest::rstest;
 
@@ -165,7 +169,7 @@ mod tests {
             page,
             count,
             order,
-            fetch_all: false,
+            ..Default::default()
         };
         let result = Url::from_paginated_endpoint(base_url, endpoint_url, pagination).unwrap();
         assert_eq!(result, expected);
@@ -173,34 +177,48 @@ mod tests {
 
     #[rstest]
     #[case(
-        Some("8929261"),
-        Some("9999269:10"),
+        Some(BlockCursor::block(8929261)),
+        Some(BlockCursor::tx(9999269, 10)),
         "http://example.com/api/items?page=2&count=5&order=desc&from=8929261&to=9999269%3A10"
     )]
     #[case(
-        Some("8929261:3"),
+        Some(BlockCursor::tx(8929261, 3)),
         None,
         "http://example.com/api/items?page=2&count=5&order=desc&from=8929261%3A3"
     )]
     #[case(
         None,
-        Some("9999269"),
+        Some(BlockCursor::block(9999269)),
         "http://example.com/api/items?page=2&count=5&order=desc&to=9999269"
     )]
     fn test_from_cursor_paginated_endpoint(
-        #[case] from: Option<&str>, #[case] to: Option<&str>, #[case] expected: &str,
+        #[case] from: Option<BlockCursor>, #[case] to: Option<BlockCursor>, #[case] expected: &str,
     ) {
-        let pagination = CursorPagination {
-            pagination: Pagination::new(Order::Desc, 2, 5),
-            from: from.map(String::from),
-            to: to.map(String::from),
+        let pagination = Pagination {
+            from,
+            to,
+            ..Pagination::new(Order::Desc, 2, 5)
         };
 
         let result =
-            Url::from_cursor_paginated_endpoint("http://example.com", "api/items", &pagination)
+            Url::from_cursor_paginated_endpoint("http://example.com", "api/items", pagination)
                 .unwrap();
 
         assert_eq!(result, expected);
+    }
+
+    /// Non-cursor endpoints must never leak `from`/`to`, even when they are set.
+    #[test]
+    fn test_from_paginated_endpoint_ignores_cursors() {
+        let pagination = Pagination::new(Order::Desc, 2, 5).with_range(8929261, (9999269, 10));
+
+        let result =
+            Url::from_paginated_endpoint("http://example.com", "api/items", pagination).unwrap();
+
+        assert_eq!(
+            result,
+            "http://example.com/api/items?page=2&count=5&order=desc"
+        );
     }
 
     #[rstest]
@@ -218,7 +236,7 @@ mod tests {
             page: 0,
             count,
             order,
-            fetch_all: false,
+            ..Default::default()
         };
         let urls = Url::generate_batch(base, batch_size, page_start, pagination).unwrap();
         let expected: Vec<String> = expected.into_iter().map(String::from).collect();
@@ -285,7 +303,7 @@ mod tests {
             page: 0,
             count,
             order,
-            fetch_all: false,
+            ..Default::default()
         };
         let urls = Url::generate_batch(base, batch_size, page_start, pagination).unwrap();
         let expected: Vec<String> = expected.into_iter().map(String::from).collect();

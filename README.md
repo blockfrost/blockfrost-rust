@@ -65,6 +65,39 @@ async fn main() -> blockfrost::BlockfrostResult<()> {
 }
 ```
 
+## Pagination
+
+Every paginated endpoint takes a `Pagination`, which controls `page`, `count` and `order`:
+
+```rust
+use blockfrost::{Order, Pagination};
+
+let pagination = Pagination::new(Order::Desc, 1, 100);
+let everything = Pagination::all(); // fetch every page
+```
+
+### Block range cursors
+
+Three endpoints additionally accept inclusive `from`/`to` block cursors:
+
+- `accounts_transactions`
+- `addresses_transactions`
+- `assets_transactions`
+
+```rust
+use blockfrost::{BlockCursor, Pagination};
+
+// a plain block height, or a block height with a transaction index
+let pagination = Pagination::default().with_range(8929261, BlockCursor::tx(9999269, 10));
+```
+
+Cursors also accept `BlockCursor::block(..)`, `BlockCursor::tx(..)` and `"8929261:10".parse()`.
+They are preserved across pages when `fetch_all` is set.
+
+> **Note:** every other paginated endpoint ignores `from`/`to`. Passing a `Pagination` that carries
+> cursors to, say, `accounts_utxos` returns the full unfiltered list rather than an error, so keep
+> cursors on a `Pagination` you only hand to the three endpoints above.
+
 [`examples/`]: https://github.com/blockfrost/blockfrost-rust/tree/master/examples
 [`all_requests.rs`]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/all_requests.rs
 [`ipfs.rs`]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/ipfs.rs

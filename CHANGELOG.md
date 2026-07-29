@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Inclusive `from`/`to` block cursor support for account, address, and asset transaction endpoints
+- `Pagination::with_from`, `Pagination::with_to` and `Pagination::with_range` for inclusive `from`/`to`
+  block cursors, plus the `BlockCursor` type they take
+- Cursors are only sent by the three endpoints that accept them (`accounts_transactions`,
+  `addresses_transactions`, `assets_transactions`). Every other paginated endpoint silently drops
+  them and returns an unfiltered result rather than an error, so keep cursors on a `Pagination`
+  handed only to those three
+- Cursors are preserved across pages when `fetch_all` is set
+
+### Changed
+
+- `Pagination` gained the public `from` and `to` fields. Endpoint signatures are unchanged and
+  `Pagination` stays `Copy`, so only code constructing it via a struct literal needs updating
+  (add `..Default::default()`); `Pagination::default()`, `::new()` and `::all()` are unaffected
 
 ## 1.2.4 - 2026-05-28
 

@@ -141,13 +141,14 @@ impl BlockfrostAPI {
     /// Transactions of a specific account.
     ///
     /// Use [`Pagination::with_from`], [`Pagination::with_to`], or [`Pagination::with_range`] to
-    /// restrict results to an inclusive block range.
+    /// restrict results to an inclusive block range. This is one of the three endpoints that
+    /// accept block cursors; see [`BlockCursor`].
     pub async fn accounts_transactions(
-        &self, stake_address: &str, pagination: impl Into<CursorPagination>,
+        &self, stake_address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AccountTransactionsContentInner>> {
         self.call_cursor_paged_endpoint(
             format!("/accounts/{stake_address}/transactions").as_str(),
-            pagination.into(),
+            pagination,
         )
         .await
     }
