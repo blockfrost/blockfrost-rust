@@ -142,6 +142,7 @@ mod tests {
                         "hashAlgorithm": "blake2b-256"
                     },
                     "bytes": "7b0a2020227c"
+                }
             },
             {
                 // no registration anchor - `metadata` is null
