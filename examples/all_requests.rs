@@ -113,6 +113,7 @@ async fn main() -> BlockfrostResult<()> {
     let scripts = api.scripts(pagination).await;
     let scripts_by_id = api.scripts_by_id(script_hash).await;
     let scripts_redeemers = api.scripts_redeemers(script_hash, pagination).await;
+    let scripts_utxos = api.scripts_utxos(script_hash, pagination).await;
 
     // Transactions
     let transaction_hash = "cb0e7b0cd0f0edbe5c6e260c369f5f0f0069cd41f501243ab67f1052040de28f";
@@ -206,6 +207,7 @@ async fn main() -> BlockfrostResult<()> {
     println!("scripts: {scripts:#?}");
     println!("scripts_by_id: {scripts_by_id:#?}");
     println!("scripts_redeemers: {scripts_redeemers:#?}");
+    println!("scripts_utxos: {scripts_utxos:#?}");
     println!("transaction_by_hash: {transaction_by_hash:#?}");
     println!("transactions_utxos: {transactions_utxos:#?}");
     println!("transactions_stakes: {transactions_stakes:#?}");

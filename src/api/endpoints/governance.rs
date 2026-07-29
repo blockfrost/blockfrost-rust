@@ -126,11 +126,54 @@ mod tests {
         let json_value = json!([
             {
                 "drep_id": "drep1mvdu8slennngja7w4un6knwezufra70887zuxpprd64jxfveahn",
-                "hex": "db1bc3c3f99ce68977ceaf27ab4dd917123ef9e73f85c304236eab23"
+                "hex": "db1bc3c3f99ce68977ceaf27ab4dd917123ef9e73f85c304236eab23",
+                "amount": "2000000",
+                "has_script": true,
+                "retired": false,
+                "expired": false,
+                "last_active_epoch": 509,
+                "metadata": {
+                    "url": "https://aaa.xyz/drep.json",
+                    "hash": "8c1a7f8d1e2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5",
+                    "json_metadata": {
+                        "@context": {
+                            "CIP100": "https://github.com/cardano-foundation/CIPs/blob/master/CIP-0100/README.md#"
+                        },
+                        "hashAlgorithm": "blake2b-256"
+                    },
+                    "bytes": "0x7b0a2020227c"
+                }
             },
             {
+                // no registration anchor - `metadata` is null
                 "drep_id": "drep15cfxz9exyn5rx0807zvxfrvslrjqfchrd4d47kv9e0f46uedqtc",
-                "hex": "a61261172624e8333cef435227a5857a6937c35147d20951f7257e9"
+                "hex": "a61261172624e8333cef435227a5857a6937c35147d20951f7257e9",
+                "amount": "0",
+                "has_script": false,
+                "retired": true,
+                "expired": true,
+                "last_active_epoch": null,
+                "metadata": null
+            },
+            {
+                // anchor present but off-chain content unavailable - `error` is populated
+                "drep_id": "drep1y2z8x7w6v5u4t3s2r1q0p9o8n7m6l5k4j3h2g1f0e9d8c7b6a5",
+                "hex": "c7b6a5948372615f4e3d2c1b0a9f8e7d6c5b4a39281706f5e4d3c2b1",
+                "amount": "42000000",
+                "has_script": false,
+                "retired": false,
+                "expired": false,
+                "last_active_epoch": 512,
+                "metadata": {
+                    "url": "https://bbb.xyz/drep.json",
+                    "hash": "9d2b8e7f6a5c4d3e2f1908172635445362718091a2b3c4d5e6f708192a3b4c5d",
+                    "json_metadata": null,
+                    "bytes": null,
+                    "error": {
+                        "code": "CONNECTION_ERROR",
+                        "message": "Failed to fetch metadata"
+                    }
+                }
             }
         ]);
 
