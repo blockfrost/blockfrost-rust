@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 1.3.0 - 2026-07-29
 
 ### Added
 
@@ -16,12 +16,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   them and returns an unfiltered result rather than an error, so keep cursors on a `Pagination`
   handed only to those three
 - Cursors are preserved across pages when `fetch_all` is set
+- `scripts_utxos` for `GET /scripts/:script_hash/utxos`, listing the UTXOs that hold a reference
+  script
 
 ### Changed
 
 - `Pagination` gained the public `from` and `to` fields. Endpoint signatures are unchanged and
   `Pagination` stays `Copy`, so only code constructing it via a struct literal needs updating
   (add `..Default::default()`); `Pagination::default()`, `::new()` and `::all()` are unaffected
+- Bumped `blockfrost-openapi` to `0.1.91`. The generated models it re-exports changed:
+  - `DrepsInner` (returned by `governance_dreps`) gained `amount`, `has_script`, `retired`,
+    `expired`, `last_active_epoch` and `metadata`
+  - `DrepMetadataError` was renamed to `DrepsInnerMetadataError`, affecting the `error` field of
+    `DrepMetadata`, `PoolMetadata`, `ProposalMetadataV2`, `PoolListExtendedInnerMetadata` and
+    `PoolsPoolIdMetadataGet200Response`
 
 ## 1.2.4 - 2026-05-28
 

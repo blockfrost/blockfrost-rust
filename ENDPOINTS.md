@@ -90,6 +90,7 @@
   - [x] `GET /scripts/:hash/json`
   - [x] `GET /scripts/:hash/cbor`
   - [x] `GET /scripts/:script_hash/redeemers`
+  - [x] `GET /scripts/:script_hash/utxos`
   - [x] `GET /scripts/datum/:datum_hash`
   - [x] `GET /scripts/datum/:datum_hash/cbor`
 - Transactions
