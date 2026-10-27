@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Constitutional committee endpoints: `committee` (`GET /governance/committee`), `committee_votes`
+  (`GET /governance/committee/votes`) and `committee_member_votes`
+  (`GET /governance/committee/:cc_id/votes`, accepting a `cc_hot1...` or `cc_cold1...` credential)
+- Proposal endpoints addressed by CIP-129 governance action id: `proposals_by_gov_action_id`,
+  `proposals_parameters_by_gov_action_id`, `proposals_withdrawals_by_gov_action_id`,
+  `proposals_votes_by_gov_action_id` and `proposals_metadata_by_gov_action_id` (the last one
+  returns `ProposalMetadataV2`)
+- `assets_utxos` for `GET /assets/:asset/utxos`, listing the unspent UTXOs that hold an asset. It
+  accepts `from`/`to` block cursors (block heights only)
+
+### Changed
+
+- Bumped `blockfrost-openapi` to `0.1.93`. The generated models it re-exports changed:
+  - `ProposalVotesInner` (returned by `proposals_votes`) gained the required `counted` field, and
+    its `new` constructor takes it as an extra argument
+  - Constitutional committee voters in proposal votes are CIP-129 `cc_hot1...` ids instead of
+    raw hex
+  - Redeemer `purpose` enums gained the Conway `vote` and `propose` purposes
+
 ## 1.3.0 - 2026-07-29
 
 ### Added

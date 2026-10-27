@@ -53,6 +53,7 @@ async fn main() -> BlockfrostResult<()> {
     let assets_by_id = api.assets_by_id(&asset).await;
     let assets_history = api.assets_history(&asset, pagination).await;
     let assets_transactions = api.assets_transactions(&asset, pagination).await;
+    let assets_utxos = api.assets_utxos(&asset, pagination).await;
     let assets_addresses = api.assets_addresses(&asset, pagination).await;
     let assets_policy_by_id = api.assets_policy_by_id(policy_id, pagination).await;
 
@@ -140,6 +141,19 @@ async fn main() -> BlockfrostResult<()> {
         .await;
     let nutlink_ticker_by_id = api.nutlink_ticker_by_id(ticker, pagination).await;
 
+    // Governance
+    let gov_action_id = "gov_action1zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zygsq6dmejn";
+    let cc_id = "cc_hot1qf4xq9mlra5j68w8zjz2lvf3kc3rtsdtu98ka7zx4u6jvqyy39ww0";
+    let committee = api.committee().await;
+    let committee_votes = api.committee_votes(pagination).await;
+    let committee_member_votes = api.committee_member_votes(cc_id, pagination).await;
+    let proposals_by_gov_action_id = api.proposals_by_gov_action_id(gov_action_id).await;
+    let proposals_votes_by_gov_action_id = api
+        .proposals_votes_by_gov_action_id(gov_action_id, pagination)
+        .await;
+    let proposals_metadata_by_gov_action_id =
+        api.proposals_metadata_by_gov_action_id(gov_action_id).await;
+
     // Utils
     let utils_derive_result = api.derive_address("d507c8f866691bd96e131334c355188b1a1d0b2fa0ab11545075aab332d77d9eb19657ad13ee581b56b0f8d744d66ca356b93d42fe176b3de007d53e9c4c4e7a", "0", "1").await;
     let utils_tx_evaluate_result = api.utils_tx_evaluate(tx_data).await;
@@ -167,6 +181,7 @@ async fn main() -> BlockfrostResult<()> {
     println!("assets_by_id: {assets_by_id:#?}");
     println!("assets_history: {assets_history:#?}");
     println!("assets_transactions: {assets_transactions:#?}");
+    println!("assets_utxos: {assets_utxos:#?}");
     println!("assets_addresses: {assets_addresses:#?}");
     println!("assets_policy_by_id: {assets_policy_by_id:#?}");
     println!("epochs_latest: {epochs_latest:#?}");
@@ -223,6 +238,12 @@ async fn main() -> BlockfrostResult<()> {
     println!("nutlink_address_tickers: {nutlink_address_tickers:#?}");
     println!("nutlink_address_ticker_by_id: {nutlink_address_ticker_by_id:#?}");
     println!("nutlink_ticker_by_id: {nutlink_ticker_by_id:#?}");
+    println!("committee: {committee:#?}");
+    println!("committee_votes: {committee_votes:#?}");
+    println!("committee_member_votes: {committee_member_votes:#?}");
+    println!("proposals_by_gov_action_id: {proposals_by_gov_action_id:#?}");
+    println!("proposals_votes_by_gov_action_id: {proposals_votes_by_gov_action_id:#?}");
+    println!("proposals_metadata_by_gov_action_id: {proposals_metadata_by_gov_action_id:#?}");
     println!("derive_result: {utils_derive_result:#?}");
     println!("tx_evaluate_result: {utils_tx_evaluate_result:#?}");
 

@@ -50,8 +50,8 @@ impl BlockfrostAPI {
     /// Return the transactions for a specific address.
     ///
     /// Use [`Pagination::with_from`], [`Pagination::with_to`], or [`Pagination::with_range`] to
-    /// restrict results to an inclusive block range. This is one of the three endpoints that
-    /// accept block cursors; see [`BlockCursor`].
+    /// restrict results to an inclusive block range. This endpoint accepts block cursors;
+    /// see [`BlockCursor`].
     pub async fn addresses_transactions(
         &self, address: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AddressTransactionsContentInner>> {

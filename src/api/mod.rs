@@ -148,7 +148,19 @@ mod tests {
                 .body("[]");
         });
 
-        // A single Copy `Pagination` is reused across all three calls.
+        let asset_utxos_mock = server.mock(|when, then| {
+            when.method(GET)
+                .path("/assets/asset_test/utxos")
+                .query_param("count", "100")
+                .query_param("page", "1")
+                .query_param("order", "asc")
+                .query_param("from", "8929261")
+                .query_param("to", "9999269");
+            then.status(200)
+                .header("Content-Type", "application/json")
+                .body("[]");
+        });
+
         let pagination = Pagination::default().with_range(8929261, (9999269, 10));
         api.accounts_transactions("stake_test", pagination)
             .await
@@ -160,8 +172,16 @@ mod tests {
             .await
             .unwrap();
 
+        api.assets_utxos(
+            "asset_test",
+            Pagination::default().with_range(8929261, 9999269),
+        )
+        .await
+        .unwrap();
+
         account_mock.assert();
         address_mock.assert();
         asset_mock.assert();
+        asset_utxos_mock.assert();
     }
 }
