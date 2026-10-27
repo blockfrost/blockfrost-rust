@@ -78,11 +78,12 @@ let everything = Pagination::all(); // fetch every page
 
 ### Block range cursors
 
-Three endpoints additionally accept inclusive `from`/`to` block cursors:
+These endpoints additionally accept inclusive `from`/`to` block cursors:
 
 - `accounts_transactions`
 - `addresses_transactions`
 - `assets_transactions`
+- `assets_utxos` (block heights only, without a transaction index)
 
 ```rust
 use blockfrost::{BlockCursor, Pagination};
@@ -96,7 +97,7 @@ They are preserved across pages when `fetch_all` is set.
 
 > **Note:** every other paginated endpoint ignores `from`/`to`. Passing a `Pagination` that carries
 > cursors to, say, `accounts_utxos` returns the full unfiltered list rather than an error, so keep
-> cursors on a `Pagination` you only hand to the three endpoints above.
+> cursors on a `Pagination` you only hand to the endpoints above.
 
 [`examples/`]: https://github.com/blockfrost/blockfrost-rust/tree/master/examples
 [`all_requests.rs`]: https://github.com/blockfrost/blockfrost-rust/blob/master/examples/all_requests.rs

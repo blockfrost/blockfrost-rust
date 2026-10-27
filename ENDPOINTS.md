@@ -33,6 +33,7 @@
   - [x] `GET /assets/:asset`
   - [x] `GET /assets/:asset/history`
   - [x] `GET /assets/:asset/transactions`
+  - [x] `GET /assets/:asset/utxos`
   - [x] `GET /assets/:asset/addresses`
   - [x] `GET /assets/policy/:policy_id`
 - Blocks
@@ -113,6 +114,9 @@
   - [x] `POST /utils/txs/evaluate`
   - [x] `POST /utils/txs/evaluate/utxos`
 - Governance
+  - [x] `GET /governance/committee`
+  - [x] `GET /governance/committee/votes`
+  - [x] `GET /governance/committee/:cc_id/votes`
   - [x] `GET /governance/dreps`
   - [x] `GET /governance/dreps/:drep_id`
   - [x] `GET /governance/dreps/:drep_id/delegators`
@@ -125,3 +129,8 @@
   - [x] `GET /governance/proposals/:tx_hash/:cert_index/withdrawals`
   - [x] `GET /governance/proposals/:tx_hash/:cert_index/votes`
   - [x] `GET /governance/proposals/:tx_hash/:cert_index/metadata`
+  - [x] `GET /governance/proposals/:gov_action_id`
+  - [x] `GET /governance/proposals/:gov_action_id/parameters`
+  - [x] `GET /governance/proposals/:gov_action_id/withdrawals`
+  - [x] `GET /governance/proposals/:gov_action_id/votes`
+  - [x] `GET /governance/proposals/:gov_action_id/metadata`

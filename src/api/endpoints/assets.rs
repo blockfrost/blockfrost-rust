@@ -2,7 +2,8 @@ use crate::*;
 use blockfrost_openapi::models::{
     asset::Asset, asset_addresses_inner::AssetAddressesInner,
     asset_history_inner::AssetHistoryInner, asset_policy_inner::AssetPolicyInner,
-    asset_transactions_inner::AssetTransactionsInner, assets_inner::AssetsInner,
+    asset_transactions_inner::AssetTransactionsInner,
+    asset_utxo_content_inner::AssetUtxoContentInner, assets_inner::AssetsInner,
 };
 
 impl BlockfrostAPI {
@@ -28,8 +29,8 @@ impl BlockfrostAPI {
     /// Return the transactions for a specific asset.
     ///
     /// Use [`Pagination::with_from`], [`Pagination::with_to`], or [`Pagination::with_range`] to
-    /// restrict results to an inclusive block range. This is one of the three endpoints that
-    /// accept block cursors; see [`BlockCursor`].
+    /// restrict results to an inclusive block range. This endpoint accepts block cursors;
+    /// see [`BlockCursor`].
     pub async fn assets_transactions(
         &self, asset: &str, pagination: Pagination,
     ) -> BlockfrostResult<Vec<AssetTransactionsInner>> {
@@ -38,6 +39,19 @@ impl BlockfrostAPI {
             pagination,
         )
         .await
+    }
+
+    /// Return the unspent UTXOs containing a specific asset.
+    ///
+    /// Use [`Pagination::with_from`], [`Pagination::with_to`], or [`Pagination::with_range`] to
+    /// restrict results to an inclusive block range. This endpoint accepts block cursors;
+    /// see [`BlockCursor`]. The API documents plain block heights ([`BlockCursor::block`]) for
+    /// this endpoint, without a transaction index.
+    pub async fn assets_utxos(
+        &self, asset: &str, pagination: Pagination,
+    ) -> BlockfrostResult<Vec<AssetUtxoContentInner>> {
+        self.call_cursor_paged_endpoint(format!("/assets/{asset}/utxos").as_str(), pagination)
+            .await
     }
 
     /// Return the addresses holding a specific asset.
@@ -160,6 +174,71 @@ mod tests {
         ]);
 
         serde_json::from_value::<Vec<AssetTransactionsInner>>(json_value).unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_asset_utxos() {
+        let json_value = json!([
+            {
+                "address": "addr1qxfdlum57a0083mnth9y583jvdcv5a9nwj5lzv9v34t9tl7wmz90ahznykuhr4ykwvfrge8yc63c6lpf7345yd5h59nq885d05",
+                "tx_hash": "47abf925faa462fe7ddbf906e65b4f8a27da52c3638ec4ee4fffb2298096aced",
+                "output_index": 0,
+                "amount": [
+                    {
+                        "unit": "lovelace",
+                        "quantity": "1444443"
+                    },
+                    {
+                        "unit": "750900e4999ebe0d58f19b634768ba25e525aaf12403bfe8fe130501424f4f4b",
+                        "quantity": "1000"
+                    }
+                ],
+                "block": "8dadf03917c51b36c7580a49162224f71845a5492976e0449319da6e8eea243e",
+                "block_height": 5804427,
+                "block_time": 1622754311,
+                "data_hash": null,
+                "inline_datum": null,
+                "inline_datum_json": null,
+                "reference_script_hash": null
+            },
+            {
+                "address": "addr1qxfdlum57a0083mnth9y583jvdcv5a9nwj5lzv9v34t9tl7wmz90ahznykuhr4ykwvfrge8yc63c6lpf7345yd5h59nq885d05",
+                "tx_hash": "47abf925faa462fe7ddbf906e65b4f8a27da52c3638ec4ee4fffb2298096aced",
+                "output_index": 1,
+                "amount": [
+                    {
+                        "unit": "lovelace",
+                        "quantity": "1444443"
+                    },
+                    {
+                        "unit": "750900e4999ebe0d58f19b634768ba25e525aaf12403bfe8fe130501424f4f4b",
+                        "quantity": "1000"
+                    }
+                ],
+                "block": "8dadf03917c51b36c7580a49162224f71845a5492976e0449319da6e8eea243e",
+                "block_height": 5804427,
+                "block_time": 1622754311,
+                "data_hash": null,
+                "inline_datum": "19a6aa",
+                "inline_datum_json": { "int": 42666 },
+                "reference_script_hash": "13a3efd825703a352a8f71f4e2758d08c28c564e8dfcce9f77776ad1"
+            }
+        ]);
+
+        let utxos =
+            serde_json::from_value::<Vec<AssetUtxoContentInner>>(json_value.clone()).unwrap();
+
+        assert_eq!(utxos.len(), 2);
+        assert_eq!(utxos[0].inline_datum, None);
+        assert_eq!(utxos[0].inline_datum_json, None);
+        assert_eq!(utxos[0].reference_script_hash, None);
+        assert_eq!(utxos[1].inline_datum.as_deref(), Some("19a6aa"));
+        assert_eq!(utxos[1].inline_datum_json, Some(json!({ "int": 42666 })));
+        assert_eq!(
+            utxos[1].reference_script_hash.as_deref(),
+            Some("13a3efd825703a352a8f71f4e2758d08c28c564e8dfcce9f77776ad1")
+        );
+        assert_eq!(serde_json::to_value(&utxos).unwrap(), json_value);
     }
 
     #[tokio::test]
